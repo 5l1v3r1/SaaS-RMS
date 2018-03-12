@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Models;
+using SaaS_RMS.Models.Entities.System;
 
 namespace SaaS_RMS.Data
 {
@@ -14,6 +15,8 @@ namespace SaaS_RMS.Data
             : base(options)
         {
         }
+
+        public DbSet<Restaurant> Restaurants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
