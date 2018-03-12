@@ -29,6 +29,10 @@ namespace SaaS_RMS.Controllers
             return View();
         }
 
+        public IActionResult Landing()
+        {
+            return View();
+        }
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
