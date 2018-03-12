@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-SaaS_RMS-29E2988F-2AAD-4FA6-89F8-B47EF6562EFC</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\Main\**" />
+    <Content Remove="wwwroot\Main\**" />
+    <EmbeddedResource Remove="wwwroot\Main\**" />
+    <None Remove="wwwroot\Main\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Enums\" />
+    <Folder Include="Models\Entities.System\" />
+    <Folder Include="Models\Entities.Restuarant\" />
+    <Folder Include="Models\Entities.Employee\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Admin\assets\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\css\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\font-awesome\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\font-awesome\css\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\font-awesome\fonts\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\Admin\assets\fonts\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\Admin\assets\img\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\img\friends\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\img\portfolio\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\bootstrap-inputmask\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\bootstrap-inputmask\bootstrap-inputmask.min.js" />
+    <None Include="wwwroot\Admin\assets\js\bootstrap-switch.js" />
+    <None Include="wwwroot\Admin\assets\js\bootstrap.min.js" />
+    <None Include="wwwroot\Admin\assets\js\calendar-conf-events.js" />
+    <None Include="wwwroot\Admin\assets\js\chart-master\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\chart-master\Chart.js" />
+    <None Include="wwwroot\Admin\assets\js\chartjs-conf.js" />
+    <None Include="wwwroot\Admin\assets\js\common-scripts.js" />
+    <None Include="wwwroot\Admin\assets\js\easy-pie-chart.js" />
+    <None Include="wwwroot\Admin\assets\js\fancybox\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\fancybox\jquery.fancybox.js" />
+    <None Include="wwwroot\Admin\assets\js\form-component.js" />
+    <None Include="wwwroot\Admin\assets\js\fullcalendar\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\fullcalendar\fullcalendar.min.js" />
+    <None Include="wwwroot\Admin\assets\js\gritter-conf.js" />
+    <None Include="wwwroot\Admin\assets\js\gritter\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\gritter\css\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\gritter\images\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\gritter\js\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\gritter\js\jquery.gritter.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery-1.8.3.min.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery-easy-pie-chart\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\js\jquery-easy-pie-chart\jquery.easy-pie-chart.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery-ui-1.9.2.custom.min.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.backstretch.min.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.dcjqaccordion.2.7.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.nicescroll.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.scrollTo.min.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.sparkline.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.tagsinput.js" />
+    <None Include="wwwroot\Admin\assets\js\jquery.ui.touch-punch.min.js" />
+    <None Include="wwwroot\Admin\assets\js\morris-conf.js" />
+    <None Include="wwwroot\Admin\assets\js\sparkline-chart.js" />
+    <None Include="wwwroot\Admin\assets\js\tasks.js" />
+    <None Include="wwwroot\Admin\assets\js\zabuto_calendar.js" />
+    <None Include="wwwroot\Admin\assets\lineicons\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\lineicons\fonts\.DS_Store" />
+    <None Include="wwwroot\Admin\assets\lineicons\fonts\linecons.svg" />
+    <None Include="wwwroot\Admin\assets\lineicons\lte-ie7.js" />
+  </ItemGroup>
+
+</Project>
