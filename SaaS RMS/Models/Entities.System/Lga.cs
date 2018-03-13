@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.System
 {
-    public class State
+    public class Lga
     {
         #region Model Data
 
-        public int StateId { get; set; }
+        public int LgaId { get; set; }
 
         [Required(ErrorMessage = "Name field is required!!!")]
         public string Name { get; set; }
 
         #endregion
-
-        #region Foriegn Key
-
-
-
-        #endregion
+        
     }
 }
