@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Enums\" />
     <Folder Include="Models\Entities.Restuarant\" />
     <Folder Include="Models\Entities.Employee\" />
   </ItemGroup>

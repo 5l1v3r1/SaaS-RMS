@@ -45,6 +45,7 @@ namespace SaaS_RMS.Models.Entities.System
 
         public string SetUpStatus { get; set; }
 
+        [Required(ErrorMessage = "Access Code field is required")]
         public string AccessCode { get; set; }
 
         [DisplayName("Registration Number")]

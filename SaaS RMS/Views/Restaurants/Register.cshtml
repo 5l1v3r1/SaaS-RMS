@@ -1,0 +1,81 @@
+﻿@model SaaS_RMS.Models.Entities.System.Restaurant
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
+}
+
+<style>
+    .pad {
+        padding-top: 20px;
+    }
+</style>
+
+<form asp-action="Register" class="form-horizontal form-label-left">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="container contact_container">
+        <div class="row">
+            <div class=" col-md-12 col-sm-12 col-xs-12 text-center">
+                <hr />
+                <h2><strong>REGISTER RESTAURANT</strong></h2>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                <input asp-for="Name" id="input_name" class="form-control form_input input_message input_ph" placeholder="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-8 col-md-8 col-xs-12 form-group">
+                <input asp-for="Motto" id="input_motto" class="form-control form_input input_message input_ph" placeholder="Motto" />
+                <span asp-validation-for="Motto" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-ms-4 ">
+                <input asp-for="ContactEmail" id="input_Cmail" class="form-control form_input input_message input_ph" placeholder="Email" />
+                <span asp-validation-for="ContactEmail" class="text-danger "></span>
+            </div>
+            <div class="col-md-4 col-ms-4 ">
+                <input asp-for="ContactNumber" id="input_Cnumber" class="form-control form_input input_message input_ph" placeholder="Number" />
+                <span asp-validation-for="ContactNumber" class="text-danger "></span>
+            </div>
+            <div class="col-md-4 col-ms-4 ">
+                <input asp-for="AccessCode" id="input_Cnumber" class="form-control form_input input_message input_ph" placeholder="Access Code" />
+                <span asp-validation-for="AccessCode" class="text-danger "></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col-sm-3 pad">
+                <input asp-for="State" id="input_state" class="form-control form_input input_message input_ph" placeholder="State" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 col-sm-3 pad">
+                <input asp-for="LGA" id="input_lga" class="form-control form_input input_message input_ph" placeholder="LGA" />
+                <span asp-validation-for="LGA" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 col-sm-6 pad">
+                <input asp-for="Location" id="input_location" class="form-control form_input input_message input_ph" placeholder="Location" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-ms-12 form-group pad">
+                <input type="submit" value="Register" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
