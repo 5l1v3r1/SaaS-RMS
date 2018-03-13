@@ -17,9 +17,9 @@ namespace SaaS_RMS.Models.Entities.System
 
         #endregion
 
-        #region Foriegn Key
+        #region Enumerables
 
-
+        public IEnumerable<Lga> Lgas { get; set; }
 
         #endregion
     }

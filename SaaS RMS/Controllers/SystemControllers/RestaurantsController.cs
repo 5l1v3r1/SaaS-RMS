@@ -8,7 +8,7 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers
+namespace SaaS_RMS.Controllers.SystemControllers
 {
     public class RestaurantsController : Controller
     {

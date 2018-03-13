@@ -17,6 +17,9 @@ namespace SaaS_RMS.Data
         }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<Lga> Lgas { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
