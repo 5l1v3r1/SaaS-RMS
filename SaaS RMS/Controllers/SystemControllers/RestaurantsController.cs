@@ -34,6 +34,18 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Restaurant Register
 
+        // GET: /Restaurant/Register
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: /Restaurant/Register
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Restaurant restaurant)
         {
             if (ModelState.IsValid)

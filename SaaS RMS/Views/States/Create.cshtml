@@ -1,0 +1,39 @@
+﻿@model SaaS_RMS.Models.Entities.System.State
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="row mt">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="content-panel">
+            <div style="padding: 20px;">
+                <h2><strong>ADD STATE</strong></h2>
+                <section id="unseen">
+                    <form asp-action="Create">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input asp-for="Name" class="form-control" placeholder="Name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" class="btn btn-success" value="Submit" />
+                                    <a class="btn btn-warning" asp-action="Index">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
