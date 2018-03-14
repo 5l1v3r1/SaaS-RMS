@@ -210,8 +210,7 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("ContactNumber")
                         .IsRequired();
 
-                    b.Property<string>("LGA")
-                        .IsRequired();
+                    b.Property<int>("LgaId");
 
                     b.Property<string>("Location")
                         .IsRequired();
@@ -227,8 +226,7 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<string>("SetUpStatus");
 
-                    b.Property<string>("State")
-                        .IsRequired();
+                    b.Property<int>("StateId");
 
                     b.Property<DateTime>("SubscriprionStartDate");
 
@@ -237,6 +235,10 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<DateTime>("SubscriptonEndDate");
 
                     b.HasKey("RestaurantId");
+
+                    b.HasIndex("LgaId");
+
+                    b.HasIndex("StateId");
 
                     b.ToTable("Restaurants");
                 });
@@ -303,6 +305,19 @@ namespace SaaS_RMS.Data.Migrations
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
                         .WithMany("Lgas")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Restaurant", b =>
+                {
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Lga", "Lga")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("LgaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
+                        .WithMany("Restaurants")
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

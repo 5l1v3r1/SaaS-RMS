@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,12 +29,6 @@ namespace SaaS_RMS.Models.Entities.System
         [DisplayName("Subscription Duration")]
         public string SubscriptionDuration { get; set; }
 
-        [Required(ErrorMessage = "State field is required")]
-        public string State { get; set; }
-
-        [Required(ErrorMessage = "LGA field is required")]
-        public string LGA { get; set; }
-
         [Required(ErrorMessage = "Location field is required")]
         public string Location { get; set; }
 
@@ -50,6 +45,24 @@ namespace SaaS_RMS.Models.Entities.System
 
         [DisplayName("Registration Number")]
         public string RegistrationNumber { get; set; }
+
+        #endregion
+
+        #region Foriegn Key
+
+        public int StateId { get; set; }
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
+
+        public int LgaId { get; set; }
+        [ForeignKey("LgaId")]
+        public virtual Lga Lga { get; set; }
+
+        #endregion
+
+        #region Enumerables
+
+
 
         #endregion
     }

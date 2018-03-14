@@ -91,6 +91,14 @@ namespace SaaS_RMS.Controllers.SystemControllers
         {
             if (ModelState.IsValid)
             {
+                var allLgas = _db.Lgas.ToList();
+                if (allLgas.Any(l => l.Name == lga.Name))
+                {
+                    TempData["lga"] = "You cannot add this local government area because it already exist!!!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return RedirectToAction("Index");
+                }
+
                 await _db.AddAsync(lga);
                 await _db.SaveChangesAsync();
 

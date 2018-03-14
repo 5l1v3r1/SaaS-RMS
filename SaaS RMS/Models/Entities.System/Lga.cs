@@ -17,13 +17,18 @@ namespace SaaS_RMS.Models.Entities.System
         public string Name { get; set; }
 
         #endregion
-
-
+        
         #region Foreign Key
 
         public int StateId { get; set; }
         [ForeignKey("StateId")]
         public virtual State State { get; set; }
+
+        #endregion
+
+        #region Enumerables
+
+        public IEnumerable<Restaurant> Restaurants { get; set; }
 
         #endregion
     }
