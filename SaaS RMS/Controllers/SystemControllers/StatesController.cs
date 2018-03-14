@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
+using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -51,11 +52,23 @@ namespace SaaS_RMS.Controllers.SystemControllers
         {
             if (ModelState.IsValid)
             {
+                var allStates = _db.States.ToList();
+                if (allStates.Any(s => s.Name == state.Name))
+                {
+                    TempData["state"] = "You cannot add this state because it already exist!!!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return RedirectToAction("Index");
+                }
+
                 _db.Add(state);
                 await _db.SaveChangesAsync();
+
+                TempData["state"] = "You have successfully added a new State!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
                 return Json(new { success = true });
             }
-            return View(state);
+            return RedirectToAction("Index", state);
         }
 
         #endregion
@@ -96,6 +109,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 {
                     _db.Update(state);
                     await _db.SaveChangesAsync();
+                    TempData["message"] = "You have successfully modified the State!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,6 +158,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
             var state = await _db.States.SingleOrDefaultAsync(m => m.StateId == id);
             _db.States.Remove(state);
             await _db.SaveChangesAsync();
+            TempData["message"] = "You have successfully deleted the State!!!";
+            TempData["notificationType"] = NotificationType.Success.ToString();
             return RedirectToAction(nameof(Index));
         }
 

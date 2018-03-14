@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SaaS_RMS.Models.Entities.System.State>
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.System.Lga>
 @using SaaS_RMS.Models.Enums
 
 @{
@@ -8,26 +8,27 @@
 }
 
 
+
 <div style="padding-top:55px;">
-    @if (TempData["state"] != null)
+    @if (TempData["lga"] != null)
     {
         if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
-            <div class="alert alert-success alert-dismissable">@TempData["state"]</div>
+            <div class="alert alert-success alert-dismissable">@TempData["lga"]</div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
-            <div class="alert alert-danger alert-dismissable">@TempData["state"]</div>
+            <div class="alert alert-danger alert-dismissable">@TempData["lga"]</div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
-            <div class="alert alert-info alert-dismissable">@TempData["state"]</div>
+            <div class="alert alert-info alert-dismissable">@TempData["lga"]</div>
         }
 
     }
     <div class="page-title">
         <div class="title_left">
-            <h3>STATES</h3>
+            <h3>Local Government Areas in </h3>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -35,7 +36,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_content">
-                    <a asp-area="" asp-controller="States" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
+                    <a asp-area="" asp-controller="Lgas" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
                     <table class="table" id="myTable">
                         <tr>
                             <th>
@@ -58,9 +59,8 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Lgas" asp-route-id="@item.StateId"><i class="fa fa-check"></i> LGA</a>
-                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.StateId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.StateId"><i class="fa fa-trash-o "></i> Delete</a>
+                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.LgaId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.LgaId"><i class="fa fa-trash-o "></i> Delete</a>
                                 </td>
                             </tr>
                         }
@@ -83,4 +83,3 @@
         </div>
     </div>
 </div>
-
