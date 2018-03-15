@@ -51,13 +51,13 @@
 
         <div class="row">
             <div class="col-md-3 col-sm-3 pad">
-                <input asp-for="State" id="input_state" class="form-control form_input input_message input_ph" placeholder="State" />
+                @Html.DropDownListFor(model => model.StateId, null, " Select State ", htmlAttributes: new { @class = "form-control form_input input_message input_ph" })
                 <span asp-validation-for="State" class="text-danger"></span>
             </div>
-            <div class="col-md-3 col-sm-3 pad">
+            @*<div class="col-md-3 col-sm-3 pad">
                 <input asp-for="LGA" id="input_lga" class="form-control form_input input_message input_ph" placeholder="LGA" />
                 <span asp-validation-for="LGA" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="col-md-6 col-sm-6 pad">
                 <input asp-for="Location" id="input_location" class="form-control form_input input_message input_ph" placeholder="Location" />
                 <span asp-validation-for="Location" class="text-danger"></span>

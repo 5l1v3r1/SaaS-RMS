@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
+using SaaS_RMS.Data_Factory;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
+using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -20,6 +24,22 @@ namespace SaaS_RMS.Controllers.SystemControllers
         {
             _db = context;
         }
+
+        #endregion
+
+        #region Fetch Data
+
+        /// <summary>
+        /// Sends Json responds object to view with lga of the state requested via an Ajax call
+        /// </summary>
+        /// <param name="id"> state id</param>
+        /// <returns>lgas</returns>
+        /// Microsoft.CodeDom.Providers.DotNetCompilerPlatform
+        //public JsonResult GetLgaForState(int id)
+        //{
+        //    var lgas = new StateFactory().GetLgaForState(id);
+        //    return Json(lgas, JsonRequestBehavior.AllowGet);
+        //}
 
         #endregion
 
@@ -38,6 +58,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
             return View();
         }
 
@@ -71,11 +92,38 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 }
                 
             }
+            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name", restaurant.StateId);
             return View();
         }
 
         #endregion
 
+        #region Restaurant Access
+
+        //GET: Restaurant/Access
+        [HttpGet]
+        public IActionResult Access()
+        {
+            return View();
+        }
+
+        //POST: 
+        [HttpPost]
+        public async Task<IActionResult> Access(Restaurant restaurant)
+        {
+            //int restaurantId;
+            if (ModelState.IsValid)
+            {
+                if (await _db.Restaurants.AnyAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode))
+                {
+                    //HttpContext.Session.SetInt32("RId", restaurantId);
+                    return RedirectToAction("Login", "Employee");
+                }
+            }
+
+            return View();
+        }
+        #endregion
 
     }
 }
