@@ -57,7 +57,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 {
                     TempData["state"] = "You cannot add this state because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", state);
                 }
 
                 _db.Add(state);
@@ -156,11 +156,17 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var state = await _db.States.SingleOrDefaultAsync(m => m.StateId == id);
-            _db.States.Remove(state);
-            await _db.SaveChangesAsync();
-            TempData["message"] = "You have successfully deleted the State!!!";
-            TempData["notificationType"] = NotificationType.Success.ToString();
-            return RedirectToAction(nameof(Index));
+
+            if (state != null)
+            {
+                _db.States.Remove(state);
+                await _db.SaveChangesAsync();
+                TempData["message"] = "You have successfully deleted the State!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+                return Json(new { success = true });
+            }
+            
+            return RedirectToAction("Index", state);
         }
 
         #endregion

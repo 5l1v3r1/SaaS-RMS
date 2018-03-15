@@ -128,7 +128,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 return NotFound();
             }
-            return View("Edit", lga);
+            return PartialView("Edit", lga);
         }
 
         // POST: Lgas/Edit/5

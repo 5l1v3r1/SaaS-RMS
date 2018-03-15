@@ -1,7 +1,7 @@
 ﻿@model SaaS_RMS.Models.Entities.System.Lga
 
 @{
-    ViewData["Title"] = "Edit";
+    
 }
 
 <!--MODAL HEADER-->
@@ -10,10 +10,10 @@
     <h3> <strong> EDIT LOCAL GOVERNMENT AREA </strong> </h3>
 </div>
 
+
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="LgaId" />
-
     <!--MODAL BODY-->
     <div class="modal-body">
         <div class="form-horizontal">
@@ -40,9 +40,6 @@
         </div>
     </div>
 </form>
-
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
