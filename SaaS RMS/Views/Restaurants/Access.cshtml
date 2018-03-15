@@ -2,7 +2,42 @@
 
 @{
     ViewData["Title"] = "Access";
-    Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
+    Layout = "~/Views/Shared/AuthenticationLayout/_AuthenticationLayout.cshtml";
 }
 
+<form class="form-login" asp-action="Access" role="form" asp-controller="Restaurants">
+    <h2 class="form-login-heading"> ACCESS DOOR </h2>
+    <div class="login-wrap">
+        <input asp-for="Name" type="text" class="form-control" placeholder="Restaurant Name" autofocus />
+        <span asp-validation-for="Name" class="text-danger"></span>
 
+        <br />
+
+        <input asp-for="AccessCode" type="text" class="form-control" placeholder="Access Code" />
+        <span asp-validation-for="AccessCode" class="text-danger"></span>
+
+        @*<label class="checkbox">
+            <span class="pull-right">
+                <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
+
+
+            </span>
+        </label>*@
+        <br />
+        <button class="btn btn-theme btn-block" type="submit" value="Login"><i class="fa fa-lock"></i> ACCESS</button>
+        <hr />
+
+        @*<div class="login-social-link centered">
+            <p>or you can sign in via your social network</p>
+            <button class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</button>
+            <button class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</button>
+        </div>*@
+        <div class="registration">
+            Don't have an account yet?<br />
+            <a class="" asp-action="Register">
+                Create an account
+            </a>
+        </div>
+    </div>
+
+</form>

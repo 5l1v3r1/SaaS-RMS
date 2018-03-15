@@ -112,13 +112,17 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public async Task<IActionResult> Access(Restaurant restaurant)
         {
             //int restaurantId;
-            if (ModelState.IsValid)
+
+            //var rest = _db.Restaurants.SingleAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
+
+            if (await _db.Restaurants.AnyAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode))
             {
-                if (await _db.Restaurants.AnyAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode))
-                {
-                    //HttpContext.Session.SetInt32("RId", restaurantId);
-                    return RedirectToAction("Login", "Employee");
-                }
+                //HttpContext.Session.SetInt32("RId", restaurantId);
+                return RedirectToAction("Login", "Employee");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Restaurant Name doesn't match the access code");
             }
 
             return View();
