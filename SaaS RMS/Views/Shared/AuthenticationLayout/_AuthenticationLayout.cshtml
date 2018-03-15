@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/Authentication/assets/css/bootstrap.css" rel="stylesheet">
+    <!--external css-->
+    <link href="~/Authentication/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="~/Authentication/assets/css/style.css" rel="stylesheet">
+    <link href="~/Authentication/assets/css/style-responsive.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <div id="login-page">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
+
+
+    <script src="~/Authentication/assets/js/jquery.js"></script>
+    <script src="~/Authentication/assets/js/bootstrap.min.js"></script>
+
+    <!--BACKSTRETCH-->
+    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+    <script type="text/javascript" src="~/Authentication/assets/js/jquery.backstretch.min.js"></script>
+    <script>
+        $.backstretch("~/Authentication/assets/img/login-bg.jpg", {speed: 500});
+    </script>
+</body>
+</html>
