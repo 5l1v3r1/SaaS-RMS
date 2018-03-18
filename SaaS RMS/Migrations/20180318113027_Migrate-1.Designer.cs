@@ -11,7 +11,7 @@ using System;
 namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180318111454_Migrate-1")]
+    [Migration("20180318113027_Migrate-1")]
     partial class Migrate1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

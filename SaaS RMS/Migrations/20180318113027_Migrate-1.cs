@@ -231,7 +231,6 @@ namespace SaaSRMS.Migrations
                     Motto = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     RegistrationNumber = table.Column<string>(nullable: true),
-                    RestaurantId1 = table.Column<int>(nullable: true),
                     SetUpStatus = table.Column<string>(nullable: true),
                     StateId = table.Column<int>(nullable: false),
                     SubscriprionStartDate = table.Column<DateTime>(nullable: false),
@@ -246,12 +245,6 @@ namespace SaaSRMS.Migrations
                         column: x => x.LgaId,
                         principalTable: "Lgas",
                         principalColumn: "LgaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Restaurants_Restaurants_RestaurantId1",
-                        column: x => x.RestaurantId1,
-                        principalTable: "Restaurants",
-                        principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Restaurants_States_StateId",
@@ -336,9 +329,9 @@ namespace SaaSRMS.Migrations
                 column: "LgaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_RestaurantId1",
+                name: "IX_Restaurants_RestaurantId",
                 table: "Restaurants",
-                column: "RestaurantId1");
+                column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_StateId",

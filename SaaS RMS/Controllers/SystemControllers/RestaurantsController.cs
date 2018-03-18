@@ -118,7 +118,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
             if (await _db.Restaurants.AnyAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode))
             {
                 //HttpContext.Session.SetInt32("RId", restaurantId);
-                return RedirectToAction("Login", "Employee");
+                return RedirectToAction("Admin");
             }
             else
             {
@@ -127,6 +127,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
             return View();
         }
+        #endregion
+
+        #region Restaurant Admin
+
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
         #endregion
 
     }
