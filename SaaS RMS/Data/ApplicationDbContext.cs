@@ -38,6 +38,8 @@ namespace SaaS_RMS.Data
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeePersonalData> EmployeePersonalDatas { get; set; }
+        public DbSet<EmployeeMedicalData> EmployeeMedicalDatas { get; set; }
+
 
         #endregion
 
