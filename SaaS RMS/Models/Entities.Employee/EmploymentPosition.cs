@@ -13,7 +13,7 @@ namespace SaaS_RMS.Models.Entities.Employee
     {
         #region Model Data
 
-        public long EmploymentPositionId { get; set; }
+        public int EmploymentPositionId { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -31,7 +31,7 @@ namespace SaaS_RMS.Models.Entities.Employee
 
         #region Foreign Keys
 
-        public long RestaurantId { get; set; }
+        public int RestaurantId { get; set; }
         [ForeignKey("RestaurantId")]
         public virtual Restaurant Restaurant { get; set; }
 
