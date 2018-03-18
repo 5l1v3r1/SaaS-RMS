@@ -52,7 +52,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 var allBanks = _db.Banks.ToList();
                 if (allBanks.Any(b => b.Name == bank.Name))
                 {
-                    TempData["lga"] = "You cannot add this Bank because it already exist!!!";
+                    TempData["bank"] = "You cannot add this Bank because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index");
                 }
@@ -60,7 +60,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 await _db.AddAsync(bank);
                 await _db.SaveChangesAsync();
 
-                TempData["lga"] = "You have successfully added a new Bank!!!";
+                TempData["bank"] = "You have successfully added a new Bank!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -117,10 +117,58 @@ namespace SaaS_RMS.Controllers.EmployeeController
                         throw;
                     }
                 }
+
+                TempData["bank"] = "You have successfully modified a Bank!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
                 return Json(new { success = true });
             }
             return RedirectToAction("Index");
         }
+
+        #endregion
+
+        #region Bank Delete
+
+        //GET: Banks/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+
+            if (bank == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Delete", bank);
+        }
+
+        //POST:
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            if(bank != null)
+            {
+                _db.Banks.Remove(bank);
+                await _db.SaveChangesAsync();
+
+                TempData["bank"] = "You have successfully deleted a Bank!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
 
         #region Bank Exists
 
@@ -131,7 +179,5 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-
-        #endregion
     }
 }

@@ -161,6 +161,10 @@ namespace SaaS_RMS.Controllers.SystemControllers
                         throw;
                     }
                 }
+
+                TempData["bank"] = "You have successfully modified a Local Government Area!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
                 return Json(new { success = true });
 
             }
@@ -200,6 +204,10 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 _db.Lgas.Remove(lga);
                 await _db.SaveChangesAsync();
+
+                TempData["lga"] = "You have successfully deleted a Local Government Area!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
                 return Json(new { success = true });
             }
             return RedirectToAction("Index", new { StateId = lga.StateId });

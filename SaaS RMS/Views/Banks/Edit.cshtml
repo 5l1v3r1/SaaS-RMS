@@ -1,4 +1,4 @@
-﻿@model SaaS_RMS.Models.Entities.System.Lga
+﻿@model SaaS_RMS.Models.Entities.Employee.Bank
 
 @{
     ViewData["Title"] = "Create";
@@ -7,12 +7,12 @@
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3> <strong> ADD LOCAL GOVERNMENT AREA </strong> </h3>
+    <h3> <strong> EDIT A BANK </strong> </h3>
 </div>
 
-<form asp-action="Create">
+<form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+    <input type="hidden" asp-for="BankId" />
     <!--MODAL BODY-->
     <div class="modal-body">
         <div class="form-horizontal">
@@ -32,8 +32,7 @@
     <div class="modal-footer">
         <div class="row pull-right">
             <div class="col-md-12">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <input type="hidden" value="@ViewData["SId"]" asp-for="StateId" />
+                <input type="submit" value="Save" class="btn btn-primary" />
                 <a class="btn btn-danger" data-dismiss="modal">Cancel</a>
             </div>
         </div>
