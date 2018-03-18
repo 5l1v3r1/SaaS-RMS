@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
@@ -27,7 +28,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         public IActionResult Index()
         {
-            return View(_db.Restaurants.ToList());
+            return View(_db.Packages.ToList());
         }
 
         #endregion
@@ -38,7 +39,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            
+            var package = new Package();
+            return PartialView("Create", package);
         }
 
         //POST: 
@@ -74,6 +77,108 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
+        #region Package Edit
+
+        //GET: Package/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var package = await _db.Packages.SingleOrDefaultAsync(p => p.PackageId == id);
+            if (package == null)
+            {
+                return NotFound();
+            }
+            return PartialView("Edit", package);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Package package, int id)
+        {
+            if (id != package.PackageId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.Update(package);
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PackageExists(package.PackageId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+
+
+        #endregion
+
+        #region Package Delete
+
+        //GET: Package/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var package = await _db.Packages.SingleOrDefaultAsync(p => p.PackageId == id);
+
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Delete", package);
+        }
+
+        //POST:
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var package = await _db.Packages.SingleOrDefaultAsync(p => p.PackageId == id);
+            if (package != null)
+            {
+                _db.Packages.Remove(package);
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Package Exists
+
+        private bool PackageExists(long id)
+        {
+            return _db.Packages.Any(p => p.PackageId == id);
+        }
+
+        #endregion
 
 
 

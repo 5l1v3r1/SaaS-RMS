@@ -198,7 +198,7 @@ namespace SaaS_RMS.Data.Migrations
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Package", b =>
                 {
-                    b.Property<long>("PackageId")
+                    b.Property<int>("PackageId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Amount");
