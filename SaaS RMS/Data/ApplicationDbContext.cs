@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Models;
+using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.System;
 
 namespace SaaS_RMS.Data
@@ -20,7 +21,7 @@ namespace SaaS_RMS.Data
         public DbSet<State> States { get; set; }
         public DbSet<Lga> Lgas { get; set; }
         public DbSet<Package> Packages { get; set; }
-
+        public DbSet<Bank> Banks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
