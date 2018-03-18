@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.Restuarant;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -58,7 +59,7 @@ namespace SaaS_RMS.Models.Entities.System
 
         #region Enumerables
 
-        public IEnumerable<Restaurant> Restaurants { get; set; }
+        public IEnumerable<Department> Departments { get; set; }
 
         #endregion
     }

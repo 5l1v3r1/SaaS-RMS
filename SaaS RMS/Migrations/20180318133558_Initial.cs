@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SaaSRMS.Migrations
 {
-    public partial class Migrate1 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -255,11 +255,31 @@ namespace SaaSRMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RestaurantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                    table.ForeignKey(
+                        name: "FK_Employees_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
                     DepartmentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     RestaurantId = table.Column<int>(nullable: false)
                 },
@@ -267,11 +287,17 @@ namespace SaaSRMS.Migrations
                 {
                     table.PrimaryKey("PK_Departments", x => x.DepartmentId);
                     table.ForeignKey(
+                        name: "FK_Departments_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Departments_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -314,8 +340,18 @@ namespace SaaSRMS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Departments_EmployeeId",
+                table: "Departments",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Departments_RestaurantId",
                 table: "Departments",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_RestaurantId",
+                table: "Employees",
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
@@ -327,11 +363,6 @@ namespace SaaSRMS.Migrations
                 name: "IX_Restaurants_LgaId",
                 table: "Restaurants",
                 column: "LgaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_RestaurantId",
-                table: "Restaurants",
-                column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_StateId",
@@ -370,6 +401,9 @@ namespace SaaSRMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Restaurants");

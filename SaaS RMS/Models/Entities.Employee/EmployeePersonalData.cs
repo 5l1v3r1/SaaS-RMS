@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -61,6 +63,24 @@ namespace SaaS_RMS.Models.Entities.Employee
 
         public string DisplayName
             => FirstName + " " + LastName;
+
+        #endregion
+
+        #region Foreign Keys
+
+        public int EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
+        public virtual Employee Employee { get; set; }
+
+        [DisplayName("State")]
+        public int StateId { get; set; }
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
+
+        [DisplayName("LGA")]
+        public int LgaId { get; set; }
+        [ForeignKey("LgaId")]
+        public virtual Lga Lga { get; set; }
 
         #endregion
     }

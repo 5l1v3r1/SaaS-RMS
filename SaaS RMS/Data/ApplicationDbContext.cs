@@ -18,12 +18,28 @@ namespace SaaS_RMS.Data
         {
         }
 
+        #region SYSTEM DATA CONTEXT
+
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<Lga> Lgas { get; set; }
         public DbSet<Package> Packages { get; set; }
+
+        #endregion
+
+        #region RESTAURANT DATA CONTEXT
+
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Department> Departments { get; set; }
+
+        #endregion
+
+        #region EMPLOYEE DATA CONTEXT
+
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeePersonalData> EmployeePersonalDatas { get; set; }
+
+        #endregion
 
 
         protected override void OnModelCreating(ModelBuilder builder)
