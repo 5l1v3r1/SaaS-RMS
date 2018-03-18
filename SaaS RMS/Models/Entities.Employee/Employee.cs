@@ -19,6 +19,7 @@ namespace SaaS_RMS.Models.Entities.Employee
         public List<EmployeeMedicalData> EmployeeMedicalDatas { get; set; }
         public List<EmployeeBankData> EmployeeBankDatas { get; set; }
         public List<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
+        public List<EmployeeWorkData> EmployeeWorkDatas { get; set; }
 
         #endregion
 
