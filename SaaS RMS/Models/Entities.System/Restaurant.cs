@@ -12,7 +12,7 @@ namespace SaaS_RMS.Models.Entities.System
     {
         #region Model Data
 
-        public long RestaurantId { get; set; }
+        public int RestaurantId { get; set; }
 
         [Required(ErrorMessage = "Name field is required")]
         [DisplayName("Company Name")]
@@ -58,7 +58,7 @@ namespace SaaS_RMS.Models.Entities.System
 
         #region Enumerables
 
-
+        public IEnumerable<Restaurant> Restaurants { get; set; }
 
         #endregion
     }

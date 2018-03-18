@@ -10,7 +10,7 @@ namespace SaaS_RMS.Models.Entities.System
     {
         #region Data Model
 
-        public long PackageId { get; set; }
+        public int PackageId { get; set; }
 
         [Required(ErrorMessage = "Name field is required")]
         public string Name { get; set; }

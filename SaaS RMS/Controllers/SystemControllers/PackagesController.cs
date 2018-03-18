@@ -173,7 +173,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Package Exists
 
-        private bool PackageExists(long id)
+        private bool PackageExists(int id)
         {
             return _db.Packages.Any(p => p.PackageId == id);
         }

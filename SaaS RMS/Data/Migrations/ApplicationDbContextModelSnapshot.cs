@@ -191,6 +191,23 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("Banks");
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RestaurantId");
+
+                    b.HasKey("DepartmentId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>
                 {
                     b.Property<int>("LgaId")
@@ -210,7 +227,7 @@ namespace SaaS_RMS.Data.Migrations
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Package", b =>
                 {
-                    b.Property<long>("PackageId")
+                    b.Property<int>("PackageId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Amount");
@@ -231,7 +248,7 @@ namespace SaaS_RMS.Data.Migrations
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Restaurant", b =>
                 {
-                    b.Property<long>("RestaurantId")
+                    b.Property<int>("RestaurantId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessCode")
@@ -257,6 +274,8 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
+                    b.Property<int?>("RestaurantId1");
+
                     b.Property<string>("SetUpStatus");
 
                     b.Property<int>("StateId");
@@ -270,6 +289,8 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasKey("RestaurantId");
 
                     b.HasIndex("LgaId");
+
+                    b.HasIndex("RestaurantId1");
 
                     b.HasIndex("StateId");
 
@@ -334,6 +355,14 @@ namespace SaaS_RMS.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Department", b =>
+                {
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
@@ -347,6 +376,10 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Lga")
                         .WithMany("Restaurants")
                         .HasForeignKey("LgaId");
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("RestaurantId1");
 
                     b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
                         .WithMany("Restaurants")

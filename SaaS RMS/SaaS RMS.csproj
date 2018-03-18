@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Entities.Restuarant\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Authentication\assets\.DS_Store" />
     <None Include="wwwroot\Authentication\assets\css\.DS_Store" />
     <None Include="wwwroot\Authentication\assets\font-awesome\.DS_Store" />

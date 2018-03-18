@@ -11,8 +11,8 @@ using System;
 namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180315192456_Added_Package")]
-    partial class Added_Package
+    [Migration("20180318111454_Migrate-1")]
+    partial class Migrate1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -180,6 +180,35 @@ namespace SaaSRMS.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Employee.Bank", b =>
+                {
+                    b.Property<int>("BankId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("BankId");
+
+                    b.ToTable("Banks");
+                });
+
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RestaurantId");
+
+                    b.HasKey("DepartmentId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>
                 {
                     b.Property<int>("LgaId")
@@ -199,7 +228,7 @@ namespace SaaSRMS.Migrations
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Package", b =>
                 {
-                    b.Property<long>("PackageId")
+                    b.Property<int>("PackageId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Amount");
@@ -220,7 +249,7 @@ namespace SaaSRMS.Migrations
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Restaurant", b =>
                 {
-                    b.Property<long>("RestaurantId")
+                    b.Property<int>("RestaurantId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessCode")
@@ -246,6 +275,8 @@ namespace SaaSRMS.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
+                    b.Property<int?>("RestaurantId1");
+
                     b.Property<string>("SetUpStatus");
 
                     b.Property<int>("StateId");
@@ -259,6 +290,8 @@ namespace SaaSRMS.Migrations
                     b.HasKey("RestaurantId");
 
                     b.HasIndex("LgaId");
+
+                    b.HasIndex("RestaurantId1");
 
                     b.HasIndex("StateId");
 
@@ -323,6 +356,14 @@ namespace SaaSRMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Department", b =>
+                {
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
@@ -336,6 +377,10 @@ namespace SaaSRMS.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Lga")
                         .WithMany("Restaurants")
                         .HasForeignKey("LgaId");
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("RestaurantId1");
 
                     b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
                         .WithMany("Restaurants")

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SaaSRMS.Migrations
 {
-    public partial class Initial_Migration : Migration
+    public partial class Migrate1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,35 @@ namespace SaaSRMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Banks",
+                columns: table => new
+                {
+                    BankId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Banks", x => x.BankId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    PackageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<double>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.PackageId);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,16 +220,18 @@ namespace SaaSRMS.Migrations
                 name: "Restaurants",
                 columns: table => new
                 {
-                    RestaurantId = table.Column<long>(nullable: false)
+                    RestaurantId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessCode = table.Column<string>(nullable: false),
                     ContactEmail = table.Column<string>(nullable: false),
                     ContactNumber = table.Column<string>(nullable: false),
+                    LgaId = table.Column<int>(nullable: true),
                     Location = table.Column<string>(nullable: false),
                     Logo = table.Column<string>(nullable: true),
                     Motto = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     RegistrationNumber = table.Column<string>(nullable: true),
+                    RestaurantId1 = table.Column<int>(nullable: true),
                     SetUpStatus = table.Column<string>(nullable: true),
                     StateId = table.Column<int>(nullable: false),
                     SubscriprionStartDate = table.Column<DateTime>(nullable: false),
@@ -211,10 +242,42 @@ namespace SaaSRMS.Migrations
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.RestaurantId);
                     table.ForeignKey(
+                        name: "FK_Restaurants_Lgas_LgaId",
+                        column: x => x.LgaId,
+                        principalTable: "Lgas",
+                        principalColumn: "LgaId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Restaurants_Restaurants_RestaurantId1",
+                        column: x => x.RestaurantId1,
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Restaurants_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "StateId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    DepartmentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.DepartmentId);
+                    table.ForeignKey(
+                        name: "FK_Departments_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -258,9 +321,24 @@ namespace SaaSRMS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Departments_RestaurantId",
+                table: "Departments",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Lgas_StateId",
                 table: "Lgas",
                 column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_LgaId",
+                table: "Restaurants",
+                column: "LgaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_RestaurantId1",
+                table: "Restaurants",
+                column: "RestaurantId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_StateId",
@@ -286,16 +364,25 @@ namespace SaaSRMS.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Lgas");
+                name: "Banks");
 
             migrationBuilder.DropTable(
-                name: "Restaurants");
+                name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Restaurants");
+
+            migrationBuilder.DropTable(
+                name: "Lgas");
 
             migrationBuilder.DropTable(
                 name: "States");
