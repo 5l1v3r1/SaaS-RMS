@@ -50,10 +50,9 @@ namespace SaaS_RMS.Models.Entities.System
         #endregion
 
         #region Foriegn Key
-
-        public int StateId { get; set; }
-        [ForeignKey("StateId")]
-        public virtual State State { get; set; }
+        public int LgaId { get; set; }
+        [ForeignKey("LgaId")]
+        public virtual Lga Lga { get; set; }
 
         #endregion
 

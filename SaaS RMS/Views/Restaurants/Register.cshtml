@@ -51,13 +51,12 @@
 
         <div class="row">
             <div class="col-md-3 col-sm-3 pad">
-                @Html.DropDownListFor(model => model.StateId, null, " Select State ", htmlAttributes: new { @class = "form-control form_input input_message input_ph" })
-                <span asp-validation-for="State" class="text-danger"></span>
+                <select class="form-control" asp-items="ViewBag.StateId" id="state"></select>
             </div>
-            @*<div class="col-md-3 col-sm-3 pad">
-                <input asp-for="LGA" id="input_lga" class="form-control form_input input_message input_ph" placeholder="LGA" />
-                <span asp-validation-for="LGA" class="text-danger"></span>
-            </div>*@
+            <div class="col-md-3 col-sm-3 pad">
+                <select asp-for="LgaId" class="form-control" id="lga"></select>
+                <span asp-validation-for="LgaId" class="text-danger"></span>
+            </div>
             <div class="col-md-6 col-sm-6 pad">
                 <input asp-for="Location" id="input_location" class="form-control form_input input_message input_ph" placeholder="Location" />
                 <span asp-validation-for="Location" class="text-danger"></span>
@@ -78,4 +77,35 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#state').val() != '') {
+                getLGAs();
+            }
+
+            $('#state').on('input', function () {
+                getLGAs();
+            });
+
+            function getLGAs() {
+                $('#lga').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Restaurants/GetLgasForState',
+                    dataType: 'json',
+                    data: { id: $('#state').val() },
+                    success: function (lga) {
+                        console.log(lga);
+                        $.each(lga, function (i, lga) {
+                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
 }

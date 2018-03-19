@@ -11,6 +11,7 @@ using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -28,18 +29,11 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #endregion
 
         #region Fetch Data
-
-        /// <summary>
-        /// Sends Json responds object to view with lga of the state requested via an Ajax call
-        /// </summary>
-        /// <param name="id"> state id</param>
-        /// <returns>lgas</returns>
-        /// Microsoft.CodeDom.Providers.DotNetCompilerPlatform
-        //public JsonResult GetLgaForState(int id)
-        //{
-        //    var lgas = new StateFactory().GetLgaForState(id);
-        //    return Json(lgas, JsonRequestBehavior.AllowGet);
-        //}
+        public JsonResult GetLgasForState(int id)
+        {
+            var lgas = _db.Lgas.Where(l => l.StateId == id);
+            return Json(lgas);
+        }
 
         #endregion
 
@@ -92,7 +86,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 }
                 
             }
-            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name", restaurant.StateId);
             return View();
         }
 
@@ -114,15 +107,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
             //int restaurantId;
 
             //var rest = _db.Restaurants.SingleAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
-
-            if (await _db.Restaurants.AnyAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode))
+            var rest = await _db.Restaurants.FirstOrDefaultAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
+            if (rest != null)
             {
-                //HttpContext.Session.SetInt32("RId", restaurantId);
+                HttpContext.Session.SetInt32("RId", rest.RestaurantId);
                 return RedirectToAction("Admin");
             }
             else
             {
-                ModelState.AddModelError("", "Restaurant Name doesn't match the access code");
+                ViewData["mismatch"] = "Restaurant name doesn't match the access code";
             }
 
             return View();
