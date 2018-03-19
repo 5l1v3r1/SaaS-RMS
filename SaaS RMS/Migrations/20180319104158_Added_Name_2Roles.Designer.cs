@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SaaS_RMS.Data;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180319104158_Added_Name_2Roles")]
+    partial class Added_Name_2Roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -436,7 +437,7 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("RestaurantId");
+                    b.Property<int>("RestaurantId");
 
                     b.HasKey("RoleId");
 
@@ -684,7 +685,8 @@ namespace SaaS_RMS.Data.Migrations
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restuarant")
                         .WithMany()
-                        .HasForeignKey("RestaurantId");
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>

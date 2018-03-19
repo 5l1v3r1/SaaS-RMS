@@ -13,6 +13,8 @@ namespace SaaS_RMS.Models.Entities.Restuarant
 
         public int RoleId { get; set; }
 
+        public string Name { get; set; }
+
         [DisplayName("Employee Management")]
         public bool CanManageEmployee { get; set; }
 
@@ -23,7 +25,7 @@ namespace SaaS_RMS.Models.Entities.Restuarant
 
         #region Foreign Keys
 
-        public int RestaurantId { get; set; }
+        public int? RestaurantId { get; set; }
         [ForeignKey("RestaurantId")]
         public virtual System.Restaurant Restuarant { get; set; }
 
