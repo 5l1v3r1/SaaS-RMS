@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Data_Factory;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 using System.Web;
@@ -29,6 +28,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #endregion
 
         #region Fetch Data
+
         public JsonResult GetLgasForState(int id)
         {
             var lgas = _db.Lgas.Where(l => l.StateId == id);

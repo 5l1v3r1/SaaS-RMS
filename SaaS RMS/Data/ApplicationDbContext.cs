@@ -47,6 +47,12 @@ namespace SaaS_RMS.Data
 
         #endregion
 
+        #region ROLE DATA CONTEXT
+
+        public new DbSet<Role> Roles { get; set; }
+
+        #endregion
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
