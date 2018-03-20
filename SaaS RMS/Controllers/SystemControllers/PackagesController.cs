@@ -39,7 +39,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
         [HttpGet]
         public IActionResult Create()
         {
-            
             var package = new Package();
             return PartialView("Create", package);
         }
@@ -124,6 +123,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
                         throw;
                     }
                 }
+                TempData["package"] = "You have successfully modified a package!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
             return RedirectToAction("Index");
@@ -164,6 +165,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 _db.Packages.Remove(package);
                 await _db.SaveChangesAsync();
+
+                TempData["package"] = "You have successfully deleted a Local Government Area!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
             return RedirectToAction("Index");

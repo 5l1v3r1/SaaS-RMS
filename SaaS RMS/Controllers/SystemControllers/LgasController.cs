@@ -15,12 +15,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
     public class LgasController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public LgasController(ApplicationDbContext context)
+        public LgasController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -36,7 +39,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 var lga = _db.Lgas.Where(l => l.StateId == StateId);
                 if(lga != null)
                 {
-                    HttpContext.Session.SetInt32("SId", StateId);
+                    _session.SetInt32("SId", StateId);
                     return View(await lga.ToListAsync());
                 }
             }
@@ -77,7 +80,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         // GET: Lgas/Create
         public IActionResult Create()
         {
-            ViewData["SId"] = Convert.ToInt32(HttpContext.Session.GetInt32("SId"));
+            ViewData["SId"] = Convert.ToInt32(_session.GetInt32("SId"));
             var lga = new Lga();
             return PartialView("Create", lga);
         }
@@ -162,7 +165,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     }
                 }
 
-                TempData["bank"] = "You have successfully modified a Local Government Area!!!";
+                TempData["lga"] = "You have successfully modified a Local Government Area!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });

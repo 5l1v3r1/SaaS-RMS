@@ -82,9 +82,9 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 var roles = _db.Roles;
                 foreach (var item in roles)
                 {
-                    if (item.Name == role.Name)
+                    if (item.RestaurantId == restaurant && item.Name == role.Name)
                     {
-                        TempData["message"] = "Role already exist, try another role name!";
+                        TempData["role"] = "Role already exist, try another role name!";
                         TempData["notificationtype"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
@@ -92,7 +92,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 await _db.Roles.AddAsync(role);
                 await _db.SaveChangesAsync();
-                TempData["message"] = "You have successfully created a role!";
+                TempData["role"] = "You have successfully created a role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -137,7 +137,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 _db.Entry(role).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
 
-                TempData["message"] = "You have successfully modified a role!";
+                TempData["role"] = "You have successfully modified a role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -169,13 +169,17 @@ namespace SaaS_RMS.Controllers.RestaurantController
         #region Roles Delete
 
         // GET: Roles/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task <ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Role role = _db.Roles.Find(id);
+
+            Role role = await _db.Roles
+                .Include(r => r.Restuarant)
+                .SingleOrDefaultAsync(r => r.RoleId == id);
+
             if (role == null)
             {
                 return NotFound();
@@ -186,13 +190,20 @@ namespace SaaS_RMS.Controllers.RestaurantController
         // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> DeleteConfirmed(long id)
+        public async Task <IActionResult> DeleteConfirmed(int id)
         {
-            Role role = _db.Roles.Find(id);
-            _db.Roles.Remove(role);
-            await _db.SaveChangesAsync();
-            TempData["message"] = "You have successfully deleted a role!";
-            TempData["notificationtype"] = NotificationType.Success.ToString();
+            Role role = await _db.Roles.SingleOrDefaultAsync(r => r.RoleId == id);
+
+            if (role != null)
+            {
+                _db.Roles.Remove(role);
+                await _db.SaveChangesAsync();
+
+                TempData["role"] = "You have successfully deleted a role!";
+                TempData["notificationtype"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
             return RedirectToAction("Index");
         }
 
