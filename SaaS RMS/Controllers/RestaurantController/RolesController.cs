@@ -125,18 +125,38 @@ namespace SaaS_RMS.Controllers.RestaurantController
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Role role)
+        public async Task<IActionResult> Edit(int id, Role role)
         {
+            if (id != role.RoleId)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                var restaurant = _session.GetInt32("RId");
-                if (restaurant != null)
+                try
                 {
-                    role.RestaurantId = restaurant;
-                }
-                _db.Entry(role).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
+                    var restaurant = _session.GetInt32("RId");
+                    if (restaurant != null)
+                    {
+                        role.RestaurantId = restaurant;
+                    }
 
+                    _db.Entry(role).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RoleExists(role.RoleId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                
                 TempData["role"] = "You have successfully modified a role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
@@ -212,7 +232,10 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Roles Exists
 
-
+        private bool RoleExists(int id)
+        {
+            return _db.Roles.Any(e => e.RoleId == id);
+        }
 
         #endregion
 
