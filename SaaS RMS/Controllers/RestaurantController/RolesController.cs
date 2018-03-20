@@ -33,7 +33,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         public async Task <IActionResult> Index()
         {
             var restaurant = _session.GetInt32("RId");
-            ViewData["RId"] = _session.GetInt32("RId");
+            //ViewData["RId"] = _session.GetInt32("RId");
 
             //var role = _db.Restaurants.Find(restaurant);
 
@@ -105,16 +105,16 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         //GET: Roles/Edit/4
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task <IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var role = _db.Roles.Find(id);
+            var role = await _db.Roles.SingleOrDefaultAsync(r => r.RoleId == id);
 
-            if (role != null)
+            if (role == null)
             {
                 return NotFound();
             }
@@ -127,9 +127,13 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Role role)
         {
-            var restaurant = HttpContext.Session.GetInt32("RID");
             if (ModelState.IsValid)
             {
+                var restaurant = _session.GetInt32("RId");
+                if (restaurant != null)
+                {
+                    role.RestaurantId = restaurant;
+                }
                 _db.Entry(role).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
 
