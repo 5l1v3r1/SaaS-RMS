@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.RestaurantController
 {
@@ -29,9 +30,19 @@ namespace SaaS_RMS.Controllers.RestaurantController
         public async Task <IActionResult> Index()
         {
             var restaurant = HttpContext.Session.GetInt32("RId");
+            ViewData["RId"] = HttpContext.Session.GetInt32("RId");
             var roles = _db.Roles.Where(r => r.Name != "Manager" && r.Name != "CEO" && r.RestaurantId == restaurant)
                                         .Include(r => r.Restuarant);
-            return View(await roles.ToListAsync());
+
+            if (roles != null)
+            {
+                return View(await roles.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("Restaurants", "Access");
+            }
+            
         }
 
         #endregion
@@ -49,26 +60,89 @@ namespace SaaS_RMS.Controllers.RestaurantController
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(Role role)
-        //{
+        public async Task<IActionResult> Create(Role role)
+        {
+            var restaurant = HttpContext.Session.GetInt32("RID");
 
-        //}
+            if (ModelState.IsValid)
+            {
+                if (restaurant != null)
+                {
+                    role.RestaurantId = restaurant;
+                }
+
+                var roles = _db.Roles;
+                foreach (var item in roles)
+                {
+                    if (item.Name == role.Name)
+                    {
+                        TempData["message"] = "Role already exist, try another role name!";
+                        TempData["notificationtype"] = NotificationType.Error.ToString();
+                        return View(role);
+                    }
+                }
+
+                await _db.Roles.AddAsync(role);
+                await _db.SaveChangesAsync();
+                TempData["message"] = "You have successfully created a role!";
+                TempData["notificationtype"] = NotificationType.Success.ToString();
+                return Json(new { success = true });
+            }
+
+            return View(role);
+        }
         #endregion
 
         #region Roles Edit
 
+        //GET: Roles/Edit/4
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var role = _db.Roles.Find(id);
+
+            if (role != null)
+            {
+                return NotFound();
+            }
+            
+            return PartialView("Edit", role);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Role role)
+        {
+            var restaurant = HttpContext.Session.GetInt32("RID");
+            if (ModelState.IsValid)
+            {
+                _db.Entry(role).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+
+                TempData["message"] = "You have successfully modified a role!";
+                TempData["notificationtype"] = NotificationType.Success.ToString();
+                return Json(new { success = true });
+            }
+
+            return View(role);
+        }
 
         #endregion
 
         #region Roles Details
 
         // GET: Roles/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                //
+                return NotFound();
             }
             Role role = _db.Roles.Find(id);
             if (role == null)
