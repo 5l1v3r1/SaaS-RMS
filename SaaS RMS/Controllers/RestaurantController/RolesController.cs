@@ -156,6 +156,33 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Roles Delete
 
+        // GET: Roles/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Role role = _db.Roles.Find(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return PartialView("Delete", role);
+        }
+
+        // POST: Roles/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task <IActionResult> DeleteConfirmed(long id)
+        {
+            Role role = _db.Roles.Find(id);
+            _db.Roles.Remove(role);
+            await _db.SaveChangesAsync();
+            TempData["message"] = "You have successfully deleted a role!";
+            TempData["notificationtype"] = NotificationType.Success.ToString();
+            return RedirectToAction("Index");
+        }
 
 
         #endregion
