@@ -15,12 +15,15 @@ namespace SaaS_RMS.Controllers.RestaurantController
     public class RolesController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public RolesController(ApplicationDbContext context)
+        public RolesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -29,8 +32,13 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         public async Task <IActionResult> Index()
         {
-            var restaurant = HttpContext.Session.GetInt32("RId");
-            ViewData["RId"] = HttpContext.Session.GetInt32("RId");
+            var restaurant = _session.GetInt32("RId");
+            ViewData["RId"] = _session.GetInt32("RId");
+
+            //var role = _db.Restaurants.Find(restaurant);
+
+            //ViewData["RestaurantName"] = role.Name;
+
             var roles = _db.Roles.Where(r => r.Name != "Manager" && r.Name != "CEO" && r.RestaurantId == restaurant)
                                         .Include(r => r.Restuarant);
 
@@ -62,7 +70,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Role role)
         {
-            var restaurant = HttpContext.Session.GetInt32("RID");
+            var restaurant = _session.GetInt32("RId");
 
             if (ModelState.IsValid)
             {
@@ -78,7 +86,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     {
                         TempData["message"] = "Role already exist, try another role name!";
                         TempData["notificationtype"] = NotificationType.Error.ToString();
-                        return View(role);
+                        return RedirectToAction("Index");
                     }
                 }
 
@@ -89,7 +97,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return Json(new { success = true });
             }
 
-            return View(role);
+            return RedirectToAction("Index");
         }
         #endregion
 

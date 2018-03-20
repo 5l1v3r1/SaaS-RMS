@@ -27,7 +27,7 @@
             }*@
         <div class="page-title">
             <div class="title_left">
-                <h3>ROLES </h3>
+                <h3>ROLES OF @ViewData["RestaurantName"]</h3>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -84,10 +84,9 @@
         </div>
     </div>
 
-    <script>
-            window.localStorage.setItem('RID', @ViewData["RId"]);
-            console.log(@ViewData["RId"]);
-        </script>
+<script>
+    console.log(@ViewData["RId"]);
+</script>
 
 
 

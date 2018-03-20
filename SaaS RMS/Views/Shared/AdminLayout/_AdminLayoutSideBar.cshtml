@@ -3,15 +3,15 @@
         <h3>General</h3>
         <ul class="nav side-menu">
             <li>
-                <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-home"></i> Settings <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a asp-controller="Roles" asp-action="Index">Role</a></li>
                     <li><a href="index2.html">Dashboard2</a></li>
                     <li><a href="index3.html">Dashboard3</a></li>
                 </ul>
             </li>
             <li>
-                <a href="@Url.Action("Index", "Packages")"><i class="fa fa-edit"></i> Packages </a>
+                <a asp-controller="Packages" asp-action="Index"><i class="fa fa-edit"></i> Packages </a>
 
             </li>
             <li>
@@ -29,7 +29,7 @@
                     </ul>*@
             </li>
             <li>
-                <a><i class="fa fa-table"></i> States @*<span class="fa fa-chevron-down"></span>*@</a>
+                <a asp-controller="States" asp-action="Index"><i class="fa fa-table"></i> States @*<span class="fa fa-chevron-down"></span>*@</a>
                 @*<ul class="nav child_menu">
                         <li><a href="tables.html">Tables</a></li>
                         <li><a href="tables_dynamic.html">Table Dynamic</a></li>

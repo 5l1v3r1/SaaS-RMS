@@ -42,7 +42,7 @@ namespace SaaS_RMS
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
                 options.Cookie.HttpOnly = true;
             });
         }
@@ -71,7 +71,7 @@ namespace SaaS_RMS
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Restaurants}/{action=Access}/{id?}");
             });
         }
     }
