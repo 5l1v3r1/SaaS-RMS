@@ -22,6 +22,7 @@
                 <hr />
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12 form-group">
                 <input asp-for="Name" id="input_name" class="form-control form_input input_message input_ph" placeholder="Name" />
@@ -51,7 +52,7 @@
 
         <div class="row">
             <div class="col-md-3 col-sm-3 pad">
-                <select asp-for="State" class="form-control" asp-items="ViewBag.StateId" id="state" placeholder="Location"></select>
+                <select class="form-control" asp-items="ViewBag.StateId" id="state" placeholder="Location"></select>
             </div>
             <div class="col-md-3 col-sm-3 pad">
                 <select asp-for="LgaId" class="form-control" id="lga"></select>

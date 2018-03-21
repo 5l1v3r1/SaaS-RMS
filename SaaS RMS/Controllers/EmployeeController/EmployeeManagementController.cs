@@ -38,7 +38,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Employee Process
+        #region Employee Personal Data
 
         //GET: EmployeeManagement/PersonalData
         [HttpGet]
@@ -48,7 +48,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
             var _employee = _db.Employees.Find(restaurant);
             
 
-            ViewData["State"] = new SelectList(_db.States, "StateId", "Name");
+            ViewBag.State = new SelectList(_db.States, "StateId", "Name");
 
             if (returnUrl != null && returnUrl.Value)
             {
@@ -81,6 +81,47 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
             return View();
         }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PersonalData(EmployeePersonalData personalData, FormCollection collectedValues)
+        {
+            var restaurant = _session.GetInt32("RId");
+
+            var allEmployees = _db.EmployeePersonalDatas;
+
+            var _employee = _db.Employees.Find(restaurant);
+
+            if (_employee != null)
+            {
+                _employee.EmployeePersonalDatas = new List<EmployeePersonalData> { personalData };
+            }
+
+            if (allEmployees.Any(p => p.Email == personalData.Email))
+            {
+                TempData["personal"] = "The email already exists!";
+                TempData["notificationType"] = NotificationType.Error.ToString();
+                //return next view
+                ViewBag.State = new SelectList(_db.States, "StateId", "Name", personalData.StateId);
+                return View(personalData);
+            }
+
+            var returnUrl = Convert.ToBoolean(collectedValues["returnUrl"]);
+            //if it is edit from review page return to the review page
+            if (returnUrl)
+            {
+                return View("ReviewEmployeeData");
+            }
+            //return next view
+            return RedirectToAction("EducationalQualification");
+        }
+
+        #endregion
+
+        #region Employee Medical Data
+
+
 
         #endregion
 
