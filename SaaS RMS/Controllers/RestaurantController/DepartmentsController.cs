@@ -32,6 +32,12 @@ namespace SaaS_RMS.Controllers.RestaurantController
         public async Task<IActionResult> Index()
         {
             var restaurant = _session.GetInt32("RId");
+            
+
+            if (restaurant == null)
+            {
+                return RedirectToAction("Access", "Restaurants");
+            }
 
             var department = _db.Departments.Where(d => d.RestaurantId == restaurant)
                              .Include(d => d.Restaurant);
@@ -42,8 +48,9 @@ namespace SaaS_RMS.Controllers.RestaurantController
             }
             else
             {
-                return RedirectToAction("Restaurants", "Access");
+                return RedirectToAction("Access", "Restaurants");
             }
+
         }
 
         #endregion

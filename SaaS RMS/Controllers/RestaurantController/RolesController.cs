@@ -189,6 +189,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         #region Roles Delete
 
         // GET: Roles/Delete/5
+        [HttpGet]
         public async Task <ActionResult> Delete(int? id)
         {
             if (id == null)

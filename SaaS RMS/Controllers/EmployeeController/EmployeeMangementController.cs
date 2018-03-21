@@ -13,12 +13,15 @@ namespace SaaS_RMS.Controllers.EmployeeController
     public class EmployeeMangementController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public EmployeeMangementController(ApplicationDbContext context)
+        public EmployeeMangementController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
