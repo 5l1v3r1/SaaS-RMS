@@ -31,10 +31,10 @@ namespace SaaS_RMS.Models.Entities.Employee
         [ForeignKey("RestaurantId")]
         public virtual Restaurant Restaurant { get; set; }
 
-        //[DisplayName("Assigned Department")]
-        //public int DepartmentId { get; set; }
-        //[ForeignKey("DepartmentId"), Required]
-        //public virtual Department Department { get; set; }
+        [DisplayName("Assigned Department")]
+        public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId"), Required]
+        public virtual Department Department { get; set; }
 
         //[DisplayName("Assigned Role")]
         //public int RoleId { get; set; }
@@ -45,7 +45,7 @@ namespace SaaS_RMS.Models.Entities.Employee
 
         #region IEnumerable
 
-        public IEnumerable<Department> Departments { get; set; }
+        //public IEnumerable<Department> Departments { get; set; }
 
         #endregion
     }

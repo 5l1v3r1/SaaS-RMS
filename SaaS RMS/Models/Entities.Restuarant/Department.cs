@@ -26,9 +26,9 @@ namespace SaaS_RMS.Models.Entities.Restuarant
         [ForeignKey("RestaurantId")]
         public virtual Restaurant Restaurant { get; set; }
 
-        public int EmployeeId { get; set; }
-        [ForeignKey("EmployeeId")]
-        public virtual Employee.Employee Employee { get; set; }
+        //public int EmployeeId { get; set; }
+        //[ForeignKey("EmployeeId")]
+        //public virtual Employee.Employee Employee { get; set; }
 
 
         #endregion

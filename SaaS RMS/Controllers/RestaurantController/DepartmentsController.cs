@@ -192,7 +192,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
             Department department = await _db.Departments
                 .Include(d => d.RestaurantId)
-                .Include(d => d.Employee)
                 .SingleOrDefaultAsync(d => d.DepartmentId == id);
 
             if (department == null)
@@ -254,7 +253,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
             Department department = await _db.Departments
                 .Include(d => d.RestaurantId)
-                .Include(d => d.EmployeeId)
                 .SingleOrDefaultAsync(d => d.DepartmentId == id);
             
             if (department == null)
