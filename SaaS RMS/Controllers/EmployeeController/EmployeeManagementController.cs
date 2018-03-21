@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Employee;
+using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.EmployeeController
 {
-    public class EmployeeMangementController : Controller
+    public class EmployeeManagementController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -18,7 +20,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #region Constructor
 
-        public EmployeeMangementController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public EmployeeManagementController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -28,17 +30,23 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #region Fetch Data
 
+        public JsonResult GetLgasForState(int id)
+        {
+            var lgas = _db.Lgas.Where(l => l.StateId == id);
+            return Json(lgas);
+        }
+
         #endregion
 
         #region Employee Process
 
         //GET: EmployeeManagement/PersonalData
         [HttpGet]
-        public IActionResult PersonalData(bool? returnUrl, bool? backUrl)
+        public async Task<IActionResult> PersonalData(bool? returnUrl, bool? backUrl)
         {
-
-            var restaurant = _session.GetInt32("RID");
+            var restaurant = _session.GetInt32("RId");
             var _employee = _db.Employees.Find(restaurant);
+            
 
             ViewData["State"] = new SelectList(_db.States, "StateId", "Name");
 
@@ -58,8 +66,20 @@ namespace SaaS_RMS.Controllers.EmployeeController
                     return View(_employee.EmployeePersonalDatas.SingleOrDefault());
                 }
             }
-            return View();
             
+            var statistics = new RestaurantStatistics();
+            if (restaurant != null)
+            {
+                statistics.RestaurantId = restaurant;
+            }
+
+            statistics.Action = StatisticsEnum.Registration.ToString();
+            statistics.DateOccured = DateTime.Now;
+
+            await _db.AddAsync(statistics);
+            await _db.SaveChangesAsync();
+
+            return View();
         }
 
         #endregion

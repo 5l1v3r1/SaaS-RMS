@@ -1,0 +1,192 @@
+﻿@model SaaS_RMS.Models.Entities.Employee.EmployeePersonalData
+
+@{
+    ViewData["Title"] = "Step One: Employee Personal Data";
+    bool? returnUrl = ViewBag.returnUrl ?? false;
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="x_panel">
+    <div class="x_content">
+        <div id="wizard" class="form_wizard wizard_horizontal">
+            <ul class="wizard_steps">
+                <li>
+                    <a href="#step-1">
+                        <span class="step_no">1</span>
+                        <span class="step_descr">
+                            EMPLOYEE PERSONAL DATA <br />
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="step_no">2</span>
+                        <span class="step_descr">
+                            EMPLOYEE MEDICAL DATA <br />
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="step_no">1</span>
+                        <span class="step_descr">
+                            EMPLOYEE FAMILY DATA <br />
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="step_no">1</span>
+                        <span class="step_descr">
+                            EMPLOYEE BANK DATA <br />
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="step_no">1</span>
+                        <span class="step_descr">
+                            EMPLOYEE WORK DATA <br />
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div id="step-1">
+                <form asp-action="EmployeePersonalData" class="form-horizontal form-label-left">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label"> Title <span class="required">*</span></label>
+                                <input type="text" asp-for="Title" id="title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label"> First Name <span class="required">*</span></label>
+                                <input type="text" asp-for="FirstName" id="firstname" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"> Middle Name <span class="required">*</span></label>
+                                <input type="text" asp-for="MiddleName" id="middlename" class="form-control" />
+                                <span asp-validation-for="MiddleName" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"> Last Name <span class="required">*</span></label>
+                                <input type="text" asp-for="LastName" id="middlename" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label"> Place Of Birth <span class="required">*</span></label>
+                                <input type="text" asp-for="POB" id="pob" class="form-control" />
+                                <span asp-validation-for="POB" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"> Date Of Birth <span class="required">*</span></label>
+                                <input type="text" asp-for="DOB" id="dob" class="form-control" />
+                                <span asp-validation-for="DOB" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"> Gender <span class="required">*</span></label>
+                                <input type="text" asp-for="Gender" id="gender" class="form-control" />
+                                <span asp-validation-for="Gender" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label"> State <span class="required">*</span></label>
+                                <select asp-for="StateId" asp-items="ViewBag.StateId" id="state" placeholder="State" class="form-control"></select>
+                                <span asp-validation-for="StateId" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"> Local Government Area <span class="required">*</span></label>
+                                <select asp-for="LgaId" id="lga" class="form-control"></select>
+                                <span asp-validation-for="LgaId" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label"> Home Phone <span class="required">*</span></label>
+                                <input type="text" asp-for="HomePhone" id="homephone" class="form-control" />
+                                <span asp-validation-for="HomePhone" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"> Work Phone <span class="required">*</span></label>
+                                <input type="text" asp-for="MobilePhone" id="mobilephone" class="form-control" />
+                                <span asp-validation-for="MobilePhone" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label"> Email <span class="required">*</span></label>
+                                <input type="text" asp-for="Email" id="email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger "></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"> Secondary Address <span class="required">*</span></label>
+                                <input type="text" asp-for="SecondaryAddress" id="secondaryaddress" class="form-control" />
+                                <span asp-validation-for="SecondaryAddress" class="text-danger "></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label"> Marital Status <span class="required">*</span></label>
+                                <input type="text" asp-for="MaritalStatus" id="martalstatus" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"> Employee Image <span class="required">*</span></label>
+                                <input type="text" asp-for="EmployeeImage" id="employeeimage" class="form-control" />
+                                <span asp-validation-for="EmployeeImage" class="text-danger "></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Admin/vendors/jquery/dist/jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#state').val() != '') {
+                getLGAs();
+            }
+
+            $('#state').on('input', function () {
+                getLGAs();
+            });
+
+            function getLGAs() {
+                $('#lga').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Restaurants/GetLgasForState',
+                    dataType: 'json',
+                    data: { id: $('#state').val() },
+                    success: function (lga) {
+                        console.log(lga);
+                        $.each(lga, function (i, lga) {
+                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+}*@
