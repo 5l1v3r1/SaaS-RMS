@@ -31,6 +31,7 @@ namespace SaaS_RMS.Data
 
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<RestaurantStatistics> RestaurantStatistics { get; set; }
 
         #endregion
 

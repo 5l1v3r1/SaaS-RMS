@@ -37,19 +37,27 @@ namespace SaaS_RMS.Controllers.EmployeeController
         public IActionResult PersonalData(bool? returnUrl, bool? backUrl)
         {
 
-            //var restaurant = HttpContext.Session.GetInt32("RID");
-            //HttpContext.Session.SetString("Employee", employee)
+            var restaurant = _session.GetInt32("RID");
+            var _employee = _db.Employees.Find(restaurant);
 
-            //ViewData["State"] = new SelectList(_db.States, "StateId", "Name");
+            ViewData["State"] = new SelectList(_db.States, "StateId", "Name");
 
-            //if (returnUrl != null && returnUrl.Value)
-            //{
-            //    ViewBag.returnUrl = true;
-            //    if (_employee != null)
-            //    {
-            //        return View(_employee.E)
-            //    }
-            //}
+            if (returnUrl != null && returnUrl.Value)
+            {
+                ViewBag.returnUrl = true;
+                if (_employee != null)
+                {
+                    return View(_employee.EmployeePersonalDatas.SingleOrDefault());
+                }
+            }
+
+            if (backUrl != null && backUrl.Value)
+            {
+                if (_employee != null)
+                {
+                    return View(_employee.EmployeePersonalDatas.SingleOrDefault());
+                }
+            }
             return View();
             
         }

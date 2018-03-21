@@ -50,6 +50,7 @@ namespace SaaS_RMS.Models.Entities.System
         #endregion
 
         #region Foriegn Key
+
         public int LgaId { get; set; }
         [ForeignKey("LgaId")]
         public virtual Lga Lga { get; set; }
@@ -59,6 +60,12 @@ namespace SaaS_RMS.Models.Entities.System
         #region Enumerables
 
         public IEnumerable<Department> Departments { get; set; }
+
+        public IEnumerable<Role> Roles { get; set; }
+
+        public IEnumerable<RestaurantStatistics> RestaurantStatistics { get; set; }
+
+        public IEnumerable<Employee.Employee> Employees { get; set; }
 
         #endregion
     }
