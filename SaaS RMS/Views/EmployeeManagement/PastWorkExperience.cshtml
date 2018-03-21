@@ -1,10 +1,8 @@
-﻿@model SaaS_RMS.Models.Entities.Employee.EmployeePersonalData
-    @using SaaS_RMS.Models.Enums
+﻿@model SaaS_RMS.Models.Entities.Employee.EmployeePastWorkExperience
+@using SaaS_RMS.Models.Enums
 
 @{
-    ViewData["Title"] = "Step One: Employee Personal Data";
-    bool? returnUrl = ViewBag.returnUrl ?? false;
-    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+    ViewBag.Title = "Step Three: Employee Past Experience Data";
 }
 
 <div style="padding-top:55px;">
@@ -36,7 +34,7 @@
                 <ul class="wizard_steps">
                     <li class="active">
                         <a href="">
-                            <span class="step_no">1</span>
+                            <span class="step_no">Step One</span>
                             <span class="step_descr">
                                 PERSONAL DATA <br />
                             </span>
@@ -45,9 +43,9 @@
 
                     <li>
                         <a href="#step-2">
-                            <span class="step_no">2</span>
+                            <span class="step_no">Step Two</span>
                             <span class="step_descr">
-                                QUALIFICATION <br />
+                                EDUCATIONAL QUALIFICATION DATA <br />
                             </span>
                         </a>
                     </li>
@@ -56,7 +54,7 @@
                         <a href="#step-3">
                             <span class="step_no">3</span>
                             <span class="step_descr">
-                                WORK EXPERIENCE <br />
+                                PAST WORK EXPERIENCE DATA <br />
                             </span>
                         </a>
                     </li>
@@ -65,7 +63,7 @@
                         <a href="#step-4">
                             <span class="step_no">4</span>
                             <span class="step_descr">
-                                NEXT OF KIN <br />
+                                NEXT OF KIN DATA <br />
                             </span>
                         </a>
                     </li>
@@ -83,7 +81,7 @@
                         <a href="#step-6">
                             <span class="step_no">6</span>
                             <span class="step_descr">
-                                MEDICAL AND WORK DATA <br />
+                                MEDICAL/WORK DATA <br />
                             </span>
                         </a>
                     </li>
@@ -92,7 +90,7 @@
                         <a href="#step-7">
                             <span class="step_no">7</span>
                             <span class="step_descr">
-                                REVIEWS <br />
+                                REVIEW OF EMPLOYEE INFORMATION <br />
                             </span>
                         </a>
                     </li>
@@ -219,37 +217,70 @@
     </div>
 </div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        <script src="~/Admin/vendors/jquery/dist/jquery.js"></script>
-        <script>
-            $(document).ready(function () {
-                if ($('#state').val() != '') {
-                    getLGAs();
-                }
 
-                $('#state').on('input', function () {
-                    getLGAs();
-                });
 
-                function getLGAs() {
-                    $('#lga').children("option").remove();
-                    $.ajax({
-                        type: 'GET',
-                        url: '/EmployeeManagement/GetLgasForState',
-                        dataType: 'json',
-                        data: { id: $('#state').val() },
-                        success: function (lga) {
-                            console.log(lga);
-                            $.each(lga, function (i, lga) {
-                                $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
-                            });
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    });
-                }
-            });
-        </script>
-    }
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PastWorkExperience">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployerName" class="control-label"></label>
+                <input asp-for="EmployerName" class="form-control" />
+                <span asp-validation-for="EmployerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployerLocation" class="control-label"></label>
+                <input asp-for="EmployerLocation" class="form-control" />
+                <span asp-validation-for="EmployerLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployerContact" class="control-label"></label>
+                <input asp-for="EmployerContact" class="form-control" />
+                <span asp-validation-for="EmployerContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReasonForLeaving" class="control-label"></label>
+                <input asp-for="ReasonForLeaving" class="form-control" />
+                <span asp-validation-for="ReasonForLeaving" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionHeld" class="control-label"></label>
+                <input asp-for="PositionHeld" class="form-control" />
+                <span asp-validation-for="PositionHeld" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
