@@ -55,7 +55,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         public IActionResult Create()
         {
             var department = new Department();
-            return View("Create", department);
+            return PartialView("Create", department);
         }
 
         //POST:
@@ -70,22 +70,41 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 if (restaurant != null)
                 {
                     department.RestaurantId = Convert.ToInt32(restaurant);
+
+                    var allDepartments = await _db.Departments.ToListAsync();
+                    if (allDepartments.Any(d => d.Name == department.Name && d.RestaurantId == restaurant))
+                    {
+                        TempData["department"] = "You cannot add this department because it already exist!!!";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
+                        return RedirectToAction("Index");
+                    }
+
+                    //var departments = _db.Departments;
+                    //foreach (var item in departments)
+                    //{
+                    //    if (item.RestaurantId == restaurant && item.Name == department.Name)
+                    //    {
+                    //        TempData["role"] = "Role already exist, try another role name!";
+                    //        TempData["notificationtype"] = NotificationType.Error.ToString();
+                    //        return RedirectToAction("Index");
+                    //    }
+                    //}
+
+
+                    await _db.AddAsync(department);
+                    await _db.SaveChangesAsync();
+
+                    TempData["department"] = "You have successfully added a new Department!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
+                    return Json(new { success = true });
                 }
 
-                var allDepartments = await _db.Departments.ToListAsync();
-                if (allDepartments.Any(d => d.Name == department.Name && d.RestaurantId == restaurant))
+                else
                 {
-                    TempData["department"] = "You cannot add this department because it already exist!!!";
-                    TempData["notificationType"] = NotificationType.Error.ToString();
-                    return RedirectToAction("Index");
-                }
-
-                await _db.AddAsync(department);
-                await _db.SaveChangesAsync();
-
-                TempData["department"] = "You have successfully added a new Department!!!";
-                TempData["notificationType"] = NotificationType.Success.ToString();
-                return Json(new { success = true });
+                    TempData["department"] = "Session Expired,Login Again";
+                    TempData["notificationtype"] = NotificationType.Info.ToString();
+                    return RedirectToAction("Restaurant", "Access");
+                }   
             }
 
             return RedirectToAction("Index");
@@ -112,7 +131,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            return View("Edit", department);
+            return PartialView("Edit", department);
         }
 
         //POST:
@@ -218,17 +237,36 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Department Employees
 
-        //public async Task<IActionResult> Employees(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Employees(int? id)
+        {
+            var restaurant = _session.GetInt32("RId");
 
-        //    Department department = await _db.Departments.FindAsync(id);
+            
+            //var employeesss = employee.Where(employee.RestaurantId == restaurant);
+
+            //var allEmployeeInDepartment = employee.Departments.Where(employee.RestaurantId == restaurant);
 
 
-        //}
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Department department = await _db.Departments
+                .Include(d => d.RestaurantId)
+                .Include(d => d.EmployeeId)
+                .SingleOrDefaultAsync(d => d.DepartmentId == id);
+            
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            var allEmployeeInDepartment = _db.Employees.Where(r => r.RestaurantId == restaurant).ToListAsync();
+
+
+            return PartialView("Employees", allEmployeeInDepartment);
+        }
 
         #endregion
 
