@@ -44,6 +44,7 @@ namespace SaaS_RMS.Data
         public DbSet<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
         public DbSet<EmployeeWorkData> EmployeeWorkDatas { get; set; }
         public DbSet<EmploymentPosition> EmploymentPositions { get; set; }
+        public DbSet<EmployeePastWorkExperience> EmployeePastWorkExperiences { get; set; }
 
 
         #endregion
