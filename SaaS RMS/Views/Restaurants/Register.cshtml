@@ -51,7 +51,7 @@
 
         <div class="row">
             <div class="col-md-3 col-sm-3 pad">
-                <select class="form-control" asp-items="ViewBag.StateId" id="state" placeholder="Location"></select>
+                <select asp-for="State" class="form-control" asp-items="ViewBag.StateId" id="state" placeholder="Location"></select>
             </div>
             <div class="col-md-3 col-sm-3 pad">
                 <select asp-for="LgaId" class="form-control" id="lga"></select>
