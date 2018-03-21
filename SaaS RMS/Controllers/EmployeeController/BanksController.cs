@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
@@ -13,12 +14,15 @@ namespace SaaS_RMS.Controllers.EmployeeController
     public class BanksController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public BanksController(ApplicationDbContext context)
+        public BanksController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -27,7 +31,25 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         public async Task <IActionResult> Index()
         {
-            return View(await _db.Banks.ToListAsync());
+            var restaurant = _session.GetInt32("RId");
+
+            if (restaurant == null)
+            {
+                return RedirectToAction("Access", "Restaurants");
+            }
+
+            var bank = _db.Banks.Where(b => b.RestaurantId == restaurant)
+                .Include(b => b.RestaurantId)
+                .ToListAsync();
+
+            if (bank != null)
+            {
+                return View(await bank);
+            }
+            else
+            {
+                return RedirectToAction("Access", "Restaurants");
+            }
         }
 
         #endregion
@@ -47,23 +69,36 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, Bank bank)
         {
+            var restaurant = _session.GetInt32("RId");
+
             if (ModelState.IsValid)
             {
-                var allBanks = _db.Banks.ToList();
-                if (allBanks.Any(b => b.Name == bank.Name))
+                if (restaurant != null)
                 {
-                    TempData["bank"] = "You cannot add this Bank because it already exist!!!";
-                    TempData["notificationType"] = NotificationType.Error.ToString();
-                    return RedirectToAction("Index");
+                    bank.RestaurantId = restaurant;
+
+                    var allBanks = await _db.Banks.ToListAsync();
+                    if (allBanks.Any(b => b.RestaurantId == restaurant && b.Name == bank.Name))
+                    {
+                        TempData["bank"] = "You cannot add this Bank because it already exist!!!";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
+                        return RedirectToAction("Index");
+                    }
+
+                    await _db.AddAsync(bank);
+                    await _db.SaveChangesAsync();
+
+                    TempData["bank"] = "You have successfully added a new Bank!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
+
+                    return Json(new { success = true });
                 }
-
-                await _db.AddAsync(bank);
-                await _db.SaveChangesAsync();
-
-                TempData["bank"] = "You have successfully added a new Bank!!!";
-                TempData["notificationType"] = NotificationType.Success.ToString();
-
-                return Json(new { success = true });
+                else
+                {
+                    TempData["bank"] = "Session Expired, Login Again";
+                    TempData["notificationtype"] = NotificationType.Info.ToString();
+                    return RedirectToAction("Restaurant", "Access");
+                }
             }
             return View("Index");
         }
@@ -103,6 +138,12 @@ namespace SaaS_RMS.Controllers.EmployeeController
             {
                 try
                 {
+                    var restaurant = _session.GetInt32("RId");
+
+                    if (restaurant != null)
+                    {
+                        bank.RestaurantId = restaurant;
+                    }
                     _db.Update(bank);
                     await _db.SaveChangesAsync();
                 }

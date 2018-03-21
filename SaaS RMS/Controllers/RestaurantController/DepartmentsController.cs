@@ -86,18 +86,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
                         return RedirectToAction("Index");
                     }
 
-                    //var departments = _db.Departments;
-                    //foreach (var item in departments)
-                    //{
-                    //    if (item.RestaurantId == restaurant && item.Name == department.Name)
-                    //    {
-                    //        TempData["role"] = "Role already exist, try another role name!";
-                    //        TempData["notificationtype"] = NotificationType.Error.ToString();
-                    //        return RedirectToAction("Index");
-                    //    }
-                    //}
-
-
                     await _db.AddAsync(department);
                     await _db.SaveChangesAsync();
 
