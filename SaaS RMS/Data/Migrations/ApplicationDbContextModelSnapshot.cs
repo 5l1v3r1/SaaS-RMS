@@ -709,7 +709,7 @@ namespace SaaS_RMS.Data.Migrations
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Employee.EmployeeEducationalQualification", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.Employee.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeeEducationalQualifications")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

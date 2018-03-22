@@ -21,6 +21,7 @@ namespace SaaS_RMS.Models.Entities.Employee
         public List<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
         public List<EmployeeWorkData> EmployeeWorkDatas { get; set; }
         public List<EmploymentPosition> EmploymentPositions { get; set; }
+        public List<EmployeeEducationalQualification> EmployeeEducationalQualifications { get; set; }
 
         #endregion
 

@@ -95,7 +95,11 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
             if (_employee != null)
             {
+                personalData.Title = typeof(NameTitle).GetEnumName(int.Parse(personalData.Title));
+                personalData.DOB = Convert.ToString(Convert.ToDateTime(collectedValues["DOB"]));
+
                 _employee.EmployeePersonalDatas = new List<EmployeePersonalData> { personalData };
+                //_session.("Employee");
             }
 
             if (allEmployees.Any(p => p.Email == personalData.Email))
@@ -115,6 +119,84 @@ namespace SaaS_RMS.Controllers.EmployeeController
             }
             //return next view
             return RedirectToAction("EducationalQualification");
+        }
+
+        #endregion
+
+        #region Employee Educational Qualification
+
+        //GET: EmploymentManagement/EducationalQualification
+        [HttpGet]
+        public IActionResult EducationalQualification(bool? returnUrl)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            //ViewBag.RestaurantQualificationId = new SelectList(_db.RestaurantQualification.Where(rq => rq.RestaurantId == restaurant));
+
+            if (returnUrl != null && returnUrl.Value)
+            {
+                ViewBag.returnUrl = true;
+                if (_employee != null)
+                {
+                    return View();
+                }
+            }
+            return View();
+        }
+
+
+        //POST: EmploymentManagement/EducationalQualification
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EducationalQualification(FormCollection collectedValues)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            //collect data from form using form collection
+            var returnUrl = Convert.ToBoolean(collectedValues["returnUrl"]);
+            //var file = Request.Files["file"];
+
+            if (_employee != null)
+            {
+                string degree = null;
+                string classOfDegree = null;
+                int? qualification = null;
+
+                if (collectedValues["DegreeAttained"] != "")
+                {
+                    degree = typeof(DegreeTypeEnum).GetEnumName(int.Parse(collectedValues["DegreeAttained"]));
+                }
+
+                if (collectedValues["ClassOfDegree"] != "")
+                {
+                    classOfDegree = typeof(ClassOfDegree).GetEnumName(int.Parse(collectedValues["ClassOfDegree"]));
+                }
+
+                if (collectedValues["RestaurantQualificationId"] != "")
+                {
+                    qualification = Convert.ToInt32(collectedValues["RestaurantQualificationId"]);
+                }
+
+                if (_employee.EmployeeEducationalQualifications == null)
+                {
+                    _employee.EmployeeEducationalQualifications = new List<EmployeeEducationalQualification>();
+                }
+
+                _employee.EmployeeEducationalQualifications.Add(new EmployeeEducationalQualification
+                {
+                    ClassOfDegree = classOfDegree,
+                    DegreeAttained = degree,
+                    Name = collectedValues["Name"],
+                    Location = collectedValues["Location"],
+                    StartDate = Convert.ToDateTime(collectedValues["StartDate"]),
+                    EndDate = Convert.ToDateTime(collectedValues["EndDate"]),
+                    //RestaurantQualificationId = qualification,
+
+                });
+            }
+
         }
 
         #endregion
