@@ -1,14 +1,14 @@
-﻿@model SaaS_RMS.Models.Entities.System.Package
+﻿@model SaaS_RMS.Models.Entities.Restuarant.RestaurantQualification
 
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3> <strong> ADD PACKAGE </strong> </h3>
+    <h3> <strong> ADD RESTAURANT QUALIFICATION </strong> </h3>
 </div>
 
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="PackageId" />
+    <input type="hidden" asp-for="RestaurantQualificationId" />
     <!--MODAL BODY-->
     <div class="modal-body">
         <div class="form-horizontal">
@@ -31,26 +31,6 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
-            <br />
-            <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Amount"></label>
-                </div>
-                <div class="col-md-10">
-                    <input asp-for="Amount" class="form-control " />
-                    <span asp-validation-for="Amount" class="text-danger"></span>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Type"></label>
-                </div>
-                <div class="col-md-10">
-                    <select asp-for="Type" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.PackageType)))"></select>
-                    <span asp-validation-for="Type" class="text-danger"></span>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -69,4 +49,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
 
