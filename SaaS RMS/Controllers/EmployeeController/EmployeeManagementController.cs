@@ -9,6 +9,7 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Enums;
+using SaaS_RMS.Services;
 
 namespace SaaS_RMS.Controllers.EmployeeController
 {
@@ -156,7 +157,8 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
             //collect data from form using form collection
             var returnUrl = Convert.ToBoolean(collectedValues["returnUrl"]);
-            //var file = Request.Files["file"];
+
+            var file = Request.Form.Files["file"];
 
             if (_employee != null)
             {
@@ -193,8 +195,13 @@ namespace SaaS_RMS.Controllers.EmployeeController
                     StartDate = Convert.ToDateTime(collectedValues["StartDate"]),
                     EndDate = Convert.ToDateTime(collectedValues["EndDate"]),
                     //RestaurantQualificationId = qualification,
-
+                    FileUpload = 
+                        file != null && file.FileName != ""
+                        ? new FileUploader().UploadFile(file, UploadType.Education)
+                        : null
                 });
+                TempData["education"] = "You ave successfully added a " + degree + " qualification!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
             }
 
         }
