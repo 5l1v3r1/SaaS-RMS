@@ -123,8 +123,4 @@
     <None Include="wwwroot\Landing\styles\bootstrap4\popper.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\RestaurantQualifications\" />
-  </ItemGroup>
-
 </Project>
