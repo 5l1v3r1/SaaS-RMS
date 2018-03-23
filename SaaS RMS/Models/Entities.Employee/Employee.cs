@@ -20,8 +20,10 @@ namespace SaaS_RMS.Models.Entities.Employee
         public List<EmployeeBankData> EmployeeBankDatas { get; set; }
         public List<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
         public List<EmployeeWorkData> EmployeeWorkDatas { get; set; }
+        public List<EmployeePastWorkExperience> EmployeePastWorkExperiences { get; set; }
         public List<EmploymentPosition> EmploymentPositions { get; set; }
         public List<EmployeeEducationalQualification> EmployeeEducationalQualifications { get; set; }
+
 
         #endregion
 

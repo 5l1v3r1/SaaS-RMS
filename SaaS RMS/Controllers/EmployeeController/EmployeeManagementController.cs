@@ -133,7 +133,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
             var restaurant = _session.GetInt32("RId");
             var _employee = _db.Employees.Find(restaurant);
 
-            //ViewBag.RestaurantQualificationId = new SelectList(_db.RestaurantQualification.Where(rq => rq.RestaurantId == restaurant));
+            ViewBag.RestaurantQualificationId = new SelectList(_db.RestaurantQualifications.Where(rq => rq.RestaurantId == restaurant));
 
             if (returnUrl != null && returnUrl.Value)
             {
@@ -194,7 +194,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
                     Location = collectedValues["Location"],
                     StartDate = Convert.ToDateTime(collectedValues["StartDate"]),
                     EndDate = Convert.ToDateTime(collectedValues["EndDate"]),
-                    //RestaurantQualificationId = qualification,
+                    RestaurantQualificationId = qualification,
                     FileUpload = 
                         file != null && file.FileName != ""
                         ? new FileUploader().UploadFile(file, UploadType.Education)
@@ -203,10 +203,153 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 TempData["education"] = "You ave successfully added a " + degree + " qualification!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
             }
-
+            //if it is edit from review page return to the review page
+            if (returnUrl)
+                return RedirectToAction("EducationalQualification", new { returnUrl = true });
+            return RedirectToAction("EducationalQualification");
         }
 
         #endregion
+
+        #region Employee Past Work Experience
+
+        //GET: EmployeeManagement/PastWorkExperience
+        [HttpGet]
+        public IActionResult PastWorkExperience(bool? returnUrl)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            if (returnUrl != null && returnUrl.Value)
+            {
+                ViewBag.returnUrl = true;
+                if (_employee != null)
+                {
+                    return View();
+                }
+            }
+            return View();
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PastWorkExperience(FormCollection collectedValues)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            if (_employee != null)
+            {
+                if (_employee.EmployeePastWorkExperiences == null)
+                {
+                    _employee.EmployeePastWorkExperiences = new List<EmployeePastWorkExperience>();
+                }
+                _employee.EmployeePastWorkExperiences.Add(new EmployeePastWorkExperience
+                {
+                    EmployerName = collectedValues["EmployerName"],
+                    EmployerLocation = collectedValues["EmployerLocation"],
+                    EmployerContact = collectedValues["EmployerContact"],
+                    PositionHeld = collectedValues["PositionHeld"],
+                    ReasonForLeaving = collectedValues["ReasonForLeaving"],
+                    StartDate = Convert.ToDateTime(collectedValues["StartDate"]),
+                    EndDate = Convert.ToDateTime(collectedValues["EndDate"]),
+                    //FakeId = _employee.EmployeePastWorkExperiences.Count + 1
+                });
+
+                TempData["pastworkexperience"] = "You have successfully added a work experience!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+            }
+
+            var returnUrl = Convert.ToBoolean(collectedValues["returlUrl"]);
+
+            if (returnUrl)
+            {
+                return RedirectToAction("PastWorkExperience", new { returnUrl = true });
+            }
+            return View("PastWorkExperience");
+        }
+
+
+
+        #endregion
+
+        #region Employee Family Data
+
+        //GET: EmployeeManagement/FamilyData
+        [HttpGet]
+        public IActionResult FamilyData(bool? returnUrl, bool? backUrl)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            if (returnUrl != null && returnUrl.Value)
+            {
+                ViewBag.returnUrl = true;
+                if (_employee != null)
+                {
+                    return View(_employee.EmployeeFamilyDatas.SingleOrDefault());
+                }
+            }
+
+            if(backUrl != null && backUrl.Value)
+            {
+                if (_employee != null)
+                {
+                    return View(_employee.EmployeeFamilyDatas.SingleOrDefault());
+                }
+            }
+
+            return View();
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FamilyData(EmployeeFamilyData familyData, FormCollection collectedValues)
+        {
+            var restaurant = _session.GetInt32("RId");
+            var _employee = _db.Employees.Find(restaurant);
+
+            if (_employee != null)
+            {
+                familyData.NextOfKin = collectedValues["FullName"];
+                familyData.ContactNumber = collectedValues["ContactNumber"];
+                familyData.Address = collectedValues["Address"];
+                familyData.Email = collectedValues["Email"];
+                familyData.Relationship = typeof(FamilyEnum).GetEnumName(int.Parse(collectedValues["Relationship"]));
+                familyData.DOB = Convert.ToDateTime(collectedValues["DOB"]);
+
+                _employee.EmployeeFamilyDatas = new List<EmployeeFamilyData> { familyData };
+            }
+            else
+            {
+                var employeeFamilyData = new Employee();
+                familyData.NextOfKin = collectedValues["FullName"];
+                familyData.ContactNumber = collectedValues["ContactNumber"];
+                familyData.Address = collectedValues["Address"];
+                familyData.Email = collectedValues["Email"];
+                familyData.Relationship = typeof(FamilyEnum).GetEnumName(int.Parse(collectedValues["Relationship"]));
+                familyData.DOB = Convert.ToDateTime(collectedValues["DOB"]);
+
+                employeeFamilyData.EmployeeFamilyDatas = new List<EmployeeFamilyData> { familyData };
+            }
+
+            var returnUrl = Convert.ToBoolean(collectedValues["returnUrl"]);
+            //if it is edit from review page return to the review page
+            if (returnUrl)
+            {
+                return View("ReviewEmployeeData");
+            }
+            //return next view
+            return RedirectToAction("BankData");
+        }
+
+
+        #endregion
+
+
+
 
         #region Employee Medical Data
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.Restuarant;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,10 @@ namespace SaaS_RMS.Models.Entities.Employee
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
+        
+        public int? RestaurantQualificationId { get; set; }
+        [ForeignKey("RestaurantQualificationId")]
+        public virtual RestaurantQualification RestaurantQualification { get; set; }
 
         #endregion
     }
