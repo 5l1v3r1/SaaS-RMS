@@ -144,8 +144,9 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     var restaurant = _session.GetInt32("RId");
                     if (restaurant != null)
                     {
-                        restaurantQualification.RestaurantQualificationId= Convert.ToInt32(restaurant);
+                        restaurantQualification.RestaurantId = Convert.ToInt32(restaurant);
                     }
+
 
                     _db.Update(restaurantQualification);
                     await _db.SaveChangesAsync();
@@ -162,7 +163,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     }
                 }
 
-                TempData["restaurantQualification"] = "You have successfully modified a role!";
+                TempData["restaurantQualification"] = "You have successfully modified a qualification!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -184,7 +185,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
             }
 
             RestaurantQualification restaurantQualification = await _db.RestaurantQualifications
-                .Include(d => d.RestaurantId)
+                .Include(rq => rq.Restaurant)
                 .SingleOrDefaultAsync(d => d.RestaurantQualificationId == id);
 
             if (restaurantQualification == null)
