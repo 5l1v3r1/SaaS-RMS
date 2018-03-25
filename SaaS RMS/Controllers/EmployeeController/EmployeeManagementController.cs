@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
+using SaaS_RMS.Extensions;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Enums;
@@ -101,8 +103,17 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
                 _employee.EmployeePersonalDatas = new List<EmployeePersonalData> { personalData };
                 //_session.("Employee");
+                _session.SetObject("Employee", _employee);
+                
             }
+            else
+            {
+                var employeePersonalData = new Employee();
+                personalData.DOB = Convert.ToString(Convert.ToDateTime(collectedValues["DOB"]));
+                personalData.Title = typeof(NameTitle).GetEnumName(int.Parse(personalData.Title));
+                _session.SetObject("Employee", employeePersonalData);
 
+            }
             if (allEmployees.Any(p => p.Email == personalData.Email))
             {
                 TempData["personal"] = "The email already exists!";
