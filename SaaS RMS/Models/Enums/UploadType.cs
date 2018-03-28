@@ -9,6 +9,7 @@ namespace SaaS_RMS.Models.Enums
     {
         Logo,
         ProfileImage,
+        Food,
         Education,
     }
 }

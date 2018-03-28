@@ -67,7 +67,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, Bank bank)
+        public async Task<IActionResult> Create(Bank bank)
         {
             var restaurant = _session.GetInt32("RId");
 
