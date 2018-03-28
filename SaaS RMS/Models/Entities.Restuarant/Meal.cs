@@ -19,6 +19,7 @@ namespace SaaS_RMS.Models.Entities.Restuarant
         [Required(ErrorMessage = "Name field is required!!!")]
         public string Name { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Image field is required!!!")]

@@ -80,10 +80,10 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 if (restaurant != null)
                 {
                     meals.RestaurantId = Convert.ToInt32(restaurant);
-                    meals.Image =
-                        file != null && file.FileName != ""
-                        ? new FileUploader().UploadFile(file, UploadType.Food)
-                        : null;
+                    if (file != null && file.Length > 0)
+                    {
+                        new FileUploader().UploadFile(file, UploadType.Food);
+                    }
 
                     var allMeals = await _db.Meals.Where(m => m.RestaurantId == restaurant).ToListAsync();
                     if(allMeals.Any(m => m.Name == meals.Name))
