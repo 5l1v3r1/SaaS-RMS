@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Extensions
 {
-    public static class SessionExtensions
+    public static class SessionExtensions 
     {
         public static void SetObject(this ISession _session, string key, object value)
         {

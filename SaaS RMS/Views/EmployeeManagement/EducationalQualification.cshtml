@@ -1,10 +1,261 @@
 ﻿@model SaaS_RMS.Models.Entities.Employee.EmployeeEducationalQualification
+@using SaaS_RMS.Models.Enums
+@using SaaS_RMS.Models.Entities
+@using SaaS_RMS.Data
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Step Two: Employee Educational Qualification";
-    bool? returnUrl = ViewBag.returnUrl ?? false;
     Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
 }
+@{ 
+    ApplicationDbContext _db = new ApplicationDbContext();
+
+    var restaurant = HttpContext.Session.GetInt32("RId");
+    var _employee = _db.Employees.Find(restaurant);
+
+    var educationaQualification = _employee?.EmployeeEducationalQualifications;
+
+
+}
+
+
+<div style="padding-top:55px;">
+    @if (TempData["personal"] != null)
+    {
+        if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
+        {
+            <div class="alert alert-success alert-dismissable">@TempData["personal"]</div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
+        {
+            <div class="alert alert-danger alert-dismissable">@TempData["personal"]</div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
+        {
+            <div class="alert alert-info alert-dismissable">@TempData["personal"]</div>
+        }
+
+    }
+    <div class="page-title">
+        <div class="text-center">
+            <h3> <strong> EMPLOYEE REGESTRATION </strong></h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="x_panel">
+        <div class="x_content">
+            <div id="wizard" class="form_wizard wizard_horizontal">
+                <ul class="wizard_steps">
+                    <li class="active">
+                        <a href="">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                                PERSONAL DATA <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                                QUALIFICATION <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                                WORK EXPERIENCE <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-4">
+                            <span class="step_no">4</span>
+                            <span class="step_descr">
+                                NEXT OF KIN <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-5">
+                            <span class="step_no">5</span>
+                            <span class="step_descr">
+                                BANK DATA <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-6">
+                            <span class="step_no">6</span>
+                            <span class="step_descr">
+                                MEDICAL AND WORK DATA <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-7">
+                            <span class="step_no">7</span>
+                            <span class="step_descr">
+                                REVIEWS <br />
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#step-8">
+                            <span class="step_no">8</span>
+                            <span class="step_descr">
+                                REGISTRATION COMPLETED <br />
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="step-1">
+                    <form asp-action="EmployeePersonalData" class="form-horizontal form-label-left">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-offset-2 col-md-8">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label"> Title <span class="required">*</span></label>
+                                    <select asp-for="Title" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.NameTitle)))"></select>
+                                    <span asp-validation-for="Title" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label class="control-label"> First Name <span class="required">*</span></label>
+                                    <input type="text" asp-for="FirstName" id="firstname" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label"> Middle Name <span class="required">*</span></label>
+                                    <input type="text" asp-for="MiddleName" id="middlename" class="form-control" />
+                                    <span asp-validation-for="MiddleName" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label"> Last Name <span class="required">*</span></label>
+                                    <input type="text" asp-for="LastName" id="middlename" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label class="control-label"> Place Of Birth <span class="required">*</span></label>
+                                    <input type="text" asp-for="POB" id="pob" class="form-control" />
+                                    <span asp-validation-for="POB" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label"> Date Of Birth <span class="required">*</span></label>
+                                    <input type="text" asp-for="DOB" id="dob" class="form-control" />
+                                    <span asp-validation-for="DOB" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label"> Gender <span class="required">*</span></label>
+                                    <select asp-for="Gender" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.Gender)))"></select>
+                                    <span asp-validation-for="Gender" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label class="control-label"> State <span class="required">*</span></label>
+                                    <select asp-for="StateId" asp-items="ViewBag.state" id="state" placeholder="State" class="form-control"></select>
+                                    <span asp-validation-for="StateId" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label"> Local Government Area <span class="required">*</span></label>
+                                    <select asp-for="LgaId" id="lga" class="form-control"></select>
+                                    <span asp-validation-for="LgaId" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label class="control-label"> Home Phone <span class="required">*</span></label>
+                                    <input type="text" asp-for="HomePhone" id="homephone" class="form-control" />
+                                    <span asp-validation-for="HomePhone" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label"> Work Phone <span class="required">*</span></label>
+                                    <input type="text" asp-for="MobilePhone" id="mobilephone" class="form-control" />
+                                    <span asp-validation-for="MobilePhone" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label class="control-label"> Email <span class="required">*</span></label>
+                                    <input type="text" asp-for="Email" id="email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label"> Secondary Address <span class="required">*</span></label>
+                                    <input type="text" asp-for="SecondaryAddress" id="secondaryaddress" class="form-control" />
+                                    <span asp-validation-for="SecondaryAddress" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label class="control-label"> Marital Status <span class="required">*</span></label>
+                                    <select asp-for="MaritalStatus" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.MaritalStatus)))"></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label"> Employee Image <span class="required">*</span></label>
+                                    <input type="text" asp-for="EmployeeImage" id="employeeimage" class="form-control" />
+                                    <span asp-validation-for="EmployeeImage" class="text-danger "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="pull-right">
+                                    <input type="submit" value="Next" class="btn btn-success" />
+                                    <a class="btn btn-primary" data-dismiss="modal">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h4>EmployeeEducationalQualification</h4>
 <hr />
 <div class="row">

@@ -48,8 +48,8 @@ namespace SaaS_RMS.Controllers.EmployeeController
         public async Task<IActionResult> PersonalData(bool? returnUrl, bool? backUrl)
         {
             var restaurant = _session.GetInt32("RId");
-            var _employee = _db.Employees.Find(restaurant);
             
+            var _employee = _db.Employees.Find(restaurant);
 
             ViewBag.State = new SelectList(_db.States, "StateId", "Name");
 
@@ -90,11 +90,14 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public IActionResult PersonalData(EmployeePersonalData personalData, FormCollection collectedValues)
         {
-            var restaurant = _session.GetInt32("RId");
+            var employee = new Employee();
 
+            var restaurant = _session.GetInt32("RId");
+            
             var allEmployees = _db.EmployeePersonalDatas;
 
             var _employee = _db.Employees.Find(restaurant);
+            
 
             if (_employee != null)
             {
@@ -102,7 +105,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 personalData.DOB = Convert.ToString(Convert.ToDateTime(collectedValues["DOB"]));
 
                 _employee.EmployeePersonalDatas = new List<EmployeePersonalData> { personalData };
-                //_session.("Employee");
+                //_session.("Employee")
                 _session.SetObject("Employee", _employee);
                 
             }
@@ -142,8 +145,9 @@ namespace SaaS_RMS.Controllers.EmployeeController
         public IActionResult EducationalQualification(bool? returnUrl)
         {
             var restaurant = _session.GetInt32("RId");
-            var _employee = _db.Employees.Find(restaurant);
 
+            var _employee = _db.Employees.Find(restaurant);
+            
             ViewBag.RestaurantQualificationId = new SelectList(_db.RestaurantQualifications.Where(rq => rq.RestaurantId == restaurant));
 
             if (returnUrl != null && returnUrl.Value)
@@ -213,6 +217,9 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 });
                 TempData["education"] = "You ave successfully added a " + degree + " qualification!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
+
+                _session.SetObject("Employee", _employee);
+
             }
             //if it is edit from review page return to the review page
             if (returnUrl)

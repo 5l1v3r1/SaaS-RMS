@@ -496,6 +496,28 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Meal", b =>
+                {
+                    b.Property<int>("MealId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Image")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RestaurantId");
+
+                    b.HasKey("MealId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Meals");
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.RestaurantQualification", b =>
                 {
                     b.Property<int>("RestaurantQualificationId")
@@ -760,7 +782,7 @@ namespace SaaS_RMS.Data.Migrations
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Employee.EmployeePastWorkExperience", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.Employee.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeePastWorkExperiences")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -811,6 +833,14 @@ namespace SaaS_RMS.Data.Migrations
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
                         .WithMany("Departments")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Meal", b =>
+                {
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

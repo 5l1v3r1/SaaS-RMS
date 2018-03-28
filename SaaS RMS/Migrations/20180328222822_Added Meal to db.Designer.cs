@@ -11,8 +11,8 @@ using System;
 namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180323001409_Added RestaurantQualification to the db")]
-    partial class AddedRestaurantQualificationtothedb
+    [Migration("20180328222822_Added Meal to db")]
+    partial class AddedMealtodb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -497,6 +497,28 @@ namespace SaaSRMS.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Meal", b =>
+                {
+                    b.Property<int>("MealId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Image")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RestaurantId");
+
+                    b.HasKey("MealId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Meals");
+                });
+
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.RestaurantQualification", b =>
                 {
                     b.Property<int>("RestaurantQualificationId")
@@ -761,7 +783,7 @@ namespace SaaSRMS.Migrations
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Employee.EmployeePastWorkExperience", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.Employee.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeePastWorkExperiences")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -812,6 +834,14 @@ namespace SaaSRMS.Migrations
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
                         .WithMany("Departments")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Meal", b =>
+                {
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

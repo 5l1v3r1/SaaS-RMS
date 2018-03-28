@@ -33,7 +33,7 @@ namespace SaaS_RMS.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<RestaurantStatistics> RestaurantStatistics { get; set; }
         public DbSet<RestaurantQualification> RestaurantQualifications { get; set; }
-
+        public DbSet<Meal> Meals { get; set; }
 
         #endregion
 
