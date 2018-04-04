@@ -34,7 +34,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_content">
-                    <a asp-area="" asp-controller="Meals" asp-action="Create"  class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
+                    <a asp-area="" asp-action="Create" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
                     <table class="table" id="myTable">
                         <tr>
                             <th>
@@ -63,7 +63,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </th>
                             <td>
-                                <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.MealId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.MealId"><i class="fa fa-pencil-square-o "></i> Edit</a>
                                 <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.MealId"><i class="fa fa-trash-o "></i> Delete</a>
                             </td>
                         </tr>

@@ -65,9 +65,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [HttpGet]
         public IActionResult Create()
         {
-            //var meal = new Meal();
-            return View("Create");
-            //return View("Create", meal);
+            return View();
         }
 
         //POST:
@@ -121,9 +119,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     }
                 }
 
-
-                
-
                 if (ModelState.IsValid)
                 {
                     if (restaurant != null)
@@ -135,11 +130,67 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     await _db.Meals.AddAsync(meal);
                     await _db.SaveChangesAsync();
                     return View("Index");
-                    //return Json(new { success = true });
                 }
             }
 
             return View("Index");
+        }
+
+        #endregion
+
+        #region Meal Edit
+
+
+
+        #endregion
+
+        #region Meal Delete
+
+        // GET: Meals/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meal = await _db.Meals
+                .Include(l => l.Restaurant)
+                .SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Delete", meal);
+        }
+
+        // POST: Meals/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal != null)
+            {
+                _db.Meals.Remove(meal);
+                await _db.SaveChangesAsync();
+
+                TempData["meal"] = "You have successfully deleted a Meal!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Meal Exists
+
+        private bool MealExists(int id)
+        {
+            return _db.Meals.Any(e => e.MealId == id);
         }
 
         #endregion
