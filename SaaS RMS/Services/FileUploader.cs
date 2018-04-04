@@ -45,7 +45,7 @@ namespace SaaS_RMS.Services
                     {
                         filename = DateTime.Now.ToFileTime() + fileInfo.Extension;
 
-                        var uploadPath = Path.Combine(_environment.WebRootPath, "~/wwwroot/uploads/" + uploadType);
+                        var uploadPath = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
 
                         //check to see if the directory exists else, create directory
                         if (!Directory.Exists(uploadPath))
@@ -72,7 +72,7 @@ namespace SaaS_RMS.Services
         }
 
         #endregion
-
+        
         public bool ThumbnailCallback()
         {
             return false;

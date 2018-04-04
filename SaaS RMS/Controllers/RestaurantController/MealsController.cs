@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -64,51 +65,90 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [HttpGet]
         public IActionResult Create()
         {
-            var meal = new Meal();
-            return PartialView("Create", meal);
+            //var meal = new Meal();
+            return View("Create");
+            //return View("Create", meal);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Meal meals, IFormFile file)
+        public async Task<IActionResult> Create(Meal meal, IFormFile file, UploadType uploadType)
         {
             var restaurant = _session.GetInt32("RId");
 
-            if (ModelState.IsValid)
+            //var files = Request.Form.Files["Image"];
+
+            var fileUploader = new FileUploader();
+            var filename = DateTime.Now.ToFileTime().ToString();
+
+
+            if (file == null || file.Length == 0)
             {
-                if (restaurant != null)
+                ModelState.AddModelError("img_null", "Image is not selected");
+            }
+            else
+            {
+                var fileinfo = new FileInfo(file.FileName);
+
+                if ((fileinfo.Extension.ToLower() == ".jpg") || (fileinfo.Extension.ToLower() == ".jpeg") ||
+                    (fileinfo.Extension.ToLower() == ".png") || (fileinfo.Extension.ToLower() == ".gif") ||
+                    (fileinfo.Extension.ToLower() == ".pdf") || (fileinfo.Extension.ToLower() == ".docx") ||
+                    (fileinfo.Extension.ToLower() == ".doc"))
                 {
-                    meals.RestaurantId = Convert.ToInt32(restaurant);
-                    if (file != null && file.Length > 0)
+                    try
                     {
-                        new FileUploader().UploadFile(file, UploadType.Food);
-                    }
+                        filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                        var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
 
-                    var allMeals = await _db.Meals.Where(m => m.RestaurantId == restaurant).ToListAsync();
-                    if(allMeals.Any(m => m.Name == meals.Name))
+                        //check to see if the directory exists else, create directory
+                        if (!Directory.Exists(uploads))
+                        {
+                            Directory.CreateDirectory(uploads);
+                        }
+
+                        if (file.Length > 0)
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                            }
+                        }
+                    }
+                    catch (Exception)
                     {
-                        TempData["meal"] = "You cannot add this Meal because it already exist!!!";
-                        TempData["notificationType"] = NotificationType.Error.ToString();
-                        return RedirectToAction("Index");
+
                     }
-
-                    await _db.AddAsync(meals);
-                    await _db.SaveChangesAsync();
-
-                    TempData["meal"] = "You have successfully added a new Meal!!!";
-                    TempData["notificationType"] = NotificationType.Success.ToString();
-
-                    return Json(new { success = true });
                 }
-                else
+
+
+                
+
+                if (ModelState.IsValid)
                 {
-                    TempData["meal"] = "Session Expired, Login Again";
-                    TempData["notificationtype"] = NotificationType.Info.ToString();
-                    return RedirectToAction("Restaurant", "Access");
+                    if (restaurant != null)
+                    {
+                        meal.RestaurantId = Convert.ToInt32(restaurant);
+                    }
+
+                    meal.Image = filename;
+                    await _db.Meals.AddAsync(meal);
+                    await _db.SaveChangesAsync();
+                    return View("Index");
+                    //return Json(new { success = true });
                 }
             }
+
             return View("Index");
+        }
+
+        #endregion
+
+        #region Meal View Picture
+
+        public IActionResult View()
+        {
+            return View(); 
         }
 
         #endregion
