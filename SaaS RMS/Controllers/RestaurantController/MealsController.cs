@@ -256,9 +256,10 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Meal View Picture
 
-        public IActionResult View()
+        public IActionResult Picture()
         {
-            return View();
+            var meal = new Meal();
+            return PartialView("Picture", meal);
         }
 
         #endregion
