@@ -10,11 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Enums;
-using SaaS_RMS.Services;
 
 namespace SaaS_RMS.Controllers.RestaurantController
 {
-    public class MealsController : Controller
+    public class DishesController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +22,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Constructor
 
-        public MealsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment environment)
+        public DishesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment environment)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -32,36 +31,32 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #endregion
 
-        #region Meal Index
+        #region Dishes Index
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var restaurant = _session.GetInt32("RId");
+            _session.SetInt32("MealId", Convert.ToInt32(id));
 
-            if (restaurant == null)
+            if (id == null)
             {
-                return RedirectToAction("Access", "Restaurants");
+                return NotFound();
             }
 
-            var meal = _db.Meals.Where(m => m.RestaurantId == restaurant)
-                .Include(m => m.Restaurant)
-                .ToListAsync();
+            var dish = _db.Dishes.Include(d => d.Meal).ToListAsync();
 
-            if (meal != null)
+            if (dish == null)
             {
-                return View(await meal);
+                return NotFound();
             }
-            else
-            {
-                return RedirectToAction("Access", "Restaurants");
-            }
+
+            return View(await dish);
         }
 
         #endregion
 
-        #region Meal Create
+        #region Dishes Create
 
-        //GET: Meals/Create
+        //GET: Dishes/Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -71,11 +66,11 @@ namespace SaaS_RMS.Controllers.RestaurantController
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file, Meal meal, UploadType uploadType)
+        public async Task<IActionResult> Create(Dish dish, IFormFile file, UploadType uploadType)
         {
             if (file == null || file.Length == 0)
             {
-                ModelState.AddModelError("null_img", "Image file was not selected");
+                ModelState.AddModelError("null_img", "Image file not selected!!!");
             }
 
             else
@@ -94,30 +89,30 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 if (ModelState.IsValid)
                 {
-                    var restaurant = _session.GetInt32("RId");
-                    if (restaurant != null)
+                    var meal = _session.GetInt32("MealId");
+
+                    if (meal != null)
                     {
-                        meal.RestaurantId = Convert.ToInt32(restaurant);
+                        dish.MealId = Convert.ToInt32(meal);
                     }
 
-                    meal.Image = filename;
-                    await _db.Meals.AddAsync(meal);
+                    dish.Image = filename;
+                    await _db.Dishes.AddAsync(dish);
                     await _db.SaveChangesAsync();
 
-                    TempData["meal"] = "You have successfully added a new meal!!!";
+                    TempData["dish"] = "You have successfully added a new dish!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
                     return RedirectToAction(nameof(Index));
                 }
             }
-
             return RedirectToAction(nameof(Index));
         }
 
         #endregion
 
-        #region Meal Edit
+        #region Dishes Edit
 
-        //GET: Meals/Edit/5
+        //GET: Dishes/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -126,29 +121,24 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+            var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
 
-            if (meal == null)
+            if (dish == null)
             {
                 return NotFound();
             }
 
-            return View(meal);
+            return View(dish);
         }
 
-        //POST: 
+        //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, Meal meal, IFormFile file, UploadType uploadType)
+        public async Task<IActionResult> Edit(int? id, IFormFile file, Dish dish, UploadType uploadType)
         {
-            if (id != meal.MealId)
-            {
-                return NotFound();
-            }
-
             if (file == null || file.Length == 0)
             {
-                ModelState.AddModelError("null_img", "Image file was not selected");
+                ModelState.AddModelError("null_img", "Image file not selected!!!");
             }
 
             else
@@ -169,20 +159,20 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 {
                     try
                     {
-                        var restaurant = _session.GetInt32("RId");
+                        var meal = _session.GetInt32("MealId");
 
-                        if (restaurant != null)
+                        if (meal != null)
                         {
-                            meal.RestaurantId = Convert.ToInt32(restaurant);
+                            dish.MealId = Convert.ToInt32(meal);
                         }
 
-                        meal.Image = filename;
-                        _db.Update(meal);
+                        dish.Image = filename;
+                        _db.Update(dish);
                         await _db.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!MealExists(meal.MealId))
+                        if (!DishExists(dish.DishId))
                         {
                             return NotFound();
                         }
@@ -192,8 +182,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                         }
                     }
 
-
-                    TempData["meal"] = " You have successfully modified a Meal";
+                    TempData["dish"] = " You have successfully modified a Dish";
                     TempData["notificationType"] = NotificationType.Success.ToString();
                     return RedirectToAction(nameof(Index));
                 }
@@ -203,9 +192,9 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #endregion
 
-        #region Meal Delete
+        #region Dishes Delete
 
-        // GET: Meals/Delete/5
+        // GET: Dishes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -213,29 +202,29 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            var meal = await _db.Meals
-                .Include(l => l.Restaurant)
-                .SingleOrDefaultAsync(m => m.MealId == id);
-            if (meal == null)
+            var dish = await _db.Dishes
+                .Include(l => l.Meal)
+                .SingleOrDefaultAsync(m => m.DishId == id);
+            if (dish == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", meal);
+            return PartialView("Delete", dish);
         }
 
-        // POST: Meals/Delete/5
+        // POST: Dishes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
-            if (meal != null)
+            var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+            if (dish != null)
             {
-                _db.Meals.Remove(meal);
+                _db.Dishes.Remove(dish);
                 await _db.SaveChangesAsync();
 
-                TempData["meal"] = "You have successfully deleted a Meal!!!";
+                TempData["dish"] = "You have successfully deleted a Dish!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -245,23 +234,14 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #endregion
 
-        #region Meal Exists
+        #region Dish Exists
 
-        private bool MealExists(int id)
+        private bool DishExists(int id)
         {
-            return _db.Meals.Any(e => e.MealId == id);
+            return _db.Dishes.Any(e => e.DishId == id);
         }
 
         #endregion
 
-        #region Meal View Picture
-
-        public IActionResult Picture()
-        {
-            var meal = new Meal();
-            return PartialView("Picture", meal);
-        }
-
-        #endregion
     }
 }

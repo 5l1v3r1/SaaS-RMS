@@ -511,9 +511,13 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("RestaurantId");
+
                     b.HasKey("DishId");
 
                     b.HasIndex("MealId");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Dishes");
                 });
@@ -862,8 +866,13 @@ namespace SaaS_RMS.Data.Migrations
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Restuarant.Dish", b =>
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.Restuarant.Meal", "Meal")
-                        .WithMany()
+                        .WithMany("Dishes")
                         .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -27,11 +29,15 @@ namespace SaaS_RMS.Models.Entities.Restuarant
 
         #region Forigen Keys
 
+        [DisplayName("Meal")]
         public int MealId { get; set; }
         [ForeignKey("MealId")]
-        public virtual Meal Meal { get; set; }
+        public virtual Meal Meal
+        {
+            get; set;
 
-        #endregion
+            #endregion
 
+        }
     }
 }

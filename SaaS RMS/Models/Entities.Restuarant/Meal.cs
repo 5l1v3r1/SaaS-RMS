@@ -38,7 +38,7 @@ namespace SaaS_RMS.Models.Entities.Restuarant
 
         #region IEnumerable
 
-        //public virtual ICollection<Dish> Dishes { get; set; }
+        public virtual ICollection<Dish> Dishes { get; set; }
 
         #endregion
 
