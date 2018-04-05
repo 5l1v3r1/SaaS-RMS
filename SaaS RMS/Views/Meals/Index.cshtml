@@ -8,19 +8,19 @@
 }
 
 <div style="padding-top:55px;">
-    @if (TempData["meal"] != null)
+    @if (TempData["meal"] != null && TempData["null_image"] != null)
     {
         if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
-            <div class="alert alert-success alert-dismissable">@TempData["meal"]</div>
+            <div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>@TempData["meal"]</div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
-            <div class="alert alert-danger alert-dismissable">@TempData["meal"]</div>
+            <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>@TempData["null_image"]</div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
-            <div class="alert alert-info alert-dismissable">@TempData["meal"]</div>
+            <div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>@TempData["meal"]</div>
         }
 
     }

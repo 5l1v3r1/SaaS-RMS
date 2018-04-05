@@ -38,7 +38,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         {
             var restaurant = _session.GetInt32("RId");
 
-            if(restaurant == null)
+            if (restaurant == null)
             {
                 return RedirectToAction("Access", "Restaurants");
             }
@@ -65,62 +65,36 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Meal meal, IFormFile file, UploadType uploadType)
+        public async Task<IActionResult> Create(int id, IFormFile file, Meal meal, UploadType uploadType)
         {
-            var restaurant = _session.GetInt32("RId");
-
-            //var files = Request.Form.Files["Image"];
-
-            var fileUploader = new FileUploader();
-            var filename = DateTime.Now.ToFileTime().ToString();
-
-
             if (file == null || file.Length == 0)
             {
-                ModelState.AddModelError("img_null", "Image is not selected");
+                ModelState.AddModelError("null_img", "Image file was not selected");
             }
+
             else
             {
                 var fileinfo = new FileInfo(file.FileName);
+                var filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
 
-                if ((fileinfo.Extension.ToLower() == ".jpg") || (fileinfo.Extension.ToLower() == ".jpeg") ||
-                    (fileinfo.Extension.ToLower() == ".png") || (fileinfo.Extension.ToLower() == ".gif") ||
-                    (fileinfo.Extension.ToLower() == ".pdf") || (fileinfo.Extension.ToLower() == ".docx") ||
-                    (fileinfo.Extension.ToLower() == ".doc"))
+                if (file.Length > 0)
                 {
-                    try
+                    using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
                     {
-                        filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
-                        var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
-
-                        //check to see if the directory exists else, create directory
-                        if (!Directory.Exists(uploads))
-                        {
-                            Directory.CreateDirectory(uploads);
-                        }
-
-                        if (file.Length > 0)
-                        {
-                            using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
-                            {
-                                await file.CopyToAsync(fileStream);
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-
+                        await file.CopyToAsync(fileStream);
                     }
                 }
 
                 if (ModelState.IsValid)
                 {
+                    var restaurant = _session.GetInt32("RId");
                     if (restaurant != null)
                     {
                         meal.RestaurantId = Convert.ToInt32(restaurant);
@@ -129,18 +103,103 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     meal.Image = filename;
                     await _db.Meals.AddAsync(meal);
                     await _db.SaveChangesAsync();
-                    return View("Index");
+
+                    TempData["meal"] = "You have successfully added a new meal!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
+                    return RedirectToAction(nameof(Index));
                 }
             }
 
-            return View("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion
 
         #region Meal Edit
 
+        //GET: Meals/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
+            return View(meal);
+        }
+
+        //POST: 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, Meal meal, IFormFile file, UploadType uploadType)
+        {
+            if (id != meal.MealId)
+            {
+                return NotFound();
+            }
+
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("null_img", "Image file was not selected");
+            }
+
+            else
+            {
+                var fileinfo = new FileInfo(file.FileName);
+                var filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
+
+                if (file.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        var restaurant = _session.GetInt32("RId");
+
+                        if (restaurant != null)
+                        {
+                            meal.RestaurantId = Convert.ToInt32(restaurant);
+                        }
+
+                        meal.Image = filename;
+                        _db.Update(meal);
+                        await _db.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!MealExists(meal.MealId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+
+
+                    TempData["meal"] = " You have successfully modified a Meal";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
         #endregion
 
@@ -199,7 +258,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         public IActionResult View()
         {
-            return View(); 
+            return View();
         }
 
         #endregion

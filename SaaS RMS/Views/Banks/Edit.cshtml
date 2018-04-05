@@ -1,7 +1,7 @@
 ﻿@model SaaS_RMS.Models.Entities.Employee.Bank
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <!--MODAL HEADER-->
@@ -10,7 +10,7 @@
     <h3> <strong> EDIT A BANK </strong> </h3>
 </div>
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="BankId" />
     <!--MODAL BODY-->
