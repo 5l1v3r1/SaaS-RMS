@@ -34,6 +34,8 @@ namespace SaaS_RMS.Data
         public DbSet<RestaurantStatistics> RestaurantStatistics { get; set; }
         public DbSet<RestaurantQualification> RestaurantQualifications { get; set; }
         public DbSet<Meal> Meals { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
+
 
         #endregion
 
