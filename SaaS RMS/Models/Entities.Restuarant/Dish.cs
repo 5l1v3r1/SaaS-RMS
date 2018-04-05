@@ -19,6 +19,9 @@ namespace SaaS_RMS.Models.Entities.Restuarant
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "Image is required")]
         public string Image { get; set; }
 
