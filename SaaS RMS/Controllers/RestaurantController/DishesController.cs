@@ -102,7 +102,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                     TempData["dish"] = "You have successfully added a new dish!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", new { id = meal });
                 }
             }
             return RedirectToAction(nameof(Index));

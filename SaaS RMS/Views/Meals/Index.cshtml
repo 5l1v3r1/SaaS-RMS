@@ -63,9 +63,11 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </th>
                             <td>
+                                <a class="btn btn-warning btn-sm" data-modal="" asp-action="Picture" asp-route-id="@item.MealId"><i class="fa fa-picture-o "></i> View Picture</a>
                                 <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.MealId"><i class="fa fa-pencil-square-o "></i> Edit</a>
                                 <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.MealId"><i class="fa fa-trash-o "></i> Delete</a>
-                                <a class="btn btn-warning btn-sm" data-modal="" asp-action="Picture" asp-route-id="@item.MealId"><i class="fa fa-picture-o "></i> View Picture</a>
+                                <a class="btn btn-success btn-sm" asp-controller="Dishes" asp-action="Index" asp-route-id="@item.MealId"><i class="fa fa-square-o "></i>Dishes</a>
+
                             </td>
                         </tr>
                         }
