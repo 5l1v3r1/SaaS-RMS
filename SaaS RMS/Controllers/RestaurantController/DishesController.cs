@@ -34,18 +34,22 @@ namespace SaaS_RMS.Controllers.RestaurantController
         #region Dishes Index
 
         [Route("dish/index/{MealId}")]
-        public async Task<IActionResult> Index(int? MealId)
+        public async Task<IActionResult> Index(int MealId)
         {
-            var dish = await _db.Dishes.Where(d => d.MealId == MealId).ToListAsync();
-            var id = MealId;
-
-            if (dish == null)
+            try
             {
-                _session.SetInt32("MealId", Convert.ToInt32(MealId));
-                return View(dish);
+                var dish = _db.Dishes.Where(d => d.MealId == MealId);
+                if (dish != null)
+                {
+                    _session.SetInt32("MealId", MealId);
+                    return View(await dish.ToListAsync());
+                }
             }
-
-            return View(dish);
+            catch(Exception e)
+            {
+                return Json(e);
+            }
+            return View();
         }
 
         #endregion
