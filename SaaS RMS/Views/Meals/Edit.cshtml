@@ -56,7 +56,7 @@
                         <div class="col-md-12">
                             <input type="hidden" value="blank" asp-for="Image" />
                             <input type="submit" value="Save" class="btn btn-primary" />
-                            <a class="btn btn-danger" asp-controller="Meals" asp-action="Index">Cancel</a>
+                            <a class="btn btn-danger" asp-controller="Meals" asp-action="Index" asp-route="@ViewData["MealId"]" >Cancel</a>
                         </div>
                     </div>
                 </form>

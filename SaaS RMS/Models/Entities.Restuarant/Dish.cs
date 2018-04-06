@@ -35,12 +35,8 @@ namespace SaaS_RMS.Models.Entities.Restuarant
         [DisplayName("Meal")]
         public int MealId { get; set; }
         [ForeignKey("MealId")]
-        public virtual Meal Meal
-        {
-            get; set;
+        public virtual Meal Meal { get; set; }
 
-            #endregion
-
-        }
+        #endregion
     }
 }
