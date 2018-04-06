@@ -28,7 +28,7 @@ namespace SaaS_RMS.Models.Entities.System
 
         #region Enumerables
 
-        public IEnumerable<Restaurant> Restaurants { get; set; }
+        //public IEnumerable<Restaurant> Restaurants { get; set; }
 
         #endregion
     }
