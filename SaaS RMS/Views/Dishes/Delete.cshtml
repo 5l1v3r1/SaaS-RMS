@@ -1,22 +1,24 @@
-﻿@model SaaS_RMS.Models.Entities.Restuarant.Meal
-    
-@{ 
+﻿@model SaaS_RMS.Models.Entities.Restuarant.Dish
+
+
+
+@{
     ViewData["Title"] = "Delete";
 }
 
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3> <strong> DELETE MEAL </strong> </h3>
+    <h3> <strong> DELETE DISH </strong> </h3>
 </div>
 
 
 <!--MODAL BODY-->
 <div class="modal-body">
-    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Name) Meal??</h3>
+    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Name) Dish??</h3>
 </div>
 <form asp-action="Delete">
-    <input type="hidden" asp-for="MealId" />
+    <input type="hidden" asp-for="DishId" />
 
     <!--MODAL FOOTER-->
     <div class="modal-footer">

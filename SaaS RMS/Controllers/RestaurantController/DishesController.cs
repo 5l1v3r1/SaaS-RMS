@@ -68,6 +68,8 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Dish dish, IFormFile file, UploadType uploadType)
         {
+            var meal = _session.GetInt32("MealId");
+
             if (file == null || file.Length == 0)
             {
                 ModelState.AddModelError("null_img", "Image file not selected!!!");
@@ -89,8 +91,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 if (ModelState.IsValid)
                 {
-                    var meal = _session.GetInt32("MealId");
-
                     if (meal != null)
                     {
                         dish.MealId = Convert.ToInt32(meal);
@@ -105,7 +105,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     return RedirectToAction("Index", new { id = meal });
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = meal });
         }
 
         #endregion
@@ -136,6 +136,8 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, IFormFile file, Dish dish, UploadType uploadType)
         {
+            var meal = _session.GetInt32("MealId");
+
             if (file == null || file.Length == 0)
             {
                 ModelState.AddModelError("null_img", "Image file not selected!!!");
@@ -159,8 +161,6 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 {
                     try
                     {
-                        var meal = _session.GetInt32("MealId");
-
                         if (meal != null)
                         {
                             dish.MealId = Convert.ToInt32(meal);
@@ -184,10 +184,10 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                     TempData["dish"] = " You have successfully modified a Dish";
                     TempData["notificationType"] = NotificationType.Success.ToString();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", new { id = meal });
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = meal });
         }
 
         #endregion
@@ -218,6 +218,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var meal = _session.GetInt32("MealId");
             var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
             if (dish != null)
             {
@@ -229,7 +230,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 return Json(new { success = true });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = meal });
         }
 
         #endregion
