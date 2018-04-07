@@ -39,7 +39,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 var lga = _db.Lgas.Where(l => l.StateId == StateId);
                 if(lga != null)
                 {
-                    _session.SetInt32("SId", StateId);
+                    _session.SetInt32("statesessionid", StateId);
                     return View(await lga.ToListAsync());
                 }
             }
@@ -80,7 +80,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         // GET: Lgas/Create
         public IActionResult Create()
         {
-            ViewData["SId"] = Convert.ToInt32(_session.GetInt32("SId"));
+            ViewData["SId"] = Convert.ToInt32(_session.GetInt32("statesessionid"));
             var lga = new Lga();
             return PartialView("Create", lga);
         }
