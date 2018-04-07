@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Entities.Employee;
+using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.EmployeeController
+namespace SaaS_RMS.Controllers.InventoryController
 {
-    public class BanksController : Controller
+    public class VendorsController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #region Constructor
 
-        public BanksController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public VendorsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -27,24 +27,18 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Index
+        #region Index
 
-        public async Task <IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            if (restaurant == null)
-            {
-                return RedirectToAction("Access", "Restaurants");
-            }
+            var vendor = _db.Vendors.Where(v => v.RestaurantId == restaurant)
+                .Include(v => v.Restuarant);
 
-            var bank = _db.Banks.Where(b => b.RestaurantId == restaurant)
-                .Include(b => b.RestaurantId)
-                .ToListAsync();
-
-            if (bank != null)
+            if(vendor != null)
             {
-                return View(await bank);
+                return View(await vendor.ToListAsync());
             }
             else
             {
@@ -54,20 +48,20 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Create
+        #region Create
 
-        //GET: Banks/Create
+        //GET: Vendors/Create
         [HttpGet]
         public IActionResult Create()
         {
-            var bank = new Bank();
-            return PartialView("Create", bank);
+            var vendor = new Vendor();
+            return PartialView("Create", vendor);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Bank bank)
+        public async Task<IActionResult> Create(Vendor vendor)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
@@ -75,38 +69,35 @@ namespace SaaS_RMS.Controllers.EmployeeController
             {
                 if (restaurant != null)
                 {
-                    bank.RestaurantId = restaurant;
+                    vendor.RestaurantId = restaurant;
 
-                    var allBanks = await _db.Banks.ToListAsync();
-                    if (allBanks.Any(b => b.RestaurantId == restaurant && b.Name == bank.Name))
+                    var allVendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
+
+                    if (allVendors.Any(v => v.Name == vendor.Name))
                     {
-                        TempData["bank"] = "You cannot add "+ bank.Name +" Bank because it already exist!!!";
+                        TempData["vendor"] = "You cannot add " + vendor.Name + " Vendor because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
 
-                    await _db.AddAsync(bank);
+                    await _db.AddAsync(vendor);
                     await _db.SaveChangesAsync();
 
-                    TempData["bank"] = "You have successfully added " + bank.Name + " as a new Bank!!!";
+                    TempData["vendor"] = "You have successfully added " + vendor.Name + " as a new Vendor!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
                 }
-                else
-                {
-                    TempData["bank"] = "Session Expired, Login Again";
-                    TempData["notificationtype"] = NotificationType.Info.ToString();
-                    return RedirectToAction("Restaurant", "Access");
-                }
             }
-            return View("Index");
+
+            return RedirectToAction("Index");
         }
+
         #endregion
 
-        #region Bank Edit
+        #region Edit
 
-        //GET: Banks/Edit/5
+        //GET: Vendors/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -115,21 +106,22 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 return NotFound();
             }
 
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(v => v.VendorId == id);
 
-            if (bank == null)
+            if (vendor == null)
             {
                 return NotFound();
             }
-            return PartialView("Edit", bank);
+
+            return PartialView("Edit", vendor);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Bank bank)
+        public async Task<IActionResult> Edit(int? id, Vendor vendor)
         {
-            if (id != bank.BankId)
+            if (id != vendor.VendorId)
             {
                 return NotFound();
             }
@@ -142,14 +134,15 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
                     if (restaurant != null)
                     {
-                        bank.RestaurantId = restaurant;
+                        vendor.RestaurantId = restaurant;
+
+                        _db.Update(vendor);
+                        await _db.SaveChangesAsync();
                     }
-                    _db.Update(bank);
-                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BankExists(bank.BankId))
+                    if (!VendorExists(vendor.VendorId))
                     {
                         return NotFound();
                     }
@@ -159,19 +152,20 @@ namespace SaaS_RMS.Controllers.EmployeeController
                     }
                 }
 
-                TempData["bank"] = "You have successfully modified " + bank.Name + " Bank!!!";
+                TempData["vendor"] = "You have successfully modified " + vendor.Name + " Vendor!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
             }
+
             return RedirectToAction("Index");
         }
 
         #endregion
 
-        #region Bank Delete
+        #region Delete
 
-        //GET: Banks/Delete/5
+        //GET: Vendors/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -180,14 +174,14 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 return NotFound();
             }
 
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
 
-            if (bank == null)
+            if (vendor == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", bank);
+            return PartialView("Delete", vendor);
         }
 
         //POST:
@@ -195,13 +189,13 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
-            if(bank != null)
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
+            if (vendor != null)
             {
-                _db.Banks.Remove(bank);
+                _db.Vendors.Remove(vendor);
                 await _db.SaveChangesAsync();
 
-                TempData["bank"] = "You have successfully deleted " + bank.Name + " Bank!!!";
+                TempData["vendor"] = "You have successfully deleted " + vendor.Name + " Vendor!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -211,11 +205,11 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Exists
+        #region Vendor Exists
 
-        private bool BankExists(int id)
+        private bool VendorExists(int id)
         {
-            return _db.Banks.Any(b => b.BankId == id);
+            return _db.Vendors.Any(b => b.VendorId == id);
         }
 
         #endregion
