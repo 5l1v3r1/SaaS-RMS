@@ -37,9 +37,15 @@ namespace SaaS_RMS.Controllers.RestaurantController
         {
             var restaurant = _session.GetInt32("RId");
             
+            if (restaurant == null)
+            {
+                return RedirectToAction("Access", "Restaurants");
+            }
+
             var meal = await _db.Meals.Where(m => m.RestaurantId == restaurant)
                 .Include(m => m.Restaurant)
                 .ToListAsync();
+
 
             if ( meal != null)
             {
@@ -85,6 +91,14 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 if (ModelState.IsValid)
                 {
                     var restaurant = _session.GetInt32("RId");
+                    var allMeals = await _db.Meals.ToListAsync();
+
+                    if (allMeals.Any(m => m.Name == meal.Name))
+                    {
+                        TempData["meal"] = "You cannot add " + meal.Name + " meal because it already exist!!!";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
+                        return RedirectToAction("Index", meal);
+                    }
 
                     if (restaurant == null)
                     {
@@ -128,7 +142,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            return View(meal);
+            return View( meal);
         }
 
         //POST:
@@ -193,6 +207,58 @@ namespace SaaS_RMS.Controllers.RestaurantController
             }
             return RedirectToAction("Index");
             
+        }
+
+        #endregion
+
+        #region Delete
+
+        // GET: Meals/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meal = await _db.Meals
+                .Include(l => l.Restaurant)
+                .SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal == null)
+            {
+                return NotFound();
+            }
+            return PartialView("Delete", meal);
+        }
+
+        // POST: Meals/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal != null)
+            {
+                _db.Meals.Remove(meal);
+                await _db.SaveChangesAsync();
+
+                TempData["meal"] = "You have successfully deleted " + meal.Name + " Meal!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Picture
+
+        public IActionResult Picture()
+        {
+            var meal = new Meal();
+            return PartialView("Picture", meal);
         }
 
         #endregion
