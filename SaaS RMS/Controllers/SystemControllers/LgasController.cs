@@ -80,7 +80,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         // GET: Lgas/Create
         public IActionResult Create()
         {
-            ViewData["SId"] = Convert.ToInt32(_session.GetInt32("statesessionid"));
+            ViewData["statesessionid"] = Convert.ToInt32(_session.GetInt32("statesessionid"));
             var lga = new Lga();
             return PartialView("Create", lga);
         }

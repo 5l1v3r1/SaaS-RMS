@@ -14,15 +14,24 @@
     {
         if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
-            <div class="alert alert-success alert-dismissable">@TempData["bank"]</div>
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["bank"]
+            </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
-            <div class="alert alert-danger alert-dismissable">@TempData["bank"]</div>
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["bank"]
+            </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
-            <div class="alert alert-info alert-dismissable">@TempData["bank"]</div>
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["bank"]
+            </div>
         }
 
     }
@@ -36,7 +45,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_content">
-                    <a asp-area="" asp-controller="Banks" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
+                    <a asp-area="" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
                     <table class="table" id="myTable">
                         <tr>
                             <th>

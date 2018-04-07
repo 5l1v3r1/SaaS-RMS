@@ -9,67 +9,76 @@
 
 
 
-    <div style="padding-top:55px;">
-        @if (TempData["department"] != null)
+<div style="padding-top:55px;">
+    @if (TempData["department"] != null)
+    {
+        if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
-            if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
-            {
-                <div class="alert alert-success alert-dismissable">@TempData["department"]</div>
-            }
-            else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
-            {
-                <div class="alert alert-danger alert-dismissable">@TempData["department"]</div>
-            }
-            else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
-            {
-                <div class="alert alert-info alert-dismissable">@TempData["department"]</div>
-            }
-        }
-        <div class="page-title">
-            <div class="title_left">
-                <h3>DEPARTMENT</h3>
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["department"]
             </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["department"]
+            </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["department"]
+            </div>
+        }
+    }
+    <div class="page-title">
+        <div class="title_left">
+            <h3>DEPARTMENT</h3>
         </div>
-        <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_content">
-                        <a asp-area="" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
-                        <table class="table" id="myTable">
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <a asp-area="" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
+                    <table class="table" id="myTable">
+                        <tr>
+                            <th>
+                                S/N
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
                             <tr>
-                                <th>
-                                    S/N
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Name)
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
+                                <td>
+                                    @(x++)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Employees" asp-route-id="@item.DepartmentId"><i class="fa fa-pencil-square-o "></i> Employees</a>
+                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.DepartmentId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.DepartmentId"><i class="fa fa-trash-o "></i> Delete</a>
+                                </td>
                             </tr>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @(x++)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm" data-modal="" asp-action="Employees" asp-route-id="@item.DepartmentId"><i class="fa fa-pencil-square-o "></i> Employees</a>
-                                        <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.DepartmentId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                        <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.DepartmentId"><i class="fa fa-trash-o "></i> Delete</a>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <script src="~/Admin/vendors/jquery/dist/jquery.min.js"></script>
     <script src="~/Modal/Modal.js"></script>
