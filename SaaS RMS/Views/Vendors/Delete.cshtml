@@ -1,4 +1,4 @@
-﻿@model SaaS_RMS.Models.Entities.Employee.Bank
+﻿@model SaaS_RMS.Models.Entities.Inventory.Vendor
 
 @{
     ViewData["Title"] = "Delete";
@@ -13,10 +13,10 @@
 
 <!--MODAL BODY-->
 <div class="modal-body">
-    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Name) Bank?</h3>
+    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Name) Vendor?</h3>
 </div>
 <form asp-action="Delete">
-    <input type="hidden" asp-for="BankId" />
+    <input type="hidden" asp-for="VendorId" />
 
     <!--MODAL FOOTER-->
     <div class="modal-footer">

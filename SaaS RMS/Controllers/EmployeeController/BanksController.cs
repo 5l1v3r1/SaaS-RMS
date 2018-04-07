@@ -39,7 +39,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
             }
 
             var bank = _db.Banks.Where(b => b.RestaurantId == restaurant)
-                .Include(b => b.RestaurantId)
+                .Include(b => b.Restuarant)
                 .ToListAsync();
 
             if (bank != null)
