@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Models;
 using SaaS_RMS.Models.Entities.Employee;
+using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
 
@@ -36,6 +37,12 @@ namespace SaaS_RMS.Data
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Dish> Dishes { get; set; }
 
+
+        #endregion
+
+        #region RESTAURANT INVENTORY DATA CONTEXT
+
+        public DbSet<Vendor> Vendors { get; set; }
 
         #endregion
 
