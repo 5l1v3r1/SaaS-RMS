@@ -176,7 +176,20 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 {
                     var restaurant = _session.GetInt32("RId");
 
-                    if (restaurant != null)
+                    var allMeals = await _db.Meals.ToListAsync();
+
+                    if (allMeals.Any(m => m.Name == meal.Name))
+                    {
+                        TempData["meal"] = "You cannot modify " + meal.Name + " meal because it already exist!!!";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
+                        return RedirectToAction("Index", meal);
+                    }
+
+                    if (restaurant == null)
+                    {
+                        return RedirectToAction("Access", "Restaurant");
+                    }
+                    else
                     {
                         meal.RestaurantId = Convert.ToInt32(restaurant);
                     }
