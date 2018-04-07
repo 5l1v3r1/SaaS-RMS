@@ -128,7 +128,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public IActionResult Admin(int? ID)
         {
             int _ID = Convert.ToInt32(ID);
-            HttpContext.Session.SetInt32("RId", _ID);
+            HttpContext.Session.SetInt32("restaurantsessionid", _ID);
             return View();
         }
 

@@ -47,7 +47,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [HttpGet]
         public async Task<IActionResult> PersonalData(bool? returnUrl, bool? backUrl)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             
             var _employee = _db.Employees.Find(restaurant);
 
@@ -92,7 +92,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         {
             var employee = new Employee();
 
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             
             var allEmployees = _db.EmployeePersonalDatas;
 
@@ -144,7 +144,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [HttpGet]
         public IActionResult EducationalQualification(bool? returnUrl)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
 
             var _employee = _db.Employees.Find(restaurant);
             
@@ -167,7 +167,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public IActionResult EducationalQualification(FormCollection collectedValues)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             var _employee = _db.Employees.Find(restaurant);
 
             //collect data from form using form collection
@@ -235,7 +235,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [HttpGet]
         public IActionResult PastWorkExperience(bool? returnUrl)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             var _employee = _db.Employees.Find(restaurant);
 
             if (returnUrl != null && returnUrl.Value)
@@ -254,7 +254,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public IActionResult PastWorkExperience(FormCollection collectedValues)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             var _employee = _db.Employees.Find(restaurant);
 
             if (_employee != null)
@@ -298,7 +298,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [HttpGet]
         public IActionResult FamilyData(bool? returnUrl, bool? backUrl)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             var _employee = _db.Employees.Find(restaurant);
 
             if (returnUrl != null && returnUrl.Value)
@@ -326,7 +326,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public IActionResult FamilyData(EmployeeFamilyData familyData, FormCollection collectedValues)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             var _employee = _db.Employees.Find(restaurant);
 
             if (_employee != null)

@@ -32,8 +32,8 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         public async Task <IActionResult> Index()
         {
-            var restaurant = _session.GetInt32("RId");
-            //ViewData["RId"] = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
+            //ViewData["restaurantsessionid"] = _session.GetInt32("restaurantsessionid");
 
             //var role = _db.Restaurants.Find(restaurant);
 
@@ -70,7 +70,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Role role)
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
 
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
             {
                 try
                 {
-                    var restaurant = _session.GetInt32("RId");
+                    var restaurant = _session.GetInt32("restaurantsessionid");
                     if (restaurant != null)
                     {
                         role.RestaurantId = restaurant;

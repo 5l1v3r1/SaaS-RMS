@@ -45,7 +45,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     return View(await dish.ToListAsync());
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Json(e);
             }
