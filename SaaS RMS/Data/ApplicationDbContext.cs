@@ -43,6 +43,8 @@ namespace SaaS_RMS.Data
         #region RESTAURANT INVENTORY DATA CONTEXT
 
         public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
 
         #endregion
 
