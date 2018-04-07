@@ -55,7 +55,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 var allStates = _db.States.ToList();
                 if (allStates.Any(s => s.Name == state.Name))
                 {
-                    TempData["state"] = "You cannot add this state because it already exist!!!";
+                    TempData["state"] = "You cannot add " + state.Name + " state because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index", state);
                 }
@@ -63,7 +63,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 _db.Add(state);
                 await _db.SaveChangesAsync();
 
-                TempData["state"] = "You have successfully added a new State!!!";
+                TempData["state"] = "You have successfully added " + state.Name + " as a new State!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -109,7 +109,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 {
                     _db.Update(state);
                     await _db.SaveChangesAsync();
-                    TempData["state"] = "You have successfully modified the State!!!";
+                    TempData["state"] = "You have successfully modified " + state.Name + " State!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -161,7 +161,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 _db.States.Remove(state);
                 await _db.SaveChangesAsync();
-                TempData["state"] = "You have successfully deleted the State!!!";
+                TempData["state"] = "You have successfully deleted " + state.Name + " State!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }

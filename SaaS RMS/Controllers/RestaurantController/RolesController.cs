@@ -33,12 +33,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
         public async Task <IActionResult> Index()
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
-            //ViewData["restaurantsessionid"] = _session.GetInt32("restaurantsessionid");
-
-            //var role = _db.Restaurants.Find(restaurant);
-
-            //ViewData["RestaurantName"] = role.Name;
-
+            
             var roles = _db.Roles.Where(r => r.Name != "Manager" && r.Name != "CEO" && r.RestaurantId == restaurant)
                                         .Include(r => r.Restuarant);
 
@@ -84,7 +79,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 {
                     if (item.RestaurantId == restaurant && item.Name == role.Name)
                     {
-                        TempData["role"] = "Role already exist, try another role name!";
+                        TempData["role"] =  role.Name + " role already exist, try another role name!";
                         TempData["notificationtype"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
@@ -157,7 +152,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     }
                 }
                 
-                TempData["role"] = "You have successfully modified a role!";
+                TempData["role"] = "You have successfully modified " + role.Name + " role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -220,7 +215,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 _db.Roles.Remove(role);
                 await _db.SaveChangesAsync();
 
-                TempData["role"] = "You have successfully deleted a role!";
+                TempData["role"] = "You have successfully deleted " + role.Name + " role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });

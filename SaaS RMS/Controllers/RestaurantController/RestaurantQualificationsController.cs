@@ -79,7 +79,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     var allRestaurantQualifications = await _db.RestaurantQualifications.ToListAsync();
                     if (allRestaurantQualifications.Any(d => d.Name == restaurantQualification.Name && d.RestaurantId == restaurant))
                     {
-                        TempData["restaurantQualification"] = "You cannot add this Qualification because it already exist!!!";
+                        TempData["restaurantQualification"] = "You cannot add " + restaurantQualification.Name + " Qualification because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
@@ -87,7 +87,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     await _db.AddAsync(restaurantQualification);
                     await _db.SaveChangesAsync();
 
-                    TempData["restaurantQualification"] = "You have successfully added a new Qualification!!!";
+                    TempData["restaurantQualification"] = "You have successfully added " + restaurantQualification.Name + " new Qualification!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
                     return Json(new { success = true });
                 }
@@ -163,7 +163,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     }
                 }
 
-                TempData["restaurantQualification"] = "You have successfully modified a qualification!";
+                TempData["restaurantQualification"] = "You have successfully modified " + restaurantQualification.Name + " qualification!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -208,7 +208,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 _db.RestaurantQualifications.Remove(restaurantQualification);
                 await _db.SaveChangesAsync();
 
-                TempData["restaurantQualification"] = "You have successfully deleted a Qualification!";
+                TempData["restaurantQualification"] = "You have successfully deleted " + restaurantQualification.Name + " Qualification!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });

@@ -60,14 +60,14 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
                 if (allPackages.Any(p => p.Type == package.Type))
                 {
-                    TempData["package"] = "You cannot add this package because this type exist!";
+                    TempData["package"] = "You cannot add " + package.Name + " package because it's type already exist!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index");
                 }
 
                 _db.Packages.Add(package);
                 _db.SaveChanges();
-                TempData["package"] = "You have successfully added a new package!";
+                TempData["package"] = "You have successfully added " + package.Name + " as a new package!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -123,7 +123,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                         throw;
                     }
                 }
-                TempData["package"] = "You have successfully modified a package!";
+                TempData["package"] = "You have successfully modified " + package.Name + " package!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -166,7 +166,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 _db.Packages.Remove(package);
                 await _db.SaveChangesAsync();
 
-                TempData["package"] = "You have successfully deleted a Local Government Area!!!";
+                TempData["package"] = "You have successfully deleted " + package.Name + " pacakge!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }

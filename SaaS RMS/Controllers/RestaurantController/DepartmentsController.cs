@@ -81,7 +81,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     var allDepartments = await _db.Departments.ToListAsync();
                     if (allDepartments.Any(d => d.Name == department.Name && d.RestaurantId == restaurant))
                     {
-                        TempData["department"] = "You cannot add this department because it already exist!!!";
+                        TempData["department"] = "You cannot add " + department.Name + " department because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
@@ -89,7 +89,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     await _db.AddAsync(department);
                     await _db.SaveChangesAsync();
 
-                    TempData["department"] = "You have successfully added a new Department!!!";
+                    TempData["department"] = "You have successfully added " + department.Name + " as a new Department!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
                     return Json(new { success = true });
                 }
@@ -164,7 +164,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                     }
                 }
 
-                TempData["department"] = "You have successfully modified a role!";
+                TempData["department"] = "You have successfully modified " + department.Name + " department!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
                 return Json(new { success = true });
             }
@@ -209,7 +209,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 _db.Departments.Remove(department);
                 await _db.SaveChangesAsync();
 
-                TempData["department"] = "You have successfully deleted a department!";
+                TempData["department"] = "You have successfully deleted " + department.Name + " department!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });

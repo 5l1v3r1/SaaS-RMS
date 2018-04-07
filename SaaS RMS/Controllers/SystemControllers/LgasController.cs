@@ -97,7 +97,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 var allLgas = _db.Lgas.ToList();
                 if (allLgas.Any(l => l.Name == lga.Name))
                 {
-                    TempData["lga"] = "You cannot add this local government area because it already exist!!!";
+                    TempData["lga"] = "You cannot add "+ lga.Name +" local government area because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index");
                 }
@@ -105,7 +105,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 await _db.AddAsync(lga);
                 await _db.SaveChangesAsync();
 
-                TempData["lga"] = "You have successfully added a new Local Government Area!!!";
+                TempData["lga"] = "You have successfully added " + lga.Name + " as a new Local Government Area!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -165,7 +165,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     }
                 }
 
-                TempData["lga"] = "You have successfully modified a Local Government Area!!!";
+                TempData["lga"] = "You have successfully modified " + lga.Name + " Local Government Area!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -208,7 +208,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 _db.Lgas.Remove(lga);
                 await _db.SaveChangesAsync();
 
-                TempData["lga"] = "You have successfully deleted a Local Government Area!!!";
+                TempData["lga"] = "You have successfully deleted  " + lga.Name + "  Local Government Area!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
