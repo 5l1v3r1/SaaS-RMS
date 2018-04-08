@@ -7,29 +7,27 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Inventory
 {
-    public class Category
+    public class Product
     {
-        #region Data Model
+        #region Model Data
 
-        public int CategoryId { get; set; }
-        
+        public int ProductId { get; set; }
+
         [Required(ErrorMessage="Name field is required!!!")]
         public string Name { get; set; }
+
+        public double Quantity { get; set; }
 
         #endregion
 
         #region Foreign Keys
 
-        public int? RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual System.Restaurant Restaurant { get; set; }
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; set; }
 
         #endregion
 
-        #region Ienumerable
 
-        public IEnumerable<Product> Products { get; set; }
-
-        #endregion
     }
 }

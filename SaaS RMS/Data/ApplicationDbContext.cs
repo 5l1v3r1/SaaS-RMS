@@ -44,8 +44,8 @@ namespace SaaS_RMS.Data
 
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Category> Categories { get; set; }
-
-
+        public DbSet<Product> Products { get; set; }
+        
         #endregion
 
         #region EMPLOYEE DATA CONTEXT
