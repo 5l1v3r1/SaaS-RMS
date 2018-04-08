@@ -123,7 +123,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #endregion
 
         #region Restaurant Admin
-
         
         public IActionResult Admin(int? ID)
         {
