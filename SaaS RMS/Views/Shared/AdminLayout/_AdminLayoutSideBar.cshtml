@@ -3,54 +3,66 @@
         <h3>General</h3>
         <ul class="nav side-menu">
             <li>
-                <a><i class="fa fa-home"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-home"></i> SETTINGS <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a asp-controller="Roles" asp-action="Index">Role</a></li>
-                    <li><a href="index2.html">Dashboard2</a></li>
-                    <li><a href="index3.html">Dashboard3</a></li>
+                    <li><a asp-controller="EmployeeManagements" asp-action="Index">SettingS</a></li>
+                    <li><a asp-controller="RestaurantQualifications" asp-action="Index">Restaurant Employee Qualificationss</a></li>
+                    <li><a asp-controller="EmployeeManagements" asp-action="Index">Employees</a></li>
                 </ul>
             </li>
             <li>
-                <a asp-controller="Packages" asp-action="Index">@*<i class="fa fa-edit"></i>*@ Packages </a>
-
+                <a><i class="fa fa-archive"></i> INVENTORY <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
+                    <li><a asp-controller="Vendors" asp-action="Index">Vendors</a></li>
+                    <li><a asp-controller="StockDetails" asp-action="Index">Stock Details</a></li>
+                    <li><a asp-controller="PurchaseEntry" asp-action="Index">Purchases</a></li>
+                    <li><a asp-controller="Outstanding" asp-action="Index">Outstandings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a><i class="fa fa-pencil"></i> KITCHEN <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a asp-controller="Meals" asp-action="Index">Meals</a></li>
+                </ul>
             </li>
             <li>
                 <a asp-controller="Banks" asp-action="Index">@*<i class="fa fa-desktop"></i>*@ Bank @*<span class="fa fa-chevron-down"></span>*@</a>
                 @*<ul class="nav child_menu">
-                        <li><a href="general_elements.html">General Elements</a></li>
-                        <li><a href="media_gallery.html">Media Gallery</a></li>
-                        <li><a href="typography.html">Typography</a></li>
-                        <li><a href="icons.html">Icons</a></li>
-                        <li><a href="glyphicons.html">Glyphicons</a></li>
-                        <li><a href="widgets.html">Widgets</a></li>
-                        <li><a href="invoice.html">Invoice</a></li>
-                        <li><a href="inbox.html">Inbox</a></li>
-                        <li><a href="calendar.html">Calendar</a></li>
-                    </ul>*@
+                <li><a href="general_elements.html">General Elements</a></li>
+                <li><a href="media_gallery.html">Media Gallery</a></li>
+                <li><a href="typography.html">Typography</a></li>
+                <li><a href="icons.html">Icons</a></li>
+                <li><a href="glyphicons.html">Glyphicons</a></li>
+                <li><a href="widgets.html">Widgets</a></li>
+                <li><a href="invoice.html">Invoice</a></li>
+                <li><a href="inbox.html">Inbox</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+            </ul>*@
             </li>
             <li>
                 <a asp-controller="States" asp-action="Index">@*<i class="fa fa-table"></i>*@ States @*<span class="fa fa-chevron-down"></span>*@</a>
                 @*<ul class="nav child_menu">
-                        <li><a href="tables.html">Tables</a></li>
-                        <li><a href="tables_dynamic.html">Table Dynamic</a></li>
-                    </ul>*@
+                <li><a href="tables.html">Tables</a></li>
+                <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+            </ul>*@
             </li>
             <li>
                 <a asp-controller="RestaurantQualifications" asp-action="Index"><i class="fa fa-bar-chart-o"></i> Educational Qualification @*<span class="fa fa-chevron-down">*@</span></a>
                 @*<ul class="nav child_menu">
-                        <li><a href="chartjs.html">Chart JS</a></li>
-                        <li><a href="chartjs2.html">Chart JS2</a></li>
-                        <li><a href="morisjs.html">Moris JS</a></li>
-                        <li><a href="echarts.html">ECharts</a></li>
-                        <li><a href="other_charts.html">Other Charts</a></li>
-                    </ul>*@
+                <li><a href="chartjs.html">Chart JS</a></li>
+                <li><a href="chartjs2.html">Chart JS2</a></li>
+                <li><a href="morisjs.html">Moris JS</a></li>
+                <li><a href="echarts.html">ECharts</a></li>
+                <li><a href="other_charts.html">Other Charts</a></li>
+            </ul>*@
             </li>
             <li>
                 <a><i class="fa fa-clone"></i>Layouts @*<span class="fa fa-chevron-down"></span>*@</a>
                 @*<ul class="nav child_menu">
-                        <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                        <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                    </ul>*@
+                <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                <li><a href="fixed_footer.html">Fixed Footer</a></li>
+            </ul>*@
             </li>
         </ul>
     </div>

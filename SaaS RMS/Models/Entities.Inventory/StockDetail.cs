@@ -12,9 +12,7 @@ namespace SaaS_RMS.Models.Entities.Inventory
         #region Data Model
 
         public int StockDetailId { get; set; }
-
-        public int CategoryId { get; set; }
-
+        
         [Required(ErrorMessage="Amount field is required!!!")]
         public double Amount { get; set; }
 

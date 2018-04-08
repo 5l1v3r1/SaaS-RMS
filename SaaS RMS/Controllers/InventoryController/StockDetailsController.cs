@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Inventory;
@@ -57,9 +58,45 @@ namespace SaaS_RMS.Controllers.InventoryController
         [HttpGet]
         public IActionResult Create()
         {
-            
+            ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+            ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name");
             var stockDetail = new StockDetail();
             return PartialView("Create", stockDetail);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(StockDetail stockDetail)
+        {
+            var restaurant = _session.GetInt32("restaurantsessionid");
+
+            if (ModelState.IsValid)
+            {
+                var allStockDetails = await _db.StockDetails.Where(s => s.RestaurantId == restaurant).ToListAsync();
+
+                if (allStockDetails.Any(s => s.Product.Name == stockDetail.Product.Name))
+                {
+                    TempData["stockdetail"] = "You cannot add " + stockDetail.Product.Name + " Stock Detail because it already exist!!!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return RedirectToAction("Index");
+                }
+                if (restaurant != null)
+                {
+                    stockDetail.RestaurantId = Convert.ToInt32(restaurant);
+                }
+                await _db.AddAsync(stockDetail);
+                await _db.SaveChangesAsync();
+
+                TempData["stockDetail"] = "You have successfully added the Stock Detail for " + stockDetail.Product.Name + " Product!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+
+            //ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name", stockDetail.CategoryId);
+            ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name", stockDetail.VendorId);
+            return RedirectToAction("Index");
         }
 
         #endregion
@@ -110,8 +147,9 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         public JsonResult GetProductsForCategory(int id)
         {
-            var products = _db.Products.Where(p => p.CategoryId == id);
-            return Json(products);
+            var restaurant = _session.GetInt32("restaurantsessionid");
+            var products = _db.Products.Where(p => p.CategoryId == id && p.Category.RestaurantId == restaurant);
+            return Json(products); 
         }
 
         #endregion
