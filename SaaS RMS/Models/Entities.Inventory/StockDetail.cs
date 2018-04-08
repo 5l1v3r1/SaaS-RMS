@@ -18,6 +18,9 @@ namespace SaaS_RMS.Models.Entities.Inventory
         [Required(ErrorMessage="Amount field is required!!!")]
         public double Amount { get; set; }
 
+        [Required(ErrorMessage ="Measurement field is required!!!")]
+        public string Meaurement { get; set; }
+
         #endregion
 
         #region Foreign Keys
