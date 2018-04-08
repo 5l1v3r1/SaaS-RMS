@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.Category>
+@using SaaS_RMS.Models.Enums;
+
+    @{
+        ViewData["Title"] = "Index";
+        Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+        var x = 1;
+    }
+
+
+
+    <div style="padding-top:55px;">
+        @if (TempData["category"] != null)
+        {
+            if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
+            {
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    @TempData["category"]
+                </div>
+            }
+            else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    @TempData["category"]
+                </div>
+            }
+            else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
+            {
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    @TempData["category"]
+                </div>
+            }
+
+        }
+        <div class="page-title">
+            <div class="title_left">
+                <h3>CATEGORIES</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <a asp-area="" asp-action="Create" data-modal="" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
+                        <table class="table" id="myTable">
+                            <tr>
+                                <th>
+                                    S/N
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @(x++)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.CategoryId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                        <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.CategoryId"><i class="fa fa-trash-o "></i> Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="~/Modal/Modal.js"></script>
+
+    <!-- modal placeholder-->
+    <div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'>
+                </div>
+            </div>
+        </div>
+    </div>
