@@ -58,7 +58,7 @@ namespace SaaS_RMS.Controllers.InventoryController
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+            ViewBag.Category = new SelectList(_db.Categories, "CategoryId", "Name");
             ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name");
             var stockDetail = new StockDetail();
             return PartialView("Create", stockDetail);
@@ -94,7 +94,7 @@ namespace SaaS_RMS.Controllers.InventoryController
                 return Json(new { success = true });
             }
 
-            //ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name", stockDetail.CategoryId);
+            //ViewBag.Category = new SelectList(_db.Categories, "CategoryId", "Name", stockDetail.CategoryId);
             ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name", stockDetail.VendorId);
             return RedirectToAction("Index");
         }

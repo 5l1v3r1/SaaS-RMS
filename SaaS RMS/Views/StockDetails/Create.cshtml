@@ -21,7 +21,7 @@
                     <label>Category</label>
                 </div>
                 <div class="col-md-10">
-                    <select class="form-control" asp-items="ViewBag.CategoryId" id="category"></select>
+                    <select class="form-control" asp-items="ViewBag.Category" id="category"></select>
                 </div>
             </div>
             <br />
@@ -30,7 +30,7 @@
                     <label>Product</label>
                 </div>
                 <div class="col-md-10">
-                    <select asp-for="ProductId" class="form-control" id ="product"></select>
+                    <select asp-for="ProductId" id ="product" class="form-control"></select>
                     <span asp-validation-for="ProductId" class="text-danger"></span>
                 </div>
             </div>

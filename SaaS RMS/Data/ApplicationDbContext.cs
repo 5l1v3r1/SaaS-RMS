@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Models;
+using SaaS_RMS.Models.Enities.Landing;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Entities.Restuarant;
@@ -67,6 +68,12 @@ namespace SaaS_RMS.Data
         #region ROLE DATA CONTEXT
 
         public new DbSet<Role> Roles { get; set; }
+
+        #endregion
+
+        #region LANDING PAGE MODELS
+
+        public DbSet<LandingInfo> LandingInfo { get; set; }
 
         #endregion
 
