@@ -9,9 +9,9 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.InventoryController
+namespace SaaS_RMS.Controllers.InventoryControllers
 {
-    public class CategoriesController : Controller
+    public class VendorsController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #region Constructor
 
-        public CategoriesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public VendorsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -33,13 +33,12 @@ namespace SaaS_RMS.Controllers.InventoryController
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            if (restaurant != null)
-            {
-                var category = await _db.Categories.Where(c => c.RestaurantId == restaurant)
-                    .Include(c => c.Restaurant)
-                    .ToListAsync();
+            var vendor = _db.Vendors.Where(v => v.RestaurantId == restaurant)
+                .Include(v => v.Restuarant);
 
-                return View(category);
+            if(vendor != null)
+            {
+                return View(await vendor.ToListAsync());
             }
             else
             {
@@ -51,77 +50,78 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #region Create
 
-        //GET: Categories/Create
+        //GET: Vendors/Create
         [HttpGet]
         public IActionResult Create()
         {
-            var category = new Category();
-            return PartialView("Create", category);
+            var vendor = new Vendor();
+            return PartialView("Create", vendor);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(Vendor vendor)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             if (ModelState.IsValid)
             {
-                if (restaurant!= null)
+                if (restaurant != null)
                 {
-                    category.RestaurantId = restaurant;
+                    vendor.RestaurantId = restaurant;
 
-                    var allCategories = _db.Categories.Where(c => c.RestaurantId == restaurant);
+                    var allVendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
 
-                    if(allCategories.Any(c => c.Name == category.Name))
+                    if (allVendors.Any(v => v.Name == vendor.Name))
                     {
-                        TempData["category"] = "You cannot add " + category.Name + " Category because it already exist!!!";
+                        TempData["vendor"] = "You cannot add " + vendor.Name + " Vendor because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
 
-                    await _db.AddAsync(category);
+                    await _db.AddAsync(vendor);
                     await _db.SaveChangesAsync();
 
-                    TempData["category"] = "You have successfully added " + category.Name + " as a new Category!!!";
+                    TempData["vendor"] = "You have successfully added " + vendor.Name + " as a new Vendor!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
                 }
             }
-            return RedirectToAction("Access", "Restaurants");
+
+            return RedirectToAction("Index");
         }
 
         #endregion
 
         #region Edit
 
-        //GET: Categories/Edit/5
+        //GET: Vendors/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _db.Categories.SingleOrDefaultAsync(c => c.CategoryId == id);
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(v => v.VendorId == id);
 
-            if (category == null)
+            if (vendor == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Edit", category);
+            return PartialView("Edit", vendor);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, Category category)
+        public async Task<IActionResult> Edit(int? id, Vendor vendor)
         {
-            if (id != category.CategoryId)
+            if (id != vendor.VendorId)
             {
                 return NotFound();
             }
@@ -132,17 +132,17 @@ namespace SaaS_RMS.Controllers.InventoryController
                 {
                     var restaurant = _session.GetInt32("restaurantsessionid");
 
-                    if(restaurant != null)
+                    if (restaurant != null)
                     {
-                        category.RestaurantId = restaurant;
+                        vendor.RestaurantId = restaurant;
 
-                        _db.Update(category);
+                        _db.Update(vendor);
                         await _db.SaveChangesAsync();
                     }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.CategoryId))
+                    if (!VendorExists(vendor.VendorId))
                     {
                         return NotFound();
                     }
@@ -152,11 +152,12 @@ namespace SaaS_RMS.Controllers.InventoryController
                     }
                 }
 
-                TempData["category"] = "You have successfully modified " + category.Name + " Category!!!";
+                TempData["vendor"] = "You have successfully modified " + vendor.Name + " Vendor!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
             }
+
             return RedirectToAction("Index");
         }
 
@@ -164,7 +165,7 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #region Delete
 
-        //GET: Categories/Delete/5
+        //GET: Vendors/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -173,14 +174,14 @@ namespace SaaS_RMS.Controllers.InventoryController
                 return NotFound();
             }
 
-            var category = await _db.Categories.SingleOrDefaultAsync(b => b.CategoryId == id);
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
 
-            if (category == null)
+            if (vendor == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", category);
+            return PartialView("Delete", vendor);
         }
 
         //POST:
@@ -188,13 +189,13 @@ namespace SaaS_RMS.Controllers.InventoryController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _db.Categories.SingleOrDefaultAsync(b => b.CategoryId == id);
-            if (category != null)
+            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
+            if (vendor != null)
             {
-                _db.Categories.Remove(category);
+                _db.Vendors.Remove(vendor);
                 await _db.SaveChangesAsync();
 
-                TempData["category"] = "You have successfully deleted " + category.Name + " Category!!!";
+                TempData["vendor"] = "You have successfully deleted " + vendor.Name + " Vendor!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -204,11 +205,11 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #endregion
 
-        #region Category Exists
+        #region Vendor Exists
 
-        private bool CategoryExists(int id)
+        private bool VendorExists(int id)
         {
-            return _db.Categories.Any(b => b.CategoryId == id);
+            return _db.Vendors.Any(b => b.VendorId == id);
         }
 
         #endregion

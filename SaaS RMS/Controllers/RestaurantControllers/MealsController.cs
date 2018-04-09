@@ -11,9 +11,9 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.RestaurantController
+namespace SaaS_RMS.Controllers.RestaurantControllers
 {
-    public class DishesController : Controller
+    public class MealsController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -22,7 +22,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Constructor
 
-        public DishesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment environment)
+        public MealsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment environment)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -33,21 +33,23 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Index
 
-        [Route("dishes/index/{MealId}")]
-        public async Task<IActionResult> Index(int? MealId)
+        public async Task<IActionResult> Index()
         {
-            try
+            var restaurant = _session.GetInt32("RId");
+            
+            if (restaurant == null)
             {
-                var dish = _db.Dishes.Where(d => d.MealId == MealId);
-                if (dish != null)
-                {
-                    _session.SetInt32("mealsessionid", Convert.ToInt32(MealId));
-                    return View(await dish.ToListAsync());
-                }
+                return RedirectToAction("Access", "Restaurants");
             }
-            catch (Exception e)
+
+            var meal = await _db.Meals.Where(m => m.RestaurantId == restaurant)
+                .Include(m => m.Restaurant)
+                .ToListAsync();
+
+
+            if ( meal != null)
             {
-                return Json(e);
+                return View(meal);
             }
 
             return View();
@@ -57,7 +59,7 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         #region Create
 
-        //GET: Dishes/Create
+        //GET: Meals/Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -67,10 +69,8 @@ namespace SaaS_RMS.Controllers.RestaurantController
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file, Dish dish, UploadType uploadType)
+        public async Task<IActionResult> Create(Meal meal, IFormFile file, UploadType uploadType)
         {
-            var mealsessionid = _session.GetInt32("mealsessionid");
-
             if (file == null || file.Length == 0)
             {
                 ViewData["null_image"] = "Please select an image";
@@ -90,38 +90,42 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 if (ModelState.IsValid)
                 {
-                    var allDishes = await _db.Dishes.ToListAsync();
+                    var restaurant = _session.GetInt32("RId");
+                    var allMeals = await _db.Meals.ToListAsync();
 
-                    if (allDishes.Any(d => d.Name == dish.Name && d.MealId == mealsessionid))
+                    if (allMeals.Any(m => m.Name == meal.Name))
                     {
-                        TempData["dish"] = "You cannot add " + dish.Name + " dish because it already exist!!!";
+                        TempData["meal"] = "You cannot add " + meal.Name + " meal because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
-                        return RedirectToAction("Index", new { MealId = mealsessionid });
+                        return RedirectToAction("Index", meal);
                     }
 
-                    if (mealsessionid != null)
+                    if (restaurant == null)
                     {
-                        dish.MealId = Convert.ToInt32(mealsessionid);
+                        return RedirectToAction("Access", "Restaurant");
+                    }
+                    else
+                    {
+                        meal.RestaurantId = Convert.ToInt32(restaurant);
                     }
 
-                    dish.Image = filename;
-                    _db.Dishes.Add(dish);
+
+                    meal.Image = filename;
+                    _db.Meals.Add(meal);
                     await _db.SaveChangesAsync();
 
-                    TempData["dish"] = "You have successfully added " + dish.Name + " as a new Dish!!!";
+                    TempData["meal"] = "You have successfully added " + meal.Name  + " as a new Meal!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
-
-                    return RedirectToAction("Index", new { MealId = mealsessionid });
                 }
             }
-            return RedirectToAction("Index", new { MealId = mealsessionid });
+            return RedirectToAction("Index");
         }
 
         #endregion
 
         #region Edit
 
-        //GET: Dishes/Edit/4
+        //GET: Meals/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -130,26 +134,23 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
-
-            ViewData["DishName"] = dish.Name;
-
-            if (dish == null)
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+            ViewData["MealName"] = meal.Name;
+            
+            if (meal == null)
             {
                 return NotFound();
             }
 
-            return View(dish);
+            return View( meal);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(IFormFile file, int? id, UploadType uploadType, Dish dish)
+        public async Task<IActionResult> Edit(Meal meal, IFormFile file, UploadType uploadType, int? id)
         {
-            var mealsessionid = _session.GetInt32("mealsessionid");
-
-            if (id != dish.DishId)
+            if (id != meal.MealId)
             {
                 return NotFound();
             }
@@ -173,29 +174,35 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
                 if (ModelState.IsValid)
                 {
-                    var allDishes = await _db.Dishes.ToListAsync();
+                    var restaurant = _session.GetInt32("RId");
 
-                    if (allDishes.Any(d => d.Name == dish.Name && d.MealId == mealsessionid))
+                    var allMeals = await _db.Meals.ToListAsync();
+
+                    if (allMeals.Any(m => m.Name == meal.Name))
                     {
-                        TempData["dish"] = "You cannot modify " + dish.Name + " dish because it already exist!!!";
+                        TempData["meal"] = "You cannot modify " + meal.Name + " meal because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
-                        return RedirectToAction("Index", new { MealId = mealsessionid });
+                        return RedirectToAction("Index", meal);
                     }
 
-                    if (mealsessionid != null)
+                    if (restaurant == null)
                     {
-                        dish.MealId = Convert.ToInt32(mealsessionid);
+                        return RedirectToAction("Access", "Restaurant");
+                    }
+                    else
+                    {
+                        meal.RestaurantId = Convert.ToInt32(restaurant);
                     }
 
                     try
                     {
-                        dish.Image = filename;
-                        _db.Update(dish);
+                        meal.Image = filename;
+                        _db.Update(meal);
                         await _db.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!DishExists(dish.DishId))
+                        if (!MealExists(meal.MealId))
                         {
                             return NotFound();
                         }
@@ -205,19 +212,21 @@ namespace SaaS_RMS.Controllers.RestaurantController
                         }
                     }
 
-                    TempData["dish"] = "You have successfully modified " + dish.Name + " dish!!!";
+                    TempData["meal"] = "You have successfully modified " + meal.Name + " meal!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
-                    return RedirectToAction("Index", new { MealId = mealsessionid });
+                    return RedirectToAction("Index");
+
                 }
             }
-            return RedirectToAction("Index", new { MealId = mealsessionid });
+            return RedirectToAction("Index");
+            
         }
 
         #endregion
 
         #region Delete
 
-        // GET: Dishes/Delete/5
+        // GET: Meals/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -226,35 +235,33 @@ namespace SaaS_RMS.Controllers.RestaurantController
                 return NotFound();
             }
 
-            var dish = await _db.Dishes
-                .Include(l => l.Meal)
-                .SingleOrDefaultAsync(m => m.DishId == id);
-            if (dish == null)
+            var meal = await _db.Meals
+                .Include(l => l.Restaurant)
+                .SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal == null)
             {
                 return NotFound();
             }
-            return PartialView("Delete", dish);
+            return PartialView("Delete", meal);
         }
 
-        // POST: Dishes/Delete/5
+        // POST: Meals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealsessionid = _session.GetInt32("mealsessionid");
-            var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
-            ViewData["dishname"] = dish.Name;
-            if (dish != null)
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+            if (meal != null)
             {
-                _db.Dishes.Remove(dish);
+                _db.Meals.Remove(meal);
                 await _db.SaveChangesAsync();
 
-                TempData["dish"] = "You have successfully deleted " + dish.Name + " dish!!!";
+                TempData["meal"] = "You have successfully deleted " + meal.Name + " Meal!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
             }
-            return RedirectToAction("Index", new { MealId = mealsessionid });
+            return RedirectToAction("Index");
         }
 
         #endregion
@@ -263,20 +270,19 @@ namespace SaaS_RMS.Controllers.RestaurantController
 
         public IActionResult Picture()
         {
-            var dish = new Dish();
-            return PartialView("Picture", dish);
+            var meal = new Meal();
+            return PartialView("Picture", meal);
         }
 
         #endregion
 
-        #region DishExists
+        #region MealExits
 
-        private bool DishExists(int id)
+        private bool MealExists(int id)
         {
-            return _db.Dishes.Any(e => e.DishId == id);
+            return _db.Meals.Any(e => e.MealId == id);
         }
 
         #endregion
-
     }
 }

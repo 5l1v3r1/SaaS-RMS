@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Entities.Inventory;
+using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.InventoryController
+namespace SaaS_RMS.Controllers.EmployeeControllers
 {
-    public class VendorsController : Controller
+    public class BanksController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #region Constructor
 
-        public VendorsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public BanksController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -27,18 +27,24 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #endregion
 
-        #region Index
+        #region Bank Index
 
-        public async Task<IActionResult> Index()
+        public async Task <IActionResult> Index()
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            var vendor = _db.Vendors.Where(v => v.RestaurantId == restaurant)
-                .Include(v => v.Restuarant);
-
-            if(vendor != null)
+            if (restaurant == null)
             {
-                return View(await vendor.ToListAsync());
+                return RedirectToAction("Access", "Restaurants");
+            }
+
+            var bank = _db.Banks.Where(b => b.RestaurantId == restaurant)
+                .Include(b => b.Restuarant)
+                .ToListAsync();
+
+            if (bank != null)
+            {
+                return View(await bank);
             }
             else
             {
@@ -48,20 +54,20 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #endregion
 
-        #region Create
+        #region Bank Create
 
-        //GET: Vendors/Create
+        //GET: Banks/Create
         [HttpGet]
         public IActionResult Create()
         {
-            var vendor = new Vendor();
-            return PartialView("Create", vendor);
+            var bank = new Bank();
+            return PartialView("Create", bank);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Vendor vendor)
+        public async Task<IActionResult> Create(Bank bank)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
@@ -69,35 +75,38 @@ namespace SaaS_RMS.Controllers.InventoryController
             {
                 if (restaurant != null)
                 {
-                    vendor.RestaurantId = restaurant;
+                    bank.RestaurantId = restaurant;
 
-                    var allVendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
-
-                    if (allVendors.Any(v => v.Name == vendor.Name))
+                    var allBanks = await _db.Banks.ToListAsync();
+                    if (allBanks.Any(b => b.RestaurantId == restaurant && b.Name == bank.Name))
                     {
-                        TempData["vendor"] = "You cannot add " + vendor.Name + " Vendor because it already exist!!!";
+                        TempData["bank"] = "You cannot add "+ bank.Name +" Bank because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
 
-                    await _db.AddAsync(vendor);
+                    await _db.AddAsync(bank);
                     await _db.SaveChangesAsync();
 
-                    TempData["vendor"] = "You have successfully added " + vendor.Name + " as a new Vendor!!!";
+                    TempData["bank"] = "You have successfully added " + bank.Name + " as a new Bank!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
                 }
+                else
+                {
+                    TempData["bank"] = "Session Expired, Login Again";
+                    TempData["notificationtype"] = NotificationType.Info.ToString();
+                    return RedirectToAction("Restaurant", "Access");
+                }
             }
-
-            return RedirectToAction("Index");
+            return View("Index");
         }
-
         #endregion
 
-        #region Edit
+        #region Bank Edit
 
-        //GET: Vendors/Edit/5
+        //GET: Banks/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -106,22 +115,21 @@ namespace SaaS_RMS.Controllers.InventoryController
                 return NotFound();
             }
 
-            var vendor = await _db.Vendors.SingleOrDefaultAsync(v => v.VendorId == id);
+            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
 
-            if (vendor == null)
+            if (bank == null)
             {
                 return NotFound();
             }
-
-            return PartialView("Edit", vendor);
+            return PartialView("Edit", bank);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, Vendor vendor)
+        public async Task<IActionResult> Edit(int id, Bank bank)
         {
-            if (id != vendor.VendorId)
+            if (id != bank.BankId)
             {
                 return NotFound();
             }
@@ -134,15 +142,14 @@ namespace SaaS_RMS.Controllers.InventoryController
 
                     if (restaurant != null)
                     {
-                        vendor.RestaurantId = restaurant;
-
-                        _db.Update(vendor);
-                        await _db.SaveChangesAsync();
+                        bank.RestaurantId = restaurant;
                     }
+                    _db.Update(bank);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VendorExists(vendor.VendorId))
+                    if (!BankExists(bank.BankId))
                     {
                         return NotFound();
                     }
@@ -152,20 +159,19 @@ namespace SaaS_RMS.Controllers.InventoryController
                     }
                 }
 
-                TempData["vendor"] = "You have successfully modified " + vendor.Name + " Vendor!!!";
+                TempData["bank"] = "You have successfully modified " + bank.Name + " Bank!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
             }
-
             return RedirectToAction("Index");
         }
 
         #endregion
 
-        #region Delete
+        #region Bank Delete
 
-        //GET: Vendors/Delete/5
+        //GET: Banks/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -174,14 +180,14 @@ namespace SaaS_RMS.Controllers.InventoryController
                 return NotFound();
             }
 
-            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
+            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
 
-            if (vendor == null)
+            if (bank == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", vendor);
+            return PartialView("Delete", bank);
         }
 
         //POST:
@@ -189,13 +195,13 @@ namespace SaaS_RMS.Controllers.InventoryController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vendor = await _db.Vendors.SingleOrDefaultAsync(b => b.VendorId == id);
-            if (vendor != null)
+            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            if(bank != null)
             {
-                _db.Vendors.Remove(vendor);
+                _db.Banks.Remove(bank);
                 await _db.SaveChangesAsync();
 
-                TempData["vendor"] = "You have successfully deleted " + vendor.Name + " Vendor!!!";
+                TempData["bank"] = "You have successfully deleted " + bank.Name + " Bank!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -205,11 +211,11 @@ namespace SaaS_RMS.Controllers.InventoryController
 
         #endregion
 
-        #region Vendor Exists
+        #region Bank Exists
 
-        private bool VendorExists(int id)
+        private bool BankExists(int id)
         {
-            return _db.Vendors.Any(b => b.VendorId == id);
+            return _db.Banks.Any(b => b.BankId == id);
         }
 
         #endregion

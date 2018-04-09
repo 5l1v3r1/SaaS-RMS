@@ -10,7 +10,7 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.InventoryController
+namespace SaaS_RMS.Controllers.InventoryControllers
 {
     public class StockDetailsController : Controller
     {

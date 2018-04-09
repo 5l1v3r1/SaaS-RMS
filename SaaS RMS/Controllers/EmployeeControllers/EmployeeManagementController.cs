@@ -13,7 +13,7 @@ using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Enums;
 using SaaS_RMS.Services;
 
-namespace SaaS_RMS.Controllers.EmployeeController
+namespace SaaS_RMS.Controllers.EmployeeControllers
 {
     public class EmployeeManagementController : Controller
     {

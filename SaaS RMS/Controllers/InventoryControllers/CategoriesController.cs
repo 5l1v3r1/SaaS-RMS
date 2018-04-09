@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Entities.Employee;
+using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.EmployeeController
+namespace SaaS_RMS.Controllers.InventoryControllers
 {
-    public class BanksController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #region Constructor
 
-        public BanksController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CategoriesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -27,24 +27,19 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Index
+        #region Index
 
-        public async Task <IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            if (restaurant == null)
+            if (restaurant != null)
             {
-                return RedirectToAction("Access", "Restaurants");
-            }
+                var category = await _db.Categories.Where(c => c.RestaurantId == restaurant)
+                    .Include(c => c.Restaurant)
+                    .ToListAsync();
 
-            var bank = _db.Banks.Where(b => b.RestaurantId == restaurant)
-                .Include(b => b.Restuarant)
-                .ToListAsync();
-
-            if (bank != null)
-            {
-                return View(await bank);
+                return View(category);
             }
             else
             {
@@ -54,82 +49,79 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Create
+        #region Create
 
-        //GET: Banks/Create
+        //GET: Categories/Create
         [HttpGet]
         public IActionResult Create()
         {
-            var bank = new Bank();
-            return PartialView("Create", bank);
+            var category = new Category();
+            return PartialView("Create", category);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Bank bank)
+        public async Task<IActionResult> Create(Category category)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             if (ModelState.IsValid)
             {
-                if (restaurant != null)
+                if (restaurant!= null)
                 {
-                    bank.RestaurantId = restaurant;
+                    category.RestaurantId = restaurant;
 
-                    var allBanks = await _db.Banks.ToListAsync();
-                    if (allBanks.Any(b => b.RestaurantId == restaurant && b.Name == bank.Name))
+                    var allCategories = _db.Categories.Where(c => c.RestaurantId == restaurant);
+
+                    if(allCategories.Any(c => c.Name == category.Name))
                     {
-                        TempData["bank"] = "You cannot add "+ bank.Name +" Bank because it already exist!!!";
+                        TempData["category"] = "You cannot add " + category.Name + " Category because it already exist!!!";
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
 
-                    await _db.AddAsync(bank);
+                    await _db.AddAsync(category);
                     await _db.SaveChangesAsync();
 
-                    TempData["bank"] = "You have successfully added " + bank.Name + " as a new Bank!!!";
+                    TempData["category"] = "You have successfully added " + category.Name + " as a new Category!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
                 }
-                else
-                {
-                    TempData["bank"] = "Session Expired, Login Again";
-                    TempData["notificationtype"] = NotificationType.Info.ToString();
-                    return RedirectToAction("Restaurant", "Access");
-                }
             }
-            return View("Index");
+            return RedirectToAction("Access", "Restaurants");
         }
+
         #endregion
 
-        #region Bank Edit
+        #region Edit
 
-        //GET: Banks/Edit/5
+        //GET: Categories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            var category = await _db.Categories.SingleOrDefaultAsync(c => c.CategoryId == id);
 
-            if (bank == null)
+            if (category == null)
             {
                 return NotFound();
             }
-            return PartialView("Edit", bank);
+
+            return PartialView("Edit", category);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Bank bank)
+        public async Task<IActionResult> Edit(int? id, Category category)
         {
-            if (id != bank.BankId)
+            if (id != category.CategoryId)
             {
                 return NotFound();
             }
@@ -140,16 +132,17 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 {
                     var restaurant = _session.GetInt32("restaurantsessionid");
 
-                    if (restaurant != null)
+                    if(restaurant != null)
                     {
-                        bank.RestaurantId = restaurant;
+                        category.RestaurantId = restaurant;
+
+                        _db.Update(category);
+                        await _db.SaveChangesAsync();
                     }
-                    _db.Update(bank);
-                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BankExists(bank.BankId))
+                    if (!CategoryExists(category.CategoryId))
                     {
                         return NotFound();
                     }
@@ -159,7 +152,7 @@ namespace SaaS_RMS.Controllers.EmployeeController
                     }
                 }
 
-                TempData["bank"] = "You have successfully modified " + bank.Name + " Bank!!!";
+                TempData["category"] = "You have successfully modified " + category.Name + " Category!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -169,9 +162,9 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Delete
+        #region Delete
 
-        //GET: Banks/Delete/5
+        //GET: Categories/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -180,14 +173,14 @@ namespace SaaS_RMS.Controllers.EmployeeController
                 return NotFound();
             }
 
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
+            var category = await _db.Categories.SingleOrDefaultAsync(b => b.CategoryId == id);
 
-            if (bank == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", bank);
+            return PartialView("Delete", category);
         }
 
         //POST:
@@ -195,13 +188,13 @@ namespace SaaS_RMS.Controllers.EmployeeController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bank = await _db.Banks.SingleOrDefaultAsync(b => b.BankId == id);
-            if(bank != null)
+            var category = await _db.Categories.SingleOrDefaultAsync(b => b.CategoryId == id);
+            if (category != null)
             {
-                _db.Banks.Remove(bank);
+                _db.Categories.Remove(category);
                 await _db.SaveChangesAsync();
 
-                TempData["bank"] = "You have successfully deleted " + bank.Name + " Bank!!!";
+                TempData["category"] = "You have successfully deleted " + category.Name + " Category!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -211,11 +204,11 @@ namespace SaaS_RMS.Controllers.EmployeeController
 
         #endregion
 
-        #region Bank Exists
+        #region Category Exists
 
-        private bool BankExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _db.Banks.Any(b => b.BankId == id);
+            return _db.Categories.Any(b => b.CategoryId == id);
         }
 
         #endregion
