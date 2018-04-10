@@ -133,6 +133,8 @@ namespace SaaS_RMS.Controllers.LandingControllers
             if (file == null || file.Length == 0)
             {
                 ViewData["null_image"] = "Please select an image";
+
+                return View(landingInfo);
             }
 
             else
@@ -220,6 +222,27 @@ namespace SaaS_RMS.Controllers.LandingControllers
                 return Json(new { success = true });
             }
             return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Picture
+
+        public async Task<IActionResult> Picture(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var landingInfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.LandingInfoId == id);
+
+            if (landingInfo == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Picture", landingInfo);
         }
 
         #endregion

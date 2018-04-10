@@ -62,6 +62,10 @@
                     <br />
                     <div class="row pull-right">
                         <div class="col-md-12">
+                            @if (ViewData["null_image"] != null && Convert.ToString(ViewData["null_image"]) != " ")
+                             {
+                                <h5 style="padding-left:1em;" class="text-danger">@ViewData["null_image"]</h5>
+                             }
                             <input type="hidden" value="blank" asp-for="Image" />
                             <input type="submit" value="Create" class="btn btn-primary" />
                             <a class="btn btn-danger" asp-action="Index">Cancel</a>
