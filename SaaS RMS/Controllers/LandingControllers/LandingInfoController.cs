@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enities.Landing;
@@ -13,12 +17,14 @@ namespace SaaS_RMS.Controllers.LandingControllers
     public class LandingInfoController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHostingEnvironment _environment;
 
         #region Constructor
 
-        public LandingInfoController(ApplicationDbContext context)
+        public LandingInfoController(ApplicationDbContext context, IHostingEnvironment environment)
         {
             _db = context;
+            _environment = environment;
         }
 
         #endregion
@@ -39,36 +45,54 @@ namespace SaaS_RMS.Controllers.LandingControllers
         [HttpGet]
         public IActionResult Create()
         {
-            var landingInfo = new LandingInfo();
-            return PartialView("Create", landingInfo);
+            ViewBag.Approval = new SelectList(Enum.GetValues(typeof(ApprovalEnum)));
+            return View();
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LandingInfo landingInfo)
+        public async Task<IActionResult> Create(LandingInfo landingInfo, IFormFile file, UploadType uploadType)
         {
-            if (ModelState.IsValid)
+            if (file == null || file.Length == 0)
             {
-                var approval = await _db.LandingInfo.ToListAsync();
-
-                if(approval.Any(l => l.Approval == ApprovalEnum.Apply))
+                ViewData["null_image"] = "Please select an image";
+            }
+            else
+            {
+                var fileinfo = new FileInfo(file.FileName);
+                var filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
+                if (file.Length > 0)
                 {
-                    TempData["landinginfo"] = "The Landing information wasn't added because a Landing Information is already applied!!!";
+                    using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var allLandingInfo = await _db.LandingInfo.ToListAsync();
+
+                    if (allLandingInfo.Any(l => l.Approval == ApprovalEnum.Apply && landingInfo.Approval == ApprovalEnum.Apply))
+                    {
+                        TempData["landinginfo"] = "The Landing information wasn't added because another Landing Information is already applied!!! " +
+                            "Try chaning the Approval field to Neglect";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
+                        return RedirectToAction("Index");
+                    }
+
+                    landingInfo.Image = filename;
+                    await _db.AddAsync(landingInfo);
+                    await _db.SaveChangesAsync();
+
+                    TempData["landinginfo"] = "You have successfully added a new Landing Information!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return RedirectToAction("Index");
                 }
-
-                await _db.AddAsync(landingInfo);
-                await _db.SaveChangesAsync();
-
-                TempData["landinginfo"] = "You have successfully added a new Landing Information!!!";
-                TempData["notificationType"] = NotificationType.Success.ToString();
-                
-                return Json(new { success = true });
             }
-
             return RedirectToAction("Index");
         }
 
@@ -92,58 +116,60 @@ namespace SaaS_RMS.Controllers.LandingControllers
                 return NotFound();
             }
 
-            return PartialView("Edit", landingInfo);
+            ViewBag.Approval = new SelectList(Enum.GetValues(typeof(ApprovalEnum)));
+            return View(landingInfo);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, LandingInfo landingInfo)
+        public async Task<IActionResult> Edit(int? id, LandingInfo landingInfo, IFormFile file, UploadType uploadType)
         {
-            if(landingInfo.LandingInfoId != id)
+            if(id != landingInfo.LandingInfoId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (file == null || file.Length == 0)
             {
-                try
+                ViewData["null_image"] = "Please select an image";
+            }
+
+            else
+            {
+                var fileinfo = new FileInfo(file.FileName);
+                var filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
+                if (file.Length > 0)
                 {
-                    var approval = await _db.LandingInfo.ToListAsync();
-
-                    if (approval.Any(l => l.Approval == ApprovalEnum.Apply))
+                    using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
                     {
-                        TempData["landinginfo"] = "The Landing information wasn't added because a Landing Information is already applied!!!";
-                        TempData["notificationType"] = NotificationType.Success.ToString();
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
 
+                if (ModelState.IsValid)
+                {
+                    var allLandingInfo = await _db.LandingInfo.ToListAsync();
+
+                    if (allLandingInfo.Any(l => l.Approval == ApprovalEnum.Apply && landingInfo.Approval == ApprovalEnum.Apply
+                                            || landingInfo.Approval == ApprovalEnum.Neglect && allLandingInfo.ToArray().Length > 1))
+                    {
+                        TempData["landinginfo"] = "The Landing information wasn't modified because another Landing Information is already applied!!! " +
+                            "Try chaning the Approval field to Neglect";
+                        TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
-                    else
-                    {
-                        _db.Update(landingInfo);
-                        await _db.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LandingInfoExists(landingInfo.LandingInfoId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                    
+                    landingInfo.Image = filename;
+                    _db.Update(landingInfo);
+                    await _db.SaveChangesAsync();
 
-                TempData["landinginfo"] = "You have successfully modified a Landing Information!!!";
-                TempData["notificationType"] = NotificationType.Success.ToString();
-
-                return Json(new { success = true });
+                    return RedirectToAction("Index");
+                }
             }
             return RedirectToAction("Index");
         }
-
         #endregion
 
         #region Delete
@@ -173,9 +199,19 @@ namespace SaaS_RMS.Controllers.LandingControllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var landingInfo = await _db.LandingInfo.SingleOrDefaultAsync(b => b.LandingInfoId == id);
+
+            if (landingInfo.Approval == ApprovalEnum.Apply)
+            {
+                TempData["landingInfo"] = "You cannot delete this Landing Information because it is currently been applied. " +
+                    "Apply another Landing Information before you delete!!!";
+                TempData["notificationType"] = NotificationType.Info.ToString();
+
+                return Json(new { success = true });
+            }
+
             if (landingInfo != null)
             {
-                _db.LandingInfo.Remove(landingInfo);
+                _db.LandingInfo.Remove(landingInfo);    
                 await _db.SaveChangesAsync();
 
                 TempData["landingInfo"] = "You have successfully deleted a Landing Information!!!";

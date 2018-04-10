@@ -1,4 +1,4 @@
-﻿@model SaaS_RMS.Models.Entities.Restuarant.Dish
+﻿@model SaaS_RMS.Models.Enities.Landing.LandingInfo
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,7 +7,7 @@
 
 <div class="page-title">
     <div class="title_left">
-        <h3><strong> EDIT A DISH </strong></h3>
+        <h3><strong> EDIT LANDING INFORMATION </strong></h3>
     </div>
 </div>
 
@@ -17,36 +17,36 @@
         <div class="x_panel">
             <div class="x_content">
                 <form asp-action="Edit" enctype="multipart/form-data">
-                    <input type="hidden" asp-for="DishId" />
+                    <input type="hidden" asp-for="LandingInfoId" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="control-label col-md-2">
-                                <label asp-for="Name"></label>
+                                <label asp-for="Approval"></label>
                             </div>
                             <div class="col-md-10">
-                                <input asp-for="Name" class="form-control " />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <select asp-for="Approval" asp-items="ViewBag.Approval" class="form-control "></select>
+                                <span asp-validation-for="Approval" class="text-danger"></span>
                             </div>
                         </div>
                         <br />
                         <div class="row">
                             <div class="control-label col-md-2">
-                                <label asp-for="Amount"></label>
+                                <label asp-for="AboutUs"></label>
                             </div>
                             <div class="col-md-10">
-                                <input asp-for="Amount" class="form-control " />
-                                <span asp-validation-for="Amount" class="text-danger"></span>
+                                <textarea asp-for="AboutUs" class="form-control "></textarea>
+                                <span asp-validation-for="AboutUs" class="text-danger"></span>
                             </div>
                         </div>
                         <br />
                         <div class="row">
                             <div class="control-label col-md-2">
-                                <label asp-for="Description"></label>
+                                <label asp-for="Offers"></label>
                             </div>
                             <div class="col-md-10">
-                                <textarea asp-for="Description" class="form-control "></textarea>
-                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <textarea asp-for="Offers" class="form-control "></textarea>
+                                <span asp-validation-for="Offers" class="text-danger"></span>
                             </div>
                         </div>
                         <br />
@@ -73,7 +73,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
