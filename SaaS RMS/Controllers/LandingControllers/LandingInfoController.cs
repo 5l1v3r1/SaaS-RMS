@@ -50,12 +50,22 @@ namespace SaaS_RMS.Controllers.LandingControllers
         {
             if (ModelState.IsValid)
             {
+                var approval = await _db.LandingInfo.ToListAsync();
+
+                if(approval.Any(l => l.Approval == ApprovalEnum.Apply))
+                {
+                    TempData["landinginfo"] = "The Landing information wasn't added because a Landing Information is already applied!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
+
+                    return RedirectToAction("Index");
+                }
+
                 await _db.AddAsync(landingInfo);
                 await _db.SaveChangesAsync();
 
                 TempData["landinginfo"] = "You have successfully added a new Landing Information!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
-
+                
                 return Json(new { success = true });
             }
 
@@ -64,6 +74,128 @@ namespace SaaS_RMS.Controllers.LandingControllers
 
         #endregion
 
+        #region Edit
+
+        //GET: LandingInfo/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var landingInfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.LandingInfoId == id);
+
+            if (landingInfo == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Edit", landingInfo);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, LandingInfo landingInfo)
+        {
+            if(landingInfo.LandingInfoId != id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var approval = await _db.LandingInfo.ToListAsync();
+
+                    if (approval.Any(l => l.Approval == ApprovalEnum.Apply))
+                    {
+                        TempData["landinginfo"] = "The Landing information wasn't added because a Landing Information is already applied!!!";
+                        TempData["notificationType"] = NotificationType.Success.ToString();
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _db.Update(landingInfo);
+                        await _db.SaveChangesAsync();
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LandingInfoExists(landingInfo.LandingInfoId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                TempData["landinginfo"] = "You have successfully modified a Landing Information!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Delete
+
+        //GET: LandingInfo/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var landingInfo = await _db.LandingInfo.SingleOrDefaultAsync(b => b.LandingInfoId == id);
+
+            if (landingInfo == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("Delete", landingInfo);
+        }
+
+        //POST:
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var landingInfo = await _db.LandingInfo.SingleOrDefaultAsync(b => b.LandingInfoId == id);
+            if (landingInfo != null)
+            {
+                _db.LandingInfo.Remove(landingInfo);
+                await _db.SaveChangesAsync();
+
+                TempData["landingInfo"] = "You have successfully deleted a Landing Information!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region LandingInfo Exists
+
+        private bool LandingInfoExists(int id)
+        {
+            return _db.LandingInfo.Any(b => b.LandingInfoId == id);
+        }
+
+        #endregion
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,5 +19,8 @@ namespace SaaS_RMS.Models.Enities.Landing
 
         [Required(ErrorMessage = "Offers field required")]
         public string Offers { get; set; }
+        
+        public ApprovalEnum Approval { get; set; }
+
     }
 }
