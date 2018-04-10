@@ -261,9 +261,20 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
 
         #region Picture
 
-        public IActionResult Picture()
+        public async Task<IActionResult> Picture(int? id)
         {
-            var dish = new Dish();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var dish = await _db.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+
+            if (dish == null)
+            {
+                return NotFound();
+            }
+
             return PartialView("Picture", dish);
         }
 

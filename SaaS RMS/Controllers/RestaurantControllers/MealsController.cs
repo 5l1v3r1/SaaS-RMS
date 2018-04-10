@@ -35,7 +35,7 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
 
         public async Task<IActionResult> Index()
         {
-            var restaurant = _session.GetInt32("RId");
+            var restaurant = _session.GetInt32("restaurantsessionid");
             
             if (restaurant == null)
             {
@@ -268,9 +268,20 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
 
         #region Picture
 
-        public IActionResult Picture()
+        public async Task<IActionResult> Picture(int? id)
         {
-            var meal = new Meal();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meal = await _db.Meals.SingleOrDefaultAsync(m => m.MealId == id);
+
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
             return PartialView("Picture", meal);
         }
 
