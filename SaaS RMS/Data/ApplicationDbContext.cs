@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Models;
-using SaaS_RMS.Models.Enities.Landing;
+using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Entities.Restuarant;

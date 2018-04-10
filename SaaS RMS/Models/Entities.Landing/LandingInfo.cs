@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SaaS_RMS.Models.Enities.Landing
+namespace SaaS_RMS.Models.Entities.Landing
 {
     public class LandingInfo
     {

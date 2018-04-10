@@ -1,11 +1,13 @@
-﻿@{
+﻿@model SaaS_RMS.Models.Entities.Landing.LandingInfo
+
+@{
     Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
 }
 
 
 <!-- Slider -->
 
-<div class="main_slider" style="background-image: url('/Landing/images/food1.jpg'); ">
+<div class="main_slider" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)'); ">
     <div class="container fill_height">
         <div class="row align-items-center fill_height">
             <div class="col">
@@ -71,7 +73,7 @@
         <div class="row">
             <div class="col text-center">
                 <h4>
-                    Cmp441 restaurant is an elegant restaurant. It started from a small class in Bingham Univerisity, which later grew to be one of the best restaurant in the world. Cmp441 records over 3000 customers daily
+                    @Html.DisplayFor(model => model.AboutUs)
                 </h4>
             </div>
         </div>
@@ -511,7 +513,7 @@
 
 
 
-<div class="" id="offers">
+<div class="" id="offers" >
     <div class="container">
         <div class="row">
             <div class="col text-center">
@@ -525,7 +527,7 @@
         <div class="row">
             <div class="col text-center">
                 <h4>
-                    Cmp441 restaurant is an elegant restaurant. It started from a small class in Bingham Univerisity, which later grew to be one of the best restaurant in the world. Cmp441 records over 3000 customers daily. We offer different food options, breakfast,lunch,dinner, snacks to walk in and off-site customers. We are always at your service anytime of the day. We provide security,assurance and efficiency. Cmp441 Restaurant is the place you want to go to.
+                    @Html.DisplayFor(model => model.Offers)
                 </h4>
             </div>
         </div>

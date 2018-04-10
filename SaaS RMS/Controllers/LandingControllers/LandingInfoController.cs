@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Enities.Landing;
+using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.LandingControllers
@@ -17,14 +17,17 @@ namespace SaaS_RMS.Controllers.LandingControllers
     public class LandingInfoController : Controller
     {
         private readonly ApplicationDbContext _db;
+        //private readonly IHttpContextAccessor _httpContextAccessor;
+        //private ISession _session => _httpContextAccessor.HttpContext.Session;
         private readonly IHostingEnvironment _environment;
 
         #region Constructor
 
-        public LandingInfoController(ApplicationDbContext context, IHostingEnvironment environment)
+        public LandingInfoController(ApplicationDbContext context, IHostingEnvironment environment /*IHttpContextAccessor httpContextAccessor*/)
         {
             _db = context;
             _environment = environment;
+            //_httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -82,7 +85,7 @@ namespace SaaS_RMS.Controllers.LandingControllers
                         TempData["notificationType"] = NotificationType.Error.ToString();
                         return RedirectToAction("Index");
                     }
-
+                    
                     landingInfo.Image = filename;
                     await _db.AddAsync(landingInfo);
                     await _db.SaveChangesAsync();
