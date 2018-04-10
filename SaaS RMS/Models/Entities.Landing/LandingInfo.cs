@@ -13,10 +13,7 @@ namespace SaaS_RMS.Models.Entities.Landing
 
         [Required(ErrorMessage="Image field required")]
         public string Image { get; set; }
-
-        [Required(ErrorMessage = "Image field required")]
-        public string SecondImage { get; set; }
-
+        
         [Required(ErrorMessage = "About Us field required")]
         public string AboutUs { get; set; }
 

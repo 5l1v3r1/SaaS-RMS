@@ -64,7 +64,7 @@ namespace SaaS_RMS.Controllers.LandingControllers
             else
             {
                 var fileinfo = new FileInfo(file.FileName);
-                var filename = DateTime.Now.ToFileTime() + fileinfo.Extension;
+                var filename = Path.GetFileName(file.FileName);
                 var uploads = Path.Combine(_environment.WebRootPath, "uploads" + uploadType);
                 if (file.Length > 0)
                 {
