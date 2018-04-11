@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Inventory;
@@ -63,6 +64,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         [HttpGet]
         public IActionResult Create()
         {
+            var restaurant = _session.GetInt32("restaurantsessionid");
+
+            var stockdetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant);
+
+            ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
             var purchase = new Purchase();
             return PartialView("Create", purchase);
         }
@@ -73,6 +79,8 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         public async Task<IActionResult> Create(Purchase purchase)
         {
             var purchaseentryid = _session.GetInt32("purchaseentrysessionid");
+            var restaurant = _session.GetInt32("restaurantsessionid");
+            var stockdetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant);
 
             if (ModelState.IsValid)
             {
@@ -89,7 +97,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                     return Json(new { success = true });
                 }
             }
-
+            ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
             return RedirectToAction("Index", new { PurchaseEntryId = purchaseentryid });
         }
 
