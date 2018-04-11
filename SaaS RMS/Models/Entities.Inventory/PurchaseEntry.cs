@@ -26,8 +26,8 @@ namespace SaaS_RMS.Models.Entities.Inventory
 
         [DisplayName("Restaurant")]
         public int RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual System.Restaurant Restuarant { get; set; }
+        //[ForeignKey("RestaurantId")]
+        //public virtual System.Restaurant Restuarant { get; set; }
 
         //[DisplayName("Employee")]
         //public int EmployeeId { get; set; }

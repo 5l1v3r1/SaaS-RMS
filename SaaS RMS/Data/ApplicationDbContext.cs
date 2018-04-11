@@ -37,8 +37,7 @@ namespace SaaS_RMS.Data
         public DbSet<RestaurantQualification> RestaurantQualifications { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-
-
+        
         #endregion
 
         #region RESTAURANT INVENTORY DATA CONTEXT
@@ -48,6 +47,7 @@ namespace SaaS_RMS.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<StockDetail> StockDetails { get; set; }
         public DbSet<PurchaseEntry> PurchaseEntries { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         #endregion
 
@@ -62,8 +62,7 @@ namespace SaaS_RMS.Data
         public DbSet<EmploymentPosition> EmploymentPositions { get; set; }
         public DbSet<EmployeePastWorkExperience> EmployeePastWorkExperiences { get; set; }
         public DbSet<EmployeeEducationalQualification> EmployeeEducationalQualifications { get; set; }
-
-
+        
         #endregion
 
         #region ROLE DATA CONTEXT

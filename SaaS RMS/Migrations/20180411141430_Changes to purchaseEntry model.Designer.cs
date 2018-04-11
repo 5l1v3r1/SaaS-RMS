@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180411141430_Changes to purchaseEntry model")]
+    partial class ChangestopurchaseEntrymodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -516,39 +517,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.Purchase", b =>
-                {
-                    b.Property<int>("PurchaseId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("Balance");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<DateTime>("DueDate");
-
-                    b.Property<int>("Mode");
-
-                    b.Property<double>("Payment");
-
-                    b.Property<int>("PurchaseEntryId");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<int>("StockDetailId");
-
-                    b.Property<double>("TotalPrice");
-
-                    b.HasKey("PurchaseId");
-
-                    b.HasIndex("PurchaseEntryId");
-
-                    b.HasIndex("StockDetailId");
-
-                    b.ToTable("Purchases");
-                });
-
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", b =>
                 {
                     b.Property<int>("PurchaseEntryId")
@@ -1021,19 +989,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.Inventory.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.Purchase", b =>
-                {
-                    b.HasOne("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", "PurchaseEntry")
-                        .WithMany()
-                        .HasForeignKey("PurchaseEntryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SaaS_RMS.Models.Entities.Inventory.StockDetail", "StockDetail")
-                        .WithMany()
-                        .HasForeignKey("StockDetailId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

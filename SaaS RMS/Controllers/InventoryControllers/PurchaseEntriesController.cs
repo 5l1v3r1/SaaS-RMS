@@ -40,7 +40,6 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             else
             {
                 var purchaseEntry = await _db.PurchaseEntries.Where(p => p.RestaurantId == restaurant)
-                    .Include(p => p.Restuarant)
                     .ToListAsync();
 
                 return View(purchaseEntry);
