@@ -28,6 +28,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         #endregion
 
         #region Index
+
         [Route("products/index/{CategoryId}")]
         public async Task<IActionResult> Index(int CategoryId)
         {
@@ -90,7 +91,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
                 TempData["product"] = "You have successfully added " + product.Name + " as a new Product!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
-
+                    
                 return Json(new { success = true });
             }
 

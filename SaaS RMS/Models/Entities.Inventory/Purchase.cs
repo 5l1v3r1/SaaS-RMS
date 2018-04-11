@@ -29,8 +29,10 @@ namespace SaaS_RMS.Models.Entities.Inventory
 
         public double Quantity { get; set; }
 
+        [Display(Name = "Due Date")]
         public DateTime DueDate { get; set; }
-
+        
+        [Display(Name ="Total Price")]
         public double TotalPrice { get; set; }
 
         #endregion
