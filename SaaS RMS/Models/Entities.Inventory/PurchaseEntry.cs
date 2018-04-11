@@ -35,8 +35,5 @@ namespace SaaS_RMS.Models.Entities.Inventory
         //public virtual Employee.Employee Employee { get; set; }
 
         #endregion
-
-
-
     }
 }
