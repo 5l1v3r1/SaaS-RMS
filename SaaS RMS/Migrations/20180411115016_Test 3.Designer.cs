@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180411115016_Test 3")]
+    partial class Test3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -516,25 +517,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", b =>
-                {
-                    b.Property<int>("PurchaseEntryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("RestaurantId");
-
-                    b.HasKey("PurchaseEntryId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("PurchaseEntries");
-                });
-
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.StockDetail", b =>
                 {
                     b.Property<int>("StockDetailId")
@@ -990,14 +972,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.Inventory.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", b =>
-                {
-                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restuarant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

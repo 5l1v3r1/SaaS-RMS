@@ -91,6 +91,12 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Amount)
                                 </td>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Product.Quantity)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Meaurement)
+                                </th>
                                 <td>
                                     <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.StockDetailId"><i class="fa fa-pencil-square-o "></i> Edit</a>
                                     <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.StockDetailId"><i class="fa fa-trash-o "></i> Delete</a>

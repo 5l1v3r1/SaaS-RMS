@@ -22,7 +22,7 @@ namespace SaaS_RMS.Models.Entities.Inventory
         #endregion
 
         #region Foreign Keys
-
+        
         public int VendorId { get; set; }
         [ForeignKey("VendorId")]
         public virtual Vendor Vendor { get; set; }

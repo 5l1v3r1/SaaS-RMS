@@ -44,10 +44,12 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             {
                 return View(stockDetails);
             }
-            else
+            if (restaurant == null)
             {
                 return RedirectToAction("Access", "Restaurants");
             }
+
+            return View();
         }
 
         #endregion
@@ -56,10 +58,16 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         //GET: StockDetails/Create
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Category = new SelectList(_db.Categories, "CategoryId", "Name");
-            ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name");
+            var restaurant = _session.GetInt32("restaurantsessionid");
+
+            var categories = await _db.Categories.Where(l => l.RestaurantId == restaurant).ToListAsync();
+            var vendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
+
+            ViewBag.Category = new SelectList(categories, "CategoryId", "Name");
+            ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name");
+
             var stockDetail = new StockDetail();
             return PartialView("Create", stockDetail);
         }
@@ -94,8 +102,10 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return Json(new { success = true });
             }
 
-            //ViewBag.Category = new SelectList(_db.Categories, "CategoryId", "Name", stockDetail.CategoryId);
-            ViewBag.VendorId = new SelectList(_db.Vendors, "VendorId", "Name", stockDetail.VendorId);
+            
+            var vendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
+            
+            ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name", stockDetail.VendorId);
             return RedirectToAction("Index");
         }
 

@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180411114706_test 2")]
+    partial class test2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -516,31 +517,14 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", b =>
-                {
-                    b.Property<int>("PurchaseEntryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("RestaurantId");
-
-                    b.HasKey("PurchaseEntryId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("PurchaseEntries");
-                });
-
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.StockDetail", b =>
                 {
                     b.Property<int>("StockDetailId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Amount");
+
+                    b.Property<int?>("CategoryId");
 
                     b.Property<string>("Meaurement")
                         .IsRequired();
@@ -552,6 +536,8 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<int>("VendorId");
 
                     b.HasKey("StockDetailId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ProductId");
 
@@ -993,16 +979,12 @@ namespace SaaS_RMS.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.PurchaseEntry", b =>
-                {
-                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restuarant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SaaS_RMS.Models.Entities.Inventory.StockDetail", b =>
                 {
+                    b.HasOne("SaaS_RMS.Models.Entities.Inventory.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("SaaS_RMS.Models.Entities.Inventory.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
