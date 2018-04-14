@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+
 }
 
 <!--MODAL HEADER-->
@@ -16,24 +17,13 @@
     <!--MODAL BODY-->
     <div class="modal-body">
         <div class="form-horizontal">
-
             <div class="row">
                 <div class="control-label col-md-2">
                     <label> Stock</label>
                 </div>
                 <div class="col-md-10">
-                    <select asp-for="StockDetailId" class="form-control" asp-items="ViewBag.StockDetail"></select>
+                    <select asp-for="StockDetailId" id="stockdetail" class="form-control" asp-items="ViewBag.StockDetail"></select>
                     <span asp-validation-for="StockDetail" class="text-danger"></span>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Quantity" class="control-label"></label>
-                </div>
-                <div class="col-md-10">
-                    <select asp-for="Quantity" class="form-control" asp-items="ViewBag.StockDetail"></select>
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
             </div>
             <br />
@@ -47,79 +37,80 @@
                 </div>
             </div>
             <br />
-
             <div class="row">
                 <div class="control-label col-md-2">
-                    <label> Stock</label>
+                    <label asp-for="Quantity" class="control-label"></label>
                 </div>
                 <div class="col-md-10">
-                    <select asp-for="StockDetailId" class="form-control" asp-items="ViewBag.StockDetail"></select>
-                    <span asp-validation-for="StockDetail" class="text-danger"></span>
+                    <input asp-for="Quantity" id="quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
                 <div class="control-label col-md-2">
-                    <label> Stock</label>
+                    <label asp-for="TotalPrice" class="control-label"></label>
                 </div>
                 <div class="col-md-10">
-                    <select asp-for="StockDetailId" class="form-control" asp-items="ViewBag.StockDetail"></select>
-                    <span asp-validation-for="StockDetail" class="text-danger"></span>
+                    <input asp-for="TotalPrice" id="totalprice" class="form-control" />
+                    <span asp-validation-for="TotalPrice" class="text-danger"></span>
                 </div>
             </div>
             <br />
-            <div class="form-group">
-                <label asp-for="Mode" class="control-label"></label>
-                <select asp-for="Mode" class="form-control"></select>
-                <span asp-validation-for="Mode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment" class="control-label"></label>
-                <input asp-for="Payment" class="form-control" />
-                <span asp-validation-for="Payment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Balance" class="control-label"></label>
-                <input asp-for="Balance" class="form-control" />
-                <span asp-validation-for="Balance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DueDate" class="control-label"></label>
-                <input asp-for="DueDate" class="form-control" />
-                <span asp-validation-for="DueDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseEntryId" class="control-label"></label>
-                <select asp-for="PurchaseEntryId" class="form-control" asp-items="ViewBag.PurchaseEntryId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockDetailId" class="control-label"></label>
-                <select asp-for="StockDetailId" class="form-control" asp-items="ViewBag.StockDetailId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="row">
+                <div class="control-label col-md-2">
+                    <label asp-for="DueDate" class="control-label"></label>
+                </div>
+                <div class="col-md-10">
+                    <input asp-for="DueDate" class="form-control" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
             </div>
         </div>
     </div>
-
+    <!--MODAL FOOTER-->
+    <div class="modal-footer">
+        <div class="row pull-right">
+            <div class="col-md-12">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script>
+        $(document).ready(function () {
+            if ($('#stockdetail').val() != '') {
+                getAmount();
+            }
+            $('#stockdetail').on('input', function () {
+                getAmount();
+            });
+
+            function getAmount() {
+                $('#totalprice').childern("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Purchases/GetAmountForStock',
+                    dataType: 'json',
+                    data: { id: $('#stockdetail').val() },
+                    success: function (amount) {
+                        console.log(amount);
+                        $('input').keyup(function () {
+                            var quantity = parseFloat($('#quantity').val());
+                            var amountforone = parseFloat($(amount).val());
+                            $('#totalprice').html(quantity * amountforone);
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+}

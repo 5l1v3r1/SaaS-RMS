@@ -70,7 +70,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
             ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
             var purchase = new Purchase();
-            return PartialView("Create", purchase);
+            return View();
         }
 
         //POST:
@@ -99,6 +99,30 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             }
             ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
             return RedirectToAction("Index", new { PurchaseEntryId = purchaseentryid });
+        }
+
+        #endregion
+
+        #region Fetech Data
+
+        public JsonResult GetAmountForStock(int id)
+        {
+            var stockDetail = _db.StockDetails.Where(s => s.StockDetailId == id);
+
+            try
+            {
+                if (stockDetail != null)
+                {
+                    var stock = new StockDetail();
+                    var amount = stock.Amount;
+                    return Json(amount);
+                }
+            }
+            catch(Exception e)
+            {
+                return Json(e);
+            }
+            return Json(stockDetail);
         }
 
         #endregion
