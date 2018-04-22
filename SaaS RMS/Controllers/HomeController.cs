@@ -39,6 +39,18 @@ namespace SaaS_RMS.Controllers
 
         #endregion
 
+        #region Restaurants
+
+        public async Task<IActionResult> Restaurants()
+        {
+            var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
+
+            return View(landinginfo);
+
+        }
+
+        #endregion
+
         #region Index
 
         public IActionResult Index()

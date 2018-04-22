@@ -1,107 +1,83 @@
-﻿@model IEnumerable<SaaS_RMS.Models.Entities.System.Restaurant>
+﻿
+@model SaaS_RMS.Models.Entities.Landing.LandingInfo
 
 @{
     ViewData["Title"] = "Restaurants";
+    Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
 }
 
-<h2>Restaurants</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Motto)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Logo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SubscriprionStartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SubscriptonEndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SubscriptionDuration)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ContactEmail)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ContactNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SetUpStatus)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AccessCode)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RegistrationNumber)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lga)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Motto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubscriprionStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubscriptonEndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubscriptionDuration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SetUpStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccessCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lga.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RestaurantId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RestaurantId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!--_______________________________________ Carousel__________________________________ -->
+<div class="allcontain">
+    <div id="carousel-up" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner " role="listbox">
+            <div class="item active">
+                <img src="image/oldcar.jpg" alt="oldcar">
+                <div class="carousel-caption">
+                    <h2>Porsche 356</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur ,<br>
+                        sed do eiusmod tempor incididunt ut labore
+                    </p>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-default midle-nav">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed textcostume" data-toggle="collapse" data-target="#navbarmidle" aria-expanded="false">
+                    <h1>SEARCH TEXT</h1>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarmidle">
+                <div class="searchtxt">
+                    <h1>SEARCH TEXT</h1>
+                </div>
+                <form class="navbar-form navbar-left searchformmargin" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control searchform" placeholder="Enter Keyword">
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbarborder">
+                    <li class="li-category">
+                        <a class="btn  dropdown-toggle btn-costume" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category<span class="glyphicon glyphicon-chevron-down downicon"></span></a>
+                        <ul class="dropdown-menu" id="mydd">
+                            <li><a href="#">Epic</a></li>
+                            <li><a href="#">Old</a></li>
+                            <li><a href="#">New</a></li>
+                        </ul>
+                    </li>
+                    <li class="li-minyear">
+                        <a class="btn  dropdown-toggle btn-costume" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Min Year <span class="glyphicon glyphicon-chevron-down downicon"></span></a>
+                        <ul class="dropdown-menu" id="mydd2">
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                        </ul>
+                    </li>
+                    <li class="li-maxyear">
+                        <a class="btn dropdown-toggle btn-costume" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Max Year <span class="glyphicon glyphicon-chevron-down downicon"></span></a>
+                        <ul class="dropdown-menu" id="mydd3">
+                            <li><a href="#">1900</a></li>
+                            <li><a href="#">2000</a></li>
+                            <li><a href="#">2016</a></li>
+                        </ul>
+                    </li>
+                    <li class="li-slideprice">
+                        <p>
+                            <label class="slidertxt" for="amount">Price </label>
+                            <input class="priceslider" type="text" id="amount" readonly="readonly">
+                        </p>
+                        <div id="slider-range"></div>
+
+                    </li>
+                    <li class="li-search"> <button class="searchbutton"><span class="glyphicon glyphicon-search "></span></button></li>
+                </ul>
+
+            </div>
+        </nav>
+    </div>
+</div>
