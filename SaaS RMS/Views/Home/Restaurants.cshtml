@@ -1,0 +1,107 @@
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.System.Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<h2>Restaurants</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Motto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Logo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriprionStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriptonEndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriptionDuration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactEmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SetUpStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccessCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationNumber)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lga)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Motto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubscriprionStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubscriptonEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubscriptionDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SetUpStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lga.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RestaurantId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RestaurantId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

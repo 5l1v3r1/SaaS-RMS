@@ -107,22 +107,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         public JsonResult GetAmountForStock(int id)
         {
-            var stockDetail = _db.StockDetails.Where(s => s.StockDetailId == id);
+            var restaurant = _session.GetInt32("restaurantsessionid");
+            var stockDetail = _db.StockDetails.Where(s => s.StockDetailId == id && s.RestaurantId == restaurant);
 
-            try
-            {
-                if (stockDetail != null)
-                {
-                    var stock = new StockDetail();
-                    var amount = stock.Amount;
-                    return Json(amount);
-                }
-            }
-            catch(Exception e)
-            {
-                return Json(e);
-            }
-            return Json(stockDetail);
+            var amount = stockDetail.Any(s => s.Amount > 0);
+            return Json(amount);
         }
 
         #endregion
