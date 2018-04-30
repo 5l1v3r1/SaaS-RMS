@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models;
+using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers
@@ -45,7 +47,10 @@ namespace SaaS_RMS.Controllers
         {
             var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
 
-            return View(landinginfo);
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Restaurants = GetRestaurants();
+
+            return View(mymodel);
 
         }
 
@@ -56,6 +61,17 @@ namespace SaaS_RMS.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        #endregion
+
+        #region Get Restaurants
+
+        private List<Restaurant> GetRestaurants()
+        {
+            List<Restaurant> restaurants = new List<Restaurant>();
+            restaurants.Add(new Restaurant);
+            return restaurants;
         }
 
         #endregion

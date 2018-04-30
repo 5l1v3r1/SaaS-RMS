@@ -71,7 +71,7 @@ namespace SaaS_RMS
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Restaurants}/{action=Access}/{id?}");
+                    template: "{controller=Home}/{action=Landing}/{id?}");
             });
         }
     }
