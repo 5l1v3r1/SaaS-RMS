@@ -46,11 +46,8 @@ namespace SaaS_RMS.Controllers
         public async Task<IActionResult> Restaurants()
         {
             var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
-
-            dynamic mymodel = new ExpandoObject();
-            mymodel.Restaurants = GetRestaurants();
-
-            return View(mymodel);
+           
+            return View(landinginfo);
 
         }
 
@@ -70,7 +67,7 @@ namespace SaaS_RMS.Controllers
         private List<Restaurant> GetRestaurants()
         {
             List<Restaurant> restaurants = new List<Restaurant>();
-            restaurants.Add(new Restaurant);
+            restaurants.Add(new Restaurant());
             return restaurants;
         }
 

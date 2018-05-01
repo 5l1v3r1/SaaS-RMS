@@ -1,91 +1,51 @@
 ﻿
-@model SaaS_RMS.Models.Entities.Landing.LandingInfo
+@model Tuple<SaaS_RMS.Models.Entities.System.Restaurant, SaaS_RMS.Models.Entities.Landing.LandingInfo>
 
 @{
     ViewData["Title"] = "Restaurants";
     Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
 }
 
+<style>
+    .centerr{
+        text-align: center;
+        color: orangered;
+    }
+    .select_height {
+        height: 150px;
+    }
+    .fill_restaurant_height {
+        height: 70%;
+    }
+</style>
+<!-- Slider -->
 
-<table>
-    <tr>
-        <th>
-            Id
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Address
-        </th>
-        <th>
-            D
-        </th>
-    </tr>
-    @foreach (Restaurants restaurant in Model.Restaurants)
-</table>
+<div class="main_slider" style="background-image: url('/uploadsLogo/@Html.DisplayFor(tuple => tuple.Item2.Image)'); ">
+    <div class="container fill_height">
+        <div class="row align-items-center fill_restaurant_height">
+           
+            <div class="container">
+                <h1 class="centerr">
+                    @Html.DisplayFor(tuple => tuple.Item1.AccessCode)
+                    Order delicious food online!
 
-
-
-
-    <!--_______________________________________ Carousel__________________________________ -->
-    @*<div class="allcontain">
-            <div id="carousel-up" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner " role="listbox">
-                    <div class="item active">
-                        <img src="~/images/oldcar.jpg" alt="oldcar">
-                        <div class="carousel-caption">
-                            <h2>Porsche 356</h2>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur ,<br>
-                                sed do eiusmod tempor incididunt ut labore
-                            </p>
-                        </div>
+                </h1>
+                <h3 class="centerr">
+                    Discover local restaurants that deliver to your doorstep
+                </h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-control" style="height:49px;" id="lga"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control" style="height:49px;" id="lga"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" value="FIND RESTAURANTS" class="btn btn-lg btn-block btn-primary" />
                     </div>
                 </div>
-                <nav class="navbar navbar-default midle-nav">
-
-                    <div class="collapse navbar-collapse" id="navbarmidle">
-                        <div class="searchtxt">
-                            <h1>SEARCH TEXT</h1>
-                        </div>
-                        <ul class="nav navbar-nav navbarborder">
-                            <li class="li-category">
-                                <a class="btn  dropdown-toggle btn-costume" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category<span class="glyphicon glyphicon-chevron-down downicon"></span></a>
-                                <ul class="dropdown-menu" id="mydd">
-                                    <li><a href="#">Epic</a></li>
-                                    <li><a href="#">Old</a></li>
-                                    <li><a href="#">New</a></li>
-                                </ul>
-                            </li>
-                            <li class="li-minyear">
-                                <a class="btn  dropdown-toggle btn-costume" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Min Year <span class="glyphicon glyphicon-chevron-down downicon"></span></a>
-                                <ul class="dropdown-menu" id="mydd2">
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                </ul>
-                            </li>
-                            <li class="li-maxyear">
-                                <a class="btn dropdown-toggle btn-costume" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Max Year <span class="glyphicon glyphicon-chevron-down downicon"></span></a>
-                                <ul class="dropdown-menu" id="mydd3">
-                                    <li><a href="#">1900</a></li>
-                                    <li><a href="#">2000</a></li>
-                                    <li><a href="#">2016</a></li>
-                                </ul>
-                            </li>
-                            <li class="li-slideprice">
-                                <p>
-                                    <label class="slidertxt" for="amount">Price </label>
-                                    <input class="priceslider" type="text" id="amount" readonly="readonly">
-                                </p>
-                                <div id="slider-range"></div>
-
-                            </li>
-                            <li class="li-search"> <button class="searchbutton"><span class="glyphicon glyphicon-search "></span></button></li>
-                        </ul>
-
-                    </div>
-                </nav>
             </div>
-        </div>*@
+        </div>
+    </div>
+</div>
+    
