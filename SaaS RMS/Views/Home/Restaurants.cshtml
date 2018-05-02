@@ -1,5 +1,5 @@
 ﻿
-@model Tuple<SaaS_RMS.Models.Entities.System.Restaurant, SaaS_RMS.Models.Entities.Landing.LandingInfo>
+@model SaaS_RMS.Models.Entities.Landing.LandingInfo
 
 @{
     ViewData["Title"] = "Restaurants";
@@ -7,40 +7,54 @@
 }
 
 <style>
-    .centerr{
+    .text_center {
         text-align: center;
         color: orangered;
     }
+
     .select_height {
         height: 150px;
     }
+
     .fill_restaurant_height {
         height: 70%;
     }
+
+    .Myjumbotron {
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+        background-color: #e9ecef;
+        opacity: 0.5;
+        border-radius: .3rem
+    }
+
+        .Myjumbotron:hover {
+            opacity: 1;
+        }
+
+    .pad {
+        padding-top: 8px;
+    }
 </style>
-<!-- Slider -->
 
-<div class="main_slider" style="background-image: url('/uploadsLogo/@Html.DisplayFor(tuple => tuple.Item2.Image)'); ">
+<div class="main_slider" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)'); ">
     <div class="container fill_height">
-        <div class="row align-items-center fill_restaurant_height">
-           
+        <div class="row align-items-center fill_height">
             <div class="container">
-                <h1 class="centerr">
-                    @Html.DisplayFor(tuple => tuple.Item1.AccessCode)
+                <h1 class="text_center">
                     Order delicious food online!
-
                 </h1>
-                <h3 class="centerr">
+                <h3 class="text_center">
                     Discover local restaurants that deliver to your doorstep
                 </h3>
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="Myjumbotron row">
+                    <div class="col-md-4 pad">
+                        <select class="form-control" style="height:49px;" asp-items="ViewBag.StateId" id="state"></select>
+                    </div>
+                    <div class="col-md-4 pad">
                         <select class="form-control" style="height:49px;" id="lga"></select>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-control" style="height:49px;" id="lga"></select>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 pad">
                         <input type="submit" value="FIND RESTAURANTS" class="btn btn-lg btn-block btn-primary" />
                     </div>
                 </div>
@@ -48,4 +62,39 @@
         </div>
     </div>
 </div>
-    
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#state').val() != '') {
+                getLGAs();
+            }
+
+            $('#state').on('input', function () {
+                getLGAs();
+            });
+
+            function getLGAs() {
+                $('#lga').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Restaurants/GetLgasForState',
+                    dataType: 'json',
+                    data: { id: $('#state').val() },
+                    success: function (lga) {
+                        console.log(lga);
+                        $.each(lga, function (i, lga) {
+                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+}
+

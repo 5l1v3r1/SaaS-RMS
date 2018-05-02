@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models;
@@ -64,14 +65,24 @@ namespace SaaS_RMS.Controllers
 
         #region Get Restaurants
 
-        private List<Restaurant> GetRestaurants()
+        //GET: /Home/Restaurants
+        [HttpGet]
+        public IActionResult GetRestaurant()
         {
-            List<Restaurant> restaurants = new List<Restaurant>();
-            restaurants.Add(new Restaurant());
-            return restaurants;
+            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
+            return View();
         }
 
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GetRestaurant(Restaurant restaurant)
+        {
+            return View();
+        }
         #endregion
+
+
 
         #region Error
 
@@ -82,7 +93,15 @@ namespace SaaS_RMS.Controllers
 
         #endregion
 
+        #region Fetch Data
 
+        public JsonResult GetLgasForState(int id)
+        {
+            var lgas = _db.Lgas.Where(l => l.StateId == id);
+            return Json(lgas);
+        }
+
+        #endregion
 
     }
 }
