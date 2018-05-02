@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
 }
 
 <!--MODAL HEADER-->
@@ -10,7 +10,6 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3> <strong> ADD PURCHASE</strong> </h3>
 </div>
-
 
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -22,7 +21,7 @@
                     <label> Stock</label>
                 </div>
                 <div class="col-md-10">
-                    @*<select asp-for="StockDetailId" id="stockdetail" class="form-control" asp-items="ViewBag.StockDetail"></select>*@
+                    <select asp-for="StockDetailId" id="stockdetail" class="form-control" asp-items="ViewBag.Product"></select>
                     <span asp-validation-for="StockDetail" class="text-danger"></span>
                 </div>
             </div>

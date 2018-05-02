@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models;
+using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
@@ -70,6 +71,7 @@ namespace SaaS_RMS.Controllers
         public IActionResult GetRestaurant()
         {
             ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
+            ViewBag.Me = "king";
             return View();
         }
 
@@ -78,9 +80,12 @@ namespace SaaS_RMS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult GetRestaurant(Restaurant restaurant)
         {
+
             return View();
         }
         #endregion
+
+
 
 
 
@@ -101,6 +106,12 @@ namespace SaaS_RMS.Controllers
             return Json(lgas);
         }
 
+        public JsonResult GetImageForLandingInfo()
+        {
+            var landinginfo = new LandingInfo();
+            var approvedLandingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply).ToList();
+            return Json(approvedLandingInfo);
+        }
         #endregion
 
     }

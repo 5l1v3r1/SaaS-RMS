@@ -66,11 +66,12 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            var stockdetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant);
+            var stockDetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant);
+            
 
-            ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
+            ViewBag.StockDetails = new SelectList(stockDetails, "StockDetailId", "Name");
             var purchase = new Purchase();
-            return View();
+            return PartialView("Create", stockDetails);
         }
 
         //POST:
