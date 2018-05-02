@@ -21,7 +21,7 @@
                     <label> Stock</label>
                 </div>
                 <div class="col-md-10">
-                    <select asp-for="StockDetailId" id="stockdetail" class="form-control" asp-items="ViewBag.Product"></select>
+                    <select asp-for="StockDetailId" id="stockdetail" class="form-control" asp-items="ViewBag.StockDetails"></select>
                     <span asp-validation-for="StockDetail" class="text-danger"></span>
                 </div>
             </div>
@@ -80,36 +80,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        $(document).ready(function () {
-            if ($('#stockdetail').val() != '') {
-                getAmount();
-            }
-            $('#stockdetail').on('input', function () {
-                getAmount();
-            });
-
-            function getAmount() {
-                $('#totalprice').childern("option").remove();
-                $.ajax({
-                    type: 'GET',
-                    url: '/Purchases/GetAmountForStock',
-                    dataType: 'json',
-                    data: { id: $('#stockdetail').val() },
-                    success: function (amount) {
-                        console.log(amount);
-                        $('input').keyup(function () {
-                            var quantity = parseFloat($('#quantity').val());
-                            var amountforone = parseFloat($(amount).val());
-                            $('#totalprice').html(quantity * amountforone);
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
-    </script>
 }
