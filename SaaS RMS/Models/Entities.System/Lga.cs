@@ -23,7 +23,7 @@ namespace SaaS_RMS.Models.Entities.System
         public int StateId { get; set; }
         [ForeignKey("StateId")]
         public virtual State State { get; set; }
-
+        
         #endregion
 
         #region Enumerables

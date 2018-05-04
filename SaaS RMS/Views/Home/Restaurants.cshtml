@@ -1,4 +1,4 @@
-﻿    @model SaaS_RMS.Models.Entities.Landing.LandingInfo
+﻿@model SaaS_RMS.Models.Entities.Landing.LandingInfo
 
 @{
     ViewData["Title"] = "Restaurants";
@@ -66,3 +66,63 @@
     </div>
 </form>
 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#state').val() != '') {
+                getLGAs();
+            }
+
+            $('#state').on('input', function () {
+                getLGAs();
+            });
+
+            if ($('#lga').val() != '') {
+                getRestaurants();
+            }
+
+            $('#lga').on('input', function () {
+                getRestaurants();
+             });
+
+            function getLGAs() {
+                $('#lga').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/GetLgasForState',
+                    dataType: 'json',
+                    data: { id: $('#state').val() },
+                    success: function (lga) {
+                        console.log(lga);
+                        $.each(lga, function (i, lga) {
+                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+                $('#restaurant').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/GetAllRestaurantsWithLGA',
+                    dataType: 'json',
+                    data: { id: $('#lga').val() },
+                    success: function (restaurant) {
+                        console.log(restaurant);
+                        $.each(restaurant, function (i, restaurant) {
+                            $(#'restaurant').append('<option value"' + restaurant.RestaurantId + '">' + restaurant.Name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+}

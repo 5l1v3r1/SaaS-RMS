@@ -10,6 +10,6 @@ namespace SaaS_RMS.Models
     public class LandingRestaurantViewModels
     {
         public LandingInfo LandingInfo { get; set; }
-        public List<Restaurant> Restaurants { get; set; }
+        public Restaurant Restaurant { get; set; }
     }
 }

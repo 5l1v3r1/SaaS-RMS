@@ -48,9 +48,7 @@ namespace SaaS_RMS.Controllers
         public async Task<IActionResult> Restaurants()
         {
             var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
-           
             return View(landinginfo);
-
         }
 
         #endregion
@@ -66,25 +64,13 @@ namespace SaaS_RMS.Controllers
 
         #region Get Restaurants
 
-        //GET: /Home/Restaurants
-        [HttpGet]
         public IActionResult GetRestaurant()
         {
             ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
-            ViewBag.Me = "king";
             return View();
         }
-
-        //POST:
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult GetRestaurant(Restaurant restaurant)
-        {
-
-            return View();
-        }
+        
         #endregion
-
 
 
 
@@ -106,12 +92,13 @@ namespace SaaS_RMS.Controllers
             return Json(lgas);
         }
 
-        public JsonResult GetImageForLandingInfo()
+        public JsonResult GetAllRestaurantsWithLGA(int lga)
         {
-            var landinginfo = new LandingInfo();
-            var approvedLandingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply).ToList();
-            return Json(approvedLandingInfo);
+            var allRestaurantWithLGA = _db.Restaurants.Where(r => r.Lga.ToString() == lga.ToString());
+            return Json(allRestaurantWithLGA);
         }
+        
+        
         #endregion
 
     }
