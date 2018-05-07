@@ -94,9 +94,9 @@ namespace SaaS_RMS.Controllers
             return Json(lgas);
         }
 
-        public JsonResult GetAllRestaurantsWithLGA(int lga)
+        public JsonResult GetAllRestaurantsWithLGA(int id)
         {
-            var allRestaurantWithLGA = _db.Restaurants.Where(r => r.Lga.ToString() == lga.ToString());
+            var allRestaurantWithLGA = _db.Restaurants.Where(r => r.LgaId == id);
             return Json(allRestaurantWithLGA);
         }
         
