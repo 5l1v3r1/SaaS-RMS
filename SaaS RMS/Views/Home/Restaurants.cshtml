@@ -56,16 +56,32 @@
                             <select class="form-control" style="height:49px;" id="lga"></select>
                         </div>
                         <div class="col-md-4 pad">
-                            <input onclick="getRestaurants()" value="FIND RESTAURANTS" class="btn btn-lg btn-block btn-primary" />
-                        </div>
-                        <div class="col-md-4 pad">
-                            <select class="form-control" style="height:49px;" id="restaurant"></select>
+                            <button id="findR" class="btn btn-lg btn-block btn-primary">FIND RESTAURANTS</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="new_arrivals">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2>New Arrivals</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }' id="restaurants_list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -82,6 +98,16 @@
                 getLGAs();
             });
 
+            /*$('#lga').on('input', function () {
+                GetAllRestaurantsWithLGA($('#lga').val());
+            });*/
+
+            $('#findR').on('click', function () {
+                if ($('#lga').val() != '') {
+                    GetAllRestaurantsWithLGA($('#lga').val());
+                }
+            })
+
             function getLGAs() {
                 $('#lga').children("option").remove();
                 $.ajax({
@@ -92,8 +118,13 @@
                     success: function (lga) {
                         console.log(lga);
                         $.each(lga, function (i, lga) {
-                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                            var val = '<option value="' + lga.lgaId + '">' + lga.name + '</option><button> Find Restaurant </button> '
+                            $('#lga').append(val);
                         });
+
+                        /*if ($('#lga').val() != '') {
+                            GetAllRestaurantsWithLGA($('#lga').val());
+                        }*/
                     },
                     error: function (error) {
                         console.log(error);
@@ -101,13 +132,14 @@
                 });
             }
 
-            var GetAllRestaurantsWithLGA = function (id) {
+            function GetAllRestaurantsWithLGA (id) {
                 $.ajax({
                     type: 'GET',
                     url: '/Home/GetAllRestaurantsWithLGA',
                     data: { id: id },
                     async: true,
                     success: function (data) {
+                        $('#restaurants_list').children("div").remove();
                         console.log(data);
                         for (var i = 0; i < data.length; i++) {
                             var restaurant = '<div class="product-item men"><div class="product discount product_filter"><div class="product_image">' +
