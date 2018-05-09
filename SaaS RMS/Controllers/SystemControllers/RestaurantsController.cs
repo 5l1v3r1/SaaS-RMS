@@ -17,19 +17,22 @@ namespace SaaS_RMS.Controllers.SystemControllers
     public class RestaurantsController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public RestaurantsController(ApplicationDbContext context)
+        public RestaurantsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
 
         #region Fetch Data
 
-        public JsonResult GetLgasForState(int id)
+            public JsonResult GetLgasForState(int id)
         {
             var lgas = _db.Lgas.Where(l => l.StateId == id);
             return Json(lgas);
@@ -127,8 +130,106 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public IActionResult Admin(int? ID)
         {
             int _ID = Convert.ToInt32(ID);
-            HttpContext.Session.SetInt32("restaurantsessionid", _ID);
+            _session.SetInt32("restaurantsessionid", _ID);
             return View();
+        }
+
+        #endregion
+
+        #region Restaurant Setting
+
+        //GET: Restaurants/Settings
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var id = _session.GetInt32("restaurantsessionid"); 
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var settings = await _db.Restaurants.SingleOrDefaultAsync(s => s.RestaurantId == id);
+
+            if  (settings == null)
+            {
+                return NotFound();
+            }
+
+            return View(settings);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(Restaurant restaurant)
+        {
+            var id = _session.GetInt32("restaurantsessionid");
+
+            if (id != restaurant.RestaurantId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.Update(restaurant);
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RestaurantExists(restaurant.RestaurantId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                TempData["restaurant"] = "You have successfully modified " + restaurant.Name + " Restaurant!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Restaurant Profile
+
+        
+        // GET: Restaurants/Profile/5
+        public async Task<IActionResult> Profile()
+        {
+            var id = _session.GetInt32("restaurantsessionid");
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var restaurant = await _db.Restaurants
+                .Include(r => r.Lga)
+                .SingleOrDefaultAsync(m => m.RestaurantId == id);
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            return View(restaurant);
+        }
+        #endregion
+
+        #region Restaurant Exists
+
+        private bool RestaurantExists(int id)
+        {
+            return _db.Restaurants.Any(e => e.RestaurantId == id);
         }
 
         #endregion

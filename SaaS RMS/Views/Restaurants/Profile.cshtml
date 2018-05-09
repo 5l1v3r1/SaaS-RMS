@@ -1,0 +1,124 @@
+﻿@model SaaS_RMS.Models.Entities.System.Restaurant
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>RESTAURANT PROFILE</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                    <div class="profile_img">
+                        <div id="crop-avatar">
+                            <!-- Current avatar -->
+                            <img class="img-responsive avatar-view" src="~/images/picture.jpg" alt="Avatar" title="Change the avatar">
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-12">
+                    <dl class="dl-horizontal pull-left">
+                        <dt>
+                            <h4><strong>@Html.DisplayNameFor(model => model.Name)</strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.Name) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong>@Html.DisplayNameFor(model => model.Motto)</strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.Motto) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4> <strong> Contact Email </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.ContactEmail) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong> Contact Number </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.ContactNumber) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4> <strong> State </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.Lga.State.Name)</h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong>LGA</strong></h4>
+                        </dt>
+                        <dd>
+                            <h4>@Html.DisplayFor(model => model.Lga.Name)</h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong> Location </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.Location) </h4>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <dl class="dl-horizontal pull-left">
+                        <dt>
+                            <h4><strong>Subsciption Starts </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.SubscriprionStartDate) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong>Subsciption Ends </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.SubscriptonEndDate) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4> <strong> Duration </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.SubscriptionDuration) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4> <strong> Access Code </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.AccessCode) </h4>
+                        </dd>
+
+                        <dt>
+                            <h4><strong> Registration Number </strong></h4>
+                        </dt>
+                        <dd>
+                            <h4> @Html.DisplayFor(model => model.RegistrationNumber) </h4>
+                        </dd>
+
+                        <a asp-controller="Restaurants" asp-action="EditProfile" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Edit Profile</a>
+                        <a asp-controller="Restaurants" asp-action="Admin" class="btn btn-primary"><i class="fa fa- m-right-xs"></i> Cancel</a>
+                    </dl> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

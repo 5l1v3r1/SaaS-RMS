@@ -74,6 +74,11 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+        <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }' id="restaurants_list">
 
@@ -98,10 +103,6 @@
                 getLGAs();
             });
 
-            /*$('#lga').on('input', function () {
-                GetAllRestaurantsWithLGA($('#lga').val());
-            });*/
-
             $('#findR').on('click', function () {
                 if ($('#lga').val() != '') {
                     GetAllRestaurantsWithLGA($('#lga').val());
@@ -121,10 +122,6 @@
                             var val = '<option value="' + lga.lgaId + '">' + lga.name + '</option><button> Find Restaurant </button> '
                             $('#lga').append(val);
                         });
-
-                        /*if ($('#lga').val() != '') {
-                            GetAllRestaurantsWithLGA($('#lga').val());
-                        }*/
                     },
                     error: function (error) {
                         console.log(error);
@@ -152,34 +149,6 @@
                     }
                 });
             }
-
-
-            //if ($('#lga').val() != '') {
-            //    getRestaurants();
-            //}
-
-            //$('#lga').on('input', function () {
-            //    getRestaurants();
-            //});
-
-            //function getRestaurants() {
-            //    $('#restaurant').children("option").remove();
-            //    $.ajax({
-            //        type: 'GET',
-            //        url: '/Home/GetAllRestaurantsWithLGA',
-            //        dataType: 'json',
-            //        data: { id: $('#lga').val() },
-            //        success: function (restaurant) {
-            //            console.log(restaurant);
-            //            $.each(lga, function (i, restaurant) {
-            //                $('#lga').append('<option value="' + restaurant.restaurantId + '">' + restaurant.name + '</option>');
-            //            });
-            //        },
-            //        error: function (error) {
-            //            console.log(error);
-            //        }
-            //    });
-            //}
         });
     </script>
 }
