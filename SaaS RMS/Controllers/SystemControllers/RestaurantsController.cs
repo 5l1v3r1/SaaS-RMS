@@ -136,33 +136,60 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
-        #region Restaurant Setting
+        
+
+        #region Restaurant Profile
+        
+        // GET: Restaurants/Profile/5
+        public async Task<IActionResult> Profile()
+        {
+            var id = _session.GetInt32("restaurantsessionid");
+
+            if (id == null)
+            {
+                return RedirectToAction("Restaurants", "Access");
+            }
+
+            var restaurant = await _db.Restaurants
+                .Include(r => r.Lga)
+                .SingleOrDefaultAsync(m => m.RestaurantId == id);
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            return View(restaurant);
+        }
+
+        #endregion
+
+        #region Restaurant Edit Profile
 
         //GET: Restaurants/Settings
         [HttpGet]
-        public async Task<IActionResult> Settings()
+        public async Task<IActionResult> EditProfile()
         {
-            var id = _session.GetInt32("restaurantsessionid"); 
+            var id = _session.GetInt32("restaurantsessionid");
 
             if (id == null)
             {
                 return NotFound();
             }
 
-            var settings = await _db.Restaurants.SingleOrDefaultAsync(s => s.RestaurantId == id);
+            var restaurant = await _db.Restaurants.SingleOrDefaultAsync(s => s.RestaurantId == id);
 
-            if  (settings == null)
+            if (restaurant == null)
             {
                 return NotFound();
             }
 
-            return View(settings);
+            return View(restaurant);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Settings(Restaurant restaurant)
+        public async Task<IActionResult> EditProfile(Restaurant restaurant)
         {
             var id = _session.GetInt32("restaurantsessionid");
 
@@ -195,34 +222,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Profile");
         }
 
-        #endregion
-
-        #region Restaurant Profile
-
-        
-        // GET: Restaurants/Profile/5
-        public async Task<IActionResult> Profile()
-        {
-            var id = _session.GetInt32("restaurantsessionid");
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var restaurant = await _db.Restaurants
-                .Include(r => r.Lga)
-                .SingleOrDefaultAsync(m => m.RestaurantId == id);
-            if (restaurant == null)
-            {
-                return NotFound();
-            }
-
-            return View(restaurant);
-        }
         #endregion
 
         #region Restaurant Exists
