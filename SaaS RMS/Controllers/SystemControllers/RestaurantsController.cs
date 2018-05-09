@@ -131,23 +131,22 @@ namespace SaaS_RMS.Controllers.SystemControllers
         {
             int _ID = Convert.ToInt32(ID);
             _session.SetInt32("restaurantsessionid", _ID);
+            ViewData["restaurantid"] = _session.GetInt32("restaurantsessionid");
             return View();
         }
 
         #endregion
-
         
-
         #region Restaurant Profile
         
         // GET: Restaurants/Profile/5
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(int? id)
         {
-            var id = _session.GetInt32("restaurantsessionid");
+            ViewData["restaurantid"] = _session.GetInt32("restaurantsessionid");
 
             if (id == null)
             {
-                return RedirectToAction("Restaurants", "Access");
+                return RedirectToAction("Access", "Restaurants");
             }
 
             var restaurant = await _db.Restaurants
@@ -167,10 +166,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         //GET: Restaurants/Settings
         [HttpGet]
-        public async Task<IActionResult> EditProfile()
+        public async Task<IActionResult> EditProfile(int? id)
         {
-            var id = _session.GetInt32("restaurantsessionid");
-
             if (id == null)
             {
                 return NotFound();
@@ -182,17 +179,16 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 return NotFound();
             }
-
+            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
             return View(restaurant);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(Restaurant restaurant)
+        public async Task<IActionResult> EditProfile(int? id, Restaurant restaurant)
         {
-            var id = _session.GetInt32("restaurantsessionid");
-
+            var ID = id;
             if (id != restaurant.RestaurantId)
             {
                 return NotFound();
@@ -220,7 +216,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 TempData["restaurant"] = "You have successfully modified " + restaurant.Name + " Restaurant!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
-                return View();
+                return RedirectToAction("Profile", new { id = ID});
             }
             return RedirectToAction("Profile");
         }

@@ -114,7 +114,7 @@
                             <h4> @Html.DisplayFor(model => model.RegistrationNumber) </h4>
                         </dd>
 
-                        <a asp-controller="Restaurants" asp-action="EditProfile" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Edit Profile</a>
+                        <a asp-controller="Restaurants" asp-action="EditProfile" asp-route-id="@ViewData["restaurantid"]" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Edit Profile</a>
                         
                     </dl> 
                 </div>

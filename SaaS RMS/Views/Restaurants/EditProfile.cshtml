@@ -1,91 +1,120 @@
 ﻿@model SaaS_RMS.Models.Entities.System.Restaurant
 
 @{
-    ViewData["Title"] = "Settings";
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
 }
 
-<h2>Settings</h2>
-
-<h4>Restaurant</h4>
-<hr />
+<div class="page-title">
+    <div class="title_left">
+        <h3>EDIT RESTAURANT PROFILE</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Settings">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RestaurantId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <form asp-action="EditProfile">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="RestaurantId" />
+
+                    <div class="form-group">
+                        <label asp-for="Logo" class="control-label"></label>
+                        <input class="form-control" type="file" name="file" />
+                        <span asp-validation-for="Logo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Motto" class="control-label"></label>
+                        <input asp-for="Motto" class="form-control" />
+                        <span asp-validation-for="Motto" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">State</label>
+                        <select class="form-control" asp-items="ViewBag.StateId" id="state" placeholder="Location"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Local Government Area</label>
+                        <select asp-for="LgaId" class="form-control" id="lga"></select>
+                        <span asp-validation-for="LgaId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Location</label>
+                        <input asp-for="Location" class="form-control" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Contact Email</label>
+                        <input asp-for="ContactEmail" class="form-control" />
+                        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Contact Number</label>
+                        <input asp-for="ContactNumber" class="form-control" />
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> Access Code</label>
+                        <input asp-for="AccessCode" class="form-control" />
+                        <span asp-validation-for="AccessCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" value="blank" asp-for="Logo" />
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a class="btn btn-danger" asp-controller="Restaurants" asp-action="Profile">Cancel</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Motto" class="control-label"></label>
-                <input asp-for="Motto" class="form-control" />
-                <span asp-validation-for="Motto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubscriprionStartDate" class="control-label"></label>
-                <input asp-for="SubscriprionStartDate" class="form-control" />
-                <span asp-validation-for="SubscriprionStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubscriptonEndDate" class="control-label"></label>
-                <input asp-for="SubscriptonEndDate" class="form-control" />
-                <span asp-validation-for="SubscriptonEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubscriptionDuration" class="control-label"></label>
-                <input asp-for="SubscriptionDuration" class="form-control" />
-                <span asp-validation-for="SubscriptionDuration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactEmail" class="control-label"></label>
-                <input asp-for="ContactEmail" class="form-control" />
-                <span asp-validation-for="ContactEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactNumber" class="control-label"></label>
-                <input asp-for="ContactNumber" class="form-control" />
-                <span asp-validation-for="ContactNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SetUpStatus" class="control-label"></label>
-                <input asp-for="SetUpStatus" class="form-control" />
-                <span asp-validation-for="SetUpStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccessCode" class="control-label"></label>
-                <input asp-for="AccessCode" class="form-control" />
-                <span asp-validation-for="AccessCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationNumber" class="control-label"></label>
-                <input asp-for="RegistrationNumber" class="form-control" />
-                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LgaId" class="control-label"></label>
-                <select asp-for="LgaId" class="form-control" asp-items="ViewBag.LgaId"></select>
-                <span asp-validation-for="LgaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#state').val() != '') {
+                getLGAs();
+            }
+
+            $('#state').on('input', function () {
+                getLGAs();
+            });
+
+            function getLGAs() {
+                $('#lga').children("option").remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/GetLgasForState',
+                    dataType: 'json',
+                    data: { id: $('#state').val() },
+                    success: function (lga) {
+                        console.log(lga);
+                        $.each(lga, function (i, lga) {
+                            $('#lga').append('<option value="' + lga.lgaId + '">' + lga.name + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+}
