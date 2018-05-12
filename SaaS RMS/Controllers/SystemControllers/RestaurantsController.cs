@@ -223,6 +223,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
+        #region Restaurant Dashborad
+
+        
+
+        #endregion
+
         #region Restaurant Exists
 
         private bool RestaurantExists(int id)

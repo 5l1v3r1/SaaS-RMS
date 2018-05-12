@@ -5,37 +5,6 @@
     Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
 }
 
-<style>
-    .text_center {
-        text-align: center;
-        color: orangered;
-    }
-
-    .select_height {
-        height: 150px;
-    }
-
-    .fill_restaurant_height {
-        height: 70%;
-    }
-
-    .Myjumbotron {
-        padding: 2rem 1rem;
-        margin-bottom: 2rem;
-        background-color: #e9ecef;
-        opacity: 0.5;
-        border-radius: .3rem
-    }
-
-        .Myjumbotron:hover {
-            opacity: 1;
-        }
-
-    .pad {
-        padding-top: 8px;
-    }
-</style>
-
 <div class="form-horizontal form-label-left">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="main_slider" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)'); ">
@@ -65,29 +34,27 @@
     </div>
 </div>
 
+
+<!-- Restaurants -->
 <div class="new_arrivals">
     <div class="container">
         <div class="row">
             <div class="col text-center">
                 <div class="section_title new_arrivals_title">
-                    <h2>New Arrivals</h2>
+                    <h2>View Restaurants</h2>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col" id="restaurants_list">
+                <div class="product-grid" data-isotope='{ "layoutMode": "fitRows" }'>
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }' id="restaurants_list">
+
 
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -140,11 +107,11 @@
                         $('#restaurants_list').children("div").remove();
                         console.log(data);
                         for (var i = 0; i < data.length; i++) {
-                            var restaurant = '<div class="product-item men"><div class="product discount product_filter"><div class="product_image">' +
-                                '<img src="/uploads/' + data[i].image + '" alt=""></div><div class="favorite favorite_left"></div><div class="product_info">' +
+                            var restaurant = '<div class="product-item"><div class="product discount product_filter"><div class="product_image">' +
+                                '<img src="/uploadsLogo/' + data[i].logo + '.jpg" alt=""></div><div class="favorite favorite_left"></div><div class="product_info">' +
                                 '<h6 class="product_name"><a href="">' + data[i].name + '</a></h6>' +
-                                '<div class="product_price">N' + data[i].amount + '<span></span></div></div></div>' +
-                                '<div class="red_button add_to_cart_button"><a href="@Url.Action("Cart", "Shop")">Add To Cart</a></div></div>';
+                                '<div class="product_price">' + data[i].motto + '<span></span></div></div></div>' +
+                                '<div class="btn red_button add_to_cart_button" style="width: 13.8em"><a href="@Url.Action("Cart", "Shop")" >Visit </a></div></div>'
                             $('#restaurants_list').append(restaurant);
                         }
                     }
