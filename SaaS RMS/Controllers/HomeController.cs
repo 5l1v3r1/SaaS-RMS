@@ -43,10 +43,10 @@ namespace SaaS_RMS.Controllers
 
         #endregion
 
-        #region Restaurants
+        #region Restaurant
 
         [HttpGet]
-        public async Task<IActionResult> Restaurants()
+        public async Task<IActionResult> Restaurant()
         {
             ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
             var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
@@ -73,9 +73,6 @@ namespace SaaS_RMS.Controllers
         }
         
         #endregion
-
-
-
 
         #region Error
 
