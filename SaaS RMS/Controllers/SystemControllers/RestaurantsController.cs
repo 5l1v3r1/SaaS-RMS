@@ -32,11 +32,16 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Fetch Data
 
-            public JsonResult GetLgasForState(int id)
+        public JsonResult GetLgasForState(int id)
         {
             var lgas = _db.Lgas.Where(l => l.StateId == id);
             return Json(lgas);
         }
+
+        //public JsonResult GetDishesForMeal(int id)
+        //{
+        //    var dishes = _db.Dishes.Where()
+        //}
 
         #endregion
 
@@ -225,7 +230,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Restaurant Dashborad
 
-        
+        [HttpGet]
+        public async Task <IActionResult> Dashboard()
+        {
+            var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
+            return View(landinginfo);
+        }
 
         #endregion
 
