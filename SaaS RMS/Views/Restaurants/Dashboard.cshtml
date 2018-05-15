@@ -7,8 +7,9 @@
 <style>
     .hero-unit {
         background-size: cover;
-        height: 500px;
+        height: 470px;
         opacity: .5;
+        z-index: 1;
     }
 
     h1 {
@@ -21,13 +22,19 @@
 
 <div class="">
     <div class="hero-unit" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)')">
-
+        <div class="container d-flex justify-content-center" style="padding-top: 15em;">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/uploadsLogo/@Html.DisplayFor(model => model.Image)" alt="card image cap" />
+                <div class="card-body">
+                    <div class="card-text">
+                        <p>Name: </p>
+                        <p> Goos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="container">
-        <h1>
-            Discover local restaurants that deliver to your doorstep
-        </h1>
-    </div>
+    
 </div>
 
 
