@@ -87,23 +87,7 @@ namespace SaaS_RMS.Controllers
             return Json(allRestaurantWithLGA);
         }
 
-        //public JsonResult GetRestaurant(int id)
-        //{
-        //    var allRestaurantWithLGA = _db.Restaurants.Where(r => r.LgaId == id).ToArray();
-        //    var length = allRestaurantWithLGA.Length;
-        //    var count = length;
-        //    List<SelectListItem> items = new List<SelectListItem>();
-        //    for (int i = 0; i < length; i++)
-        //    {
-        //        var restaurant = _db.Restaurants.Where(r => r.LgaId == id).Single();
-        //        var name = restaurant.Name;
-        //        items.Add(new SelectListItem
-        //        {
-        //            Text = name,
-        //            Value = 
-        //        });
-        //    }
-        //}
+        
         
         
         #endregion

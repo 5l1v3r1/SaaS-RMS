@@ -231,10 +231,16 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Dashborad
 
         [HttpGet]
-        public async Task <IActionResult> Dashboard()
+        public async Task <IActionResult> Dashboard(int? id)
         {
-            var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
-            return View(landinginfo);
+            if (id != null)
+            {
+                _session.SetInt32("restaurantid", Convert.ToInt32(id));
+                ViewData["tsting"] = _session.GetInt32("restaurantid");
+                var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
+            }
+            
+            return View();
         }
 
         #endregion
