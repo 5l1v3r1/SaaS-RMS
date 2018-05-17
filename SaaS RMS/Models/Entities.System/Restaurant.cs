@@ -67,6 +67,11 @@ namespace SaaS_RMS.Models.Entities.System
 
         public IEnumerable<Employee.Employee> Employees { get; set; }
 
+        public static implicit operator Restaurant(List<Restaurant> v)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SaaS_RMS.Models.Entities.Landing.LandingInfo
+﻿@model SaaS_RMS.Models.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
@@ -18,25 +18,39 @@
         left: 40px;
         color: #fff;
     }
+
+    img {
+        opacity: .9
+    }
 </style>
 
-<div class="">
-    <div class="hero-unit" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)')">
-        <div class="container d-flex justify-content-center" style="padding-top: 15em;">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="/uploadsLogo/@Html.DisplayFor(model => model.Image)" alt="card image cap" />
-                <div class="card-body">
-                    <div class="card-text">
-                        <p>Name: </p>
-                        <p> @ViewData["tsting"]</p>
-                    </div>
+<div class="hero-unit" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.LandingInfo.Image)')">
+    <div class="container d-flex justify-content-center" style="padding-top: 15em;">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="/uploadsLogo/@Html.DisplayFor(model => model.LandingInfo.Image)" alt="card image cap" />
+            <div class="card-body">
+                <div class="card-text">
+                    <p>Name: </p>
+                    <p> @ViewData["tsting"]</p>
                 </div>
             </div>
         </div>
     </div>
-    
 </div>
+@if (Model != null)
+{
+    @foreach (var restaurant in Model.Restaurant)
+    {
+        <p>Name: @restaurant.Name</p>
+    }
 
+    @foreach (var meal in Model.Meal)
+    {
+        <p>Name: @meal.Name</p>
+
+    }
+
+}
 
 
 
@@ -51,20 +65,20 @@
 
 
 @*<div class="main_slider" style="height: 350px; width: 1500px; background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)'); ">
-    <div class="container fill_height">
-        <div class="row align-items-center fill_height">
-            <div class="container">
-                <h1 class="text_center" style="position: relative">
-                    Order delicious food online!
-                </h1>
-                <h3 class="text_center">
-                    Discover local restaurants that deliver to your doorstep
-                </h3>
-                <div class="Myjumbotron row">
-                    
+        <div class="container fill_height">
+            <div class="row align-items-center fill_height">
+                <div class="container">
+                    <h1 class="text_center" style="position: relative">
+                        Order delicious food online!
+                    </h1>
+                    <h3 class="text_center">
+                        Discover local restaurants that deliver to your doorstep
+                    </h3>
+                    <div class="Myjumbotron row">
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 

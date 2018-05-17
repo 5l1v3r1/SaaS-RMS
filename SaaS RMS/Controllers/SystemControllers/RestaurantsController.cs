@@ -11,6 +11,9 @@ using SaaS_RMS.Models.Enums;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SaaS_RMS.Models.Entities.Landing;
+using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -236,11 +239,31 @@ namespace SaaS_RMS.Controllers.SystemControllers
             if (id != null)
             {
                 _session.SetInt32("restaurantid", Convert.ToInt32(id));
-                ViewData["tsting"] = _session.GetInt32("restaurantid");
-                var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
+                var check = await _db.Restaurants.SingleOrDefaultAsync(r => r.RestaurantId == id);
+                
+                if (check != null)
+                {
+                    var getRestaurant = _db.Restaurants.Where(r => r.RestaurantId == id).ToList();
+                    var getLandingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply).ToList();
+                    var getMeal = await _db.Meals.Where(m => m.RestaurantId == id).ToListAsync();
+
+                    List<Restaurant> restaurant = new List<Restaurant>(getRestaurant);
+                    List<LandingInfo> landingInfo = new List<LandingInfo>(getLandingInfo);
+                    List<Meal> meal = new List<Meal>(getMeal);
+
+                    DashboardViewModel dVM = new DashboardViewModel();
+                    dVM.LandingInfo = landingInfo;
+                    dVM.Restaurant = restaurant;
+                    return View(dVM);
+                }
+
+               return RedirectToAction("Home", "Restaurants");
+            }
+            else
+            {
+                return RedirectToAction("Home", "Restaurants");
             }
             
-            return View();
         }
 
         #endregion

@@ -22,5 +22,9 @@ namespace SaaS_RMS.Models.Entities.Landing
         
         public ApprovalEnum Approval { get; set; }
 
+        public static implicit operator LandingInfo(List<LandingInfo> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
