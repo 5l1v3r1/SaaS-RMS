@@ -234,39 +234,76 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Dashborad
 
         [HttpGet]
-        public async Task <IActionResult> Dashboard(int? id)
+        public async Task<IActionResult> Dashboard(int? id)
         {
             if (id != null)
             {
                 _session.SetInt32("restaurantid", Convert.ToInt32(id));
                 var check = await _db.Restaurants.SingleOrDefaultAsync(r => r.RestaurantId == id);
-                
+
                 if (check != null)
                 {
                     var getRestaurant = _db.Restaurants.Where(r => r.RestaurantId == id).ToList();
                     var getLandingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply).ToList();
-                    var getMeal = await _db.Meals.Where(m => m.RestaurantId == id).ToListAsync();
+                    var getMeal = _db.Meals.Where(m => m.RestaurantId == id).ToList();
 
-                    List<Restaurant> restaurant = new List<Restaurant>(getRestaurant);
-                    List<LandingInfo> landingInfo = new List<LandingInfo>(getLandingInfo);
-                    List<Meal> meal = new List<Meal>(getMeal);
+                    List<Restaurant> restaurant = new List<Restaurant>();
+                    List<LandingInfo> landingInfo = new List<LandingInfo>();
+                    List<Meal> meal = new List<Meal>();
+
+                    restaurant.Add(new Restaurant
+                    {
+                        Name = "Linf",
+                        Location = "king",
+                    });
+
+                    landingInfo.Add(landingInfo);
+                    meal.Add(getMeal);
 
                     DashboardViewModel dVM = new DashboardViewModel();
-                    dVM.LandingInfo = landingInfo;
+                     dVM.LandingInfo = landingInfo;
                     dVM.Restaurant = restaurant;
+                    dVM.Meals = meal;
+
                     return View(dVM);
                 }
 
-               return RedirectToAction("Home", "Restaurants");
+                return RedirectToAction("Home", "Restaurants");
             }
             else
             {
                 return RedirectToAction("Home", "Restaurants");
             }
-            
+
         }
 
         #endregion
+
+        //[HttpGet]
+        //public ActionResult Dashboard(int? id)
+        //{
+        //    _session.SetInt32("restaurantid", Convert.ToInt32(id));
+        //    DashboardViewModel dVM = new DashboardViewModel();
+        //    dVM.Restaurant = GetRestaurant();
+        //    dVM.Meals = GetMeals();
+        //    return View(dVM);
+        //}
+
+        //public Restaurant GetRestaurant()
+        //{
+        //    var rId = _session.GetInt32("restaurantid");
+        //    var restaurant = _db.Restaurants.Where(r => r.RestaurantId == rId).ToList();
+
+        //    return restaurant;
+        //}
+
+        //public Meal GetMeals()
+        //{
+        //    var rId = _session.GetInt32("restaurantid");
+        //    var meals = _db.Meals.Where(m => m.RestaurantId == rId).ToList();
+
+        //    return meals;
+        //}
 
         #region Restaurant Exists
 

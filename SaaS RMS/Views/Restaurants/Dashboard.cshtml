@@ -24,10 +24,10 @@
     }
 </style>
 
-<div class="hero-unit" style="background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.LandingInfo.Image)')">
+<div class="hero-unit" style="background-image: url('/uploadsLogo/')">
     <div class="container d-flex justify-content-center" style="padding-top: 15em;">
         <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="/uploadsLogo/@Html.DisplayFor(model => model.LandingInfo.Image)" alt="card image cap" />
+            <img class="card-img-top" src="/uploadsLogo/" alt="card image cap" />
             <div class="card-body">
                 <div class="card-text">
                     <p>Name: </p>
@@ -37,20 +37,8 @@
         </div>
     </div>
 </div>
-@if (Model != null)
-{
-    @foreach (var restaurant in Model.Restaurant)
-    {
-        <p>Name: @restaurant.Name</p>
-    }
-
-    @foreach (var meal in Model.Meal)
-    {
-        <p>Name: @meal.Name</p>
-
-    }
-
-}
+        <p>Name: @Html.DisplayFor(m => m.Meals.Name)/p>
+        <p>@Html.DisplayFor(m => m.Restaurant.Name)</p>
 
 
 

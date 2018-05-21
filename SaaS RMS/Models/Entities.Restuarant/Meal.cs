@@ -40,6 +40,11 @@ namespace SaaS_RMS.Models.Entities.Restuarant
 
         public virtual ICollection<Dish> Dishes { get; set; }
 
+        public static implicit operator Meal(List<Meal> v)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
 

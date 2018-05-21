@@ -11,8 +11,9 @@ namespace SaaS_RMS.Models
     public class DashboardViewModel
     {
         public Restaurant Restaurant { get; set; }
+
+        public Meal Meals { get; set; }
+
         public LandingInfo LandingInfo { get; set; }
-        public Dish Dish { get; set; }
-        public Meal Meal { get; set; }
     }
 }
