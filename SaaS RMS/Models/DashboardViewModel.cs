@@ -12,7 +12,9 @@ namespace SaaS_RMS.Models
     {
         public Restaurant Restaurant { get; set; }
 
-        public Meal Meals { get; set; }
+        public List<Meal> Meals { get; set; }
+
+        public List<Dish> Dishes { get; set; }
 
         public LandingInfo LandingInfo { get; set; }
     }

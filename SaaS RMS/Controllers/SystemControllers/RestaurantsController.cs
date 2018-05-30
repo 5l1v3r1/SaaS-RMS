@@ -81,14 +81,14 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     ModelState.AddModelError("", "Restaurant name already exists");
                 }
 
-                if(await _db.Restaurants.AnyAsync(r => r.ContactEmail == restaurant.ContactEmail))
+                if (await _db.Restaurants.AnyAsync(r => r.ContactEmail == restaurant.ContactEmail))
                 {
                     ModelState.AddModelError("", "Contact Email already exists");
                 }
 
                 else
                 {
-                    
+
                     _db.Restaurants.Add(restaurant);
                     _db.SaveChanges();
 
@@ -96,7 +96,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     TempData["notificationType"] = NotificationType.Success.ToString();
                     return Json(new { success = true });
                 }
-                
+
             }
             return View();
         }
@@ -134,7 +134,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #endregion
 
         #region Restaurant Admin
-        
+
         public IActionResult Admin(int? ID)
         {
             int _ID = Convert.ToInt32(ID);
@@ -144,9 +144,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
         }
 
         #endregion
-        
+
         #region Restaurant Profile
-        
+
         // GET: Restaurants/Profile/5
         public async Task<IActionResult> Profile(int? id)
         {
@@ -224,7 +224,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 TempData["restaurant"] = "You have successfully modified " + restaurant.Name + " Restaurant!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
-                return RedirectToAction("Profile", new { id = ID});
+                return RedirectToAction("Profile", new { id = ID });
             }
             return RedirectToAction("Profile");
         }
@@ -234,47 +234,54 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Dashborad
 
         [HttpGet]
-        public async Task<IActionResult> Dashboard(int? id)
+        public IActionResult Dashboard(int? id)
         {
             if (id != null)
             {
-                _session.SetInt32("restaurantid", Convert.ToInt32(id));
-                var check = await _db.Restaurants.SingleOrDefaultAsync(r => r.RestaurantId == id);
+                var meals = _db.Meals.Where(m => m.RestaurantId == id);
+                List<MealDishResponse> response = new List<MealDishResponse>();
 
-                if (check != null)
+                foreach (var meal in meals)
                 {
-                    var getRestaurant = _db.Restaurants.Where(r => r.RestaurantId == id).ToList();
-                    var getLandingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply).ToList();
-                    var getMeal = _db.Meals.Where(m => m.RestaurantId == id).ToList();
-
-                    List<Restaurant> restaurant = new List<Restaurant>();
-                    List<LandingInfo> landingInfo = new List<LandingInfo>();
-                    List<Meal> meal = new List<Meal>();
-
-                    restaurant.Add(new Restaurant
+                    var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
+                    var _response = new MealDishResponse
                     {
-                        Name = "Linf",
-                        Location = "king",
-                    });
-
-                    landingInfo.Add(landingInfo);
-                    meal.Add(getMeal);
-
-                    DashboardViewModel dVM = new DashboardViewModel();
-                     dVM.LandingInfo = landingInfo;
-                    dVM.Restaurant = restaurant;
-                    dVM.Meals = meal;
-
-                    return View(dVM);
+                        meal = meal,
+                        dishes = dishes
+                    };
+                    response.Add(_response);
                 }
-
-                return RedirectToAction("Home", "Restaurants");
+                ViewData["dishes"] = response;
+                return View();
             }
+
             else
             {
-                return RedirectToAction("Home", "Restaurants");
+                return RedirectToAction("Dashboard", "Restaurants");
             }
+        }
 
+        [HttpGet]
+        public JsonResult GetDishes(int? id)
+        {
+            if (id != null)
+            {
+                var meals = _db.Meals.Where(m => m.RestaurantId == id);
+                List<MealDishResponse> response = new List<MealDishResponse>();
+
+                foreach (var meal in meals)
+                {
+                    var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
+                    var _response = new MealDishResponse
+                    {
+                        meal = meal,
+                        dishes = dishes
+                    };
+                    response.Add(_response);
+                }
+                return Json(new { data = response });
+            }
+            return Json(new { });
         }
 
         #endregion
@@ -314,5 +321,10 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
+    }
+
+    public class MealDishResponse{
+        public Meal meal { get; set; }
+        public List<Dish> dishes { get; set; }
     }
 }

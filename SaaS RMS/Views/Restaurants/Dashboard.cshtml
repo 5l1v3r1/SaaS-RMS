@@ -29,16 +29,39 @@
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="/uploadsLogo/" alt="card image cap" />
             <div class="card-body">
-                <div class="card-text">
-                    <p>Name: </p>
-                    <p> @ViewData["tsting"]</p>
-                </div>
-            </div>
+                @foreach(var item in (List<SaaS_RMS.Controllers.SystemControllers.MealDishResponse>)ViewData["dishes"])
+                {
+                    <p>@item.meal.Name</p>
+                    @foreach(var _item in item.dishes)
+                    {
+                        <p>@_item.Name</p>
+                    }
+                    <hr/>
+                }
+                        <div class="card-text">
+                            @if (Model != null)
+                {
+                    <ul class="list-group">
+                        @ViewData["listOfMeals"];
+                        @*@foreach (var meal in Model.Meals)
+                {
+                   <li class="list-group-item">@meal.Name</li>
+                   <li class="list-group-item">@meal.Description</li>
+                }*@
+                    </ul>
+    }
+                        </div>
+                    </div>
         </div>
     </div>
 </div>
-        <p>Name: @Html.DisplayFor(m => m.Meals.Name)/p>
-        <p>@Html.DisplayFor(m => m.Restaurant.Name)</p>
+
+
+
+
+
+@*<p>Name: @Html.DisplayFor(m => m.Meals.Name)/p>
+    <p>@Html.DisplayFor(m => m.Restaurant.Name)</p>*@
 
 
 
@@ -69,4 +92,35 @@
             </div>
         </div>
     </div>*@
+@section Scripts {
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log(@ViewData["dishes"])
+        });
 
+        /*function GetMealsDishes(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = "json";
+            xhr.open('GET', "/Restaurants/GetDishes?id=" + id, true);
+            xhr.send();
+
+            function processRequest(e) {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.response);
+                }
+            }
+
+            xhr.onreadystatechange = processRequest;
+            $.ajax({
+                type: 'POST',
+                url: '/Restaurants/GetDishes',
+                data: { id: id },
+                async: true,
+                success: function (data) {
+                    console.log(data)
+                }
+            });
+        }*/
+    </script>
+}
