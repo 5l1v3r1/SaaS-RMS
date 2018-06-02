@@ -240,6 +240,16 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 var meals = _db.Meals.Where(m => m.RestaurantId == id);
                 List<MealDishResponse> response = new List<MealDishResponse>();
+                var landingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply);
+                var restaurant = _db.Restaurants.Find(id);
+
+                ViewData["restaurantname"] = restaurant.Name;
+                ViewData["restaurantlogo"] = restaurant.Logo;
+                ViewData["restaurantmotto"] = restaurant.Motto;
+                ViewData["restaurantlocation"] = restaurant.Location;
+                ViewData["restaurantnumber"] = restaurant.ContactNumber;
+                ViewData["restaurantemail"] = restaurant.ContactEmail;
+
 
                 foreach (var meal in meals)
                 {
@@ -251,7 +261,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     };
                     response.Add(_response);
                 }
+                
                 ViewData["dishes"] = response;
+                
                 return View();
             }
 

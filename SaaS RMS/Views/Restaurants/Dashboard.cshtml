@@ -22,46 +22,289 @@
     img {
         opacity: .9
     }
+
+    .card {
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+    /* Add some padding inside the card container */
+    .containerr {
+        padding: 2px 16px;
+    }
+    dt{
+        font-size: xx-large;
+    }
 </style>
 
-<div class="hero-unit" style="background-image: url('/uploadsLogo/')">
+
+<div class="hero-unit" style="background-image: url('/uploadsLogo/131675323461797572.jpg')">
     <div class="container d-flex justify-content-center" style="padding-top: 15em;">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="/uploadsLogo/" alt="card image cap" />
-            <div class="card-body">
-                @foreach(var item in (List<SaaS_RMS.Controllers.SystemControllers.MealDishResponse>)ViewData["dishes"])
-                {
-                    <p>@item.meal.Name</p>
-                    @foreach(var _item in item.dishes)
-                    {
-                        <p>@_item.Name</p>
-                    }
-                    <hr/>
-                }
-                        <div class="card-text">
-                            @if (Model != null)
-                {
-                    <ul class="list-group">
-                        @ViewData["listOfMeals"];
-                        @*@foreach (var meal in Model.Meals)
-                {
-                   <li class="list-group-item">@meal.Name</li>
-                   <li class="list-group-item">@meal.Description</li>
-                }*@
+
+        @*<div class="card">
+                <img src="~/uploadsLogo/131675323461797572.jpg" alt="Avatar"  style="height:300px; width:100%" >
+                <div class="containerr">
+                    <h4><b>@ViewData["restaurantname"]</b></h4>
+                    <p>@ViewData["restaurantmotto"]</p>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+<div class="container ">
+        <div class="row">
+            <div class="col">
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs d-flex flex-row align-items-center">
+                    <ul>
+                        <li><a  asp-controller="Home" asp-action="Landing">Home</a></li>
+                        <li><a  asp-controller="Home" asp-action="Restaurants"><i class="fa fa-angle-right" aria-hidden="true"></i>Restaurants</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewData["restaurantname"]</a></li>
                     </ul>
-    }
-                        </div>
-                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+
+<div class="tabs_section_container">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="">
+                    <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+                        <li class="tab active" data-active-tab="tab_1"><span>Menu</span></li>
+                        <li class="tab" data-active-tab="tab_2"><span>Information</span></li>
+                        <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <!-- Tab Description -->
+
+                <div id="tab_1" class="tab_container active">
+                    <div class="tab_title">
+                        <h4>Menu</h4>
+                    </div>
+
+                    <div class="new_arrivals">
+                        <div class="container">
+                            @foreach (var item in (List<SaaS_RMS.Controllers.SystemControllers.MealDishResponse>)ViewData["dishes"])
+                            {
+                            <div class="row align-items-center">
+                                <div class="col text-center">
+                                    <div class="new_arrivals_sorting">
+                                        <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
+                                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
+                                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".@item.meal.Name">@item.meal.Name</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="product-grid" data-isotope=' { "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+                                        @foreach (var _item in item.dishes)
+                            {
+                                    <div class="product-item @item.meal.Name">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="~/uploadsLogo/@_item.Image" />
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h4 class="product_name"><a href="single.html">@_item.Name</a></h4>
+                                                <h6 class="product_name">@_item.Description</h6>
+                                                <div class="product_price">N@_item.Amount</div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                                    </div>
+}
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tab Additional Info -->
+
+                <div id="tab_2" class="tab_container">
+                    <div class="tab_title additional_info_title">
+                        <h4>Information</h4>
+                    </div>
+
+                    <dl>
+                        <dt>
+                            @ViewData["restaurantname"]
+                        </dt>
+                        <dd>
+                            - @ViewData["restaurantmotto"]
+                        </dd>
+                    </dl>
+
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <h4>Delivery Time</h4>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Day
+                                    </th>
+                                    <th>
+                                        Time
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Monday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tuesday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Wednessday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Thursday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Friday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <hr />
+                        </div>
+
+                        <div class="col-lg-5 ">
+                            <h4>Take-out Hours</h4>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Day
+                                    </th>
+                                    <th>
+                                        Time
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Monday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tuesday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Wednessday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Thursday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Friday
+                                    </td>
+                                    <td>
+                                        10:00 - 21:00
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 40px">
+                        <div class="col-lg-7">
+                            <dl>
+                                <dt>
+                                    Address
+                                </dt>
+                                <dd>
+                                    - @ViewData["restaurantlocation"]
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-5">
+                            <dl>
+                                <dt>
+                                    Delivery Fee
+                                </dt>
+                                <dd>
+                                    - N500
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tab Reviews -->
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
 
 
 
-@*<p>Name: @Html.DisplayFor(m => m.Meals.Name)/p>
-    <p>@Html.DisplayFor(m => m.Restaurant.Name)</p>*@
 
 
 
@@ -70,57 +313,3 @@
 
 
 
-
-
-
-
-
-@*<div class="main_slider" style="height: 350px; width: 1500px; background-image: url('/uploadsLogo/@Html.DisplayFor(model => model.Image)'); ">
-        <div class="container fill_height">
-            <div class="row align-items-center fill_height">
-                <div class="container">
-                    <h1 class="text_center" style="position: relative">
-                        Order delicious food online!
-                    </h1>
-                    <h3 class="text_center">
-                        Discover local restaurants that deliver to your doorstep
-                    </h3>
-                    <div class="Myjumbotron row">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-@section Scripts {
-    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            console.log(@ViewData["dishes"])
-        });
-
-        /*function GetMealsDishes(id) {
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = "json";
-            xhr.open('GET', "/Restaurants/GetDishes?id=" + id, true);
-            xhr.send();
-
-            function processRequest(e) {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.response);
-                }
-            }
-
-            xhr.onreadystatechange = processRequest;
-            $.ajax({
-                type: 'POST',
-                url: '/Restaurants/GetDishes',
-                data: { id: id },
-                async: true,
-                success: function (data) {
-                    console.log(data)
-                }
-            });
-        }*/
-    </script>
-}
