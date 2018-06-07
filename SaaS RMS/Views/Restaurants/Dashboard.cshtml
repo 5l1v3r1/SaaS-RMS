@@ -38,8 +38,18 @@
     .containerr {
         padding: 2px 16px;
     }
-    dt{
+
+    dt {
         font-size: xx-large;
+    }
+
+    .box {
+        position: center;
+    }
+
+    .selector {
+        border-radius: 5px;
+        background:
     }
 </style>
 
@@ -58,20 +68,20 @@
 </div>
 
 <div class="container ">
-        <div class="row">
-            <div class="col">
-                <!-- Breadcrumbs -->
-                <div class="breadcrumbs d-flex flex-row align-items-center">
-                    <ul>
-                        <li><a  asp-controller="Home" asp-action="Landing">Home</a></li>
-                        <li><a  asp-controller="Home" asp-action="Restaurants"><i class="fa fa-angle-right" aria-hidden="true"></i>Restaurants</a></li>
-                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewData["restaurantname"]</a></li>
-                    </ul>
-                </div>
-
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Landing">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Restaurants"><i class="fa fa-angle-right" aria-hidden="true"></i>Restaurants</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewData["restaurantname"]</a></li>
+                </ul>
             </div>
+
         </div>
     </div>
+</div>
 
 <div class="tabs_section_container">
     <div class="container">
@@ -95,27 +105,14 @@
                     <div class="tab_title">
                         <h4>Menu</h4>
                     </div>
-
-                    <div class="new_arrivals">
-                        <div class="container">
-                            @foreach (var item in (List<SaaS_RMS.Controllers.SystemControllers.MealDishResponse>)ViewData["dishes"])
-                            {
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <div class="new_arrivals_sorting">
-                                        <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
-                                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".@item.meal.Name">@item.meal.Name</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                    @foreach (var item in (List<SaaS_RMS.Controllers.SystemControllers.MealDishResponse>)ViewData["dishes"])
+                    {
+                        <h4> @item.meal.Name </h4>
+                        <div class="des_col">
                             <div class="row">
-                                <div class="col">
-                                    <div class="product-grid" data-isotope=' { "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-                                        @foreach (var _item in item.dishes)
-                            {
-                                    <div class="product-item @item.meal.Name">
+                                @foreach (var _item in item.dishes)
+                                {
+                                    <div class="product-item">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="~/uploadsLogo/@_item.Image" />
@@ -126,19 +123,25 @@
                                                 <h4 class="product_name"><a href="single.html">@_item.Name</a></h4>
                                                 <h6 class="product_name">@_item.Description</h6>
                                                 <div class="product_price">N@_item.Amount</div>
+                                                <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                                                    <span>Quantity:</span>
+                                                    <div class="quantity_selector">
+                                                        <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                        <span id="quantity_value">1</span>
+                                                        <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </div>
+                                                
                                             </div>
                                         </div>
-                                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                                        <div class="red_button add_to_cart_button"><a href="@Url.Action("Restaurant", "Cart")">add to cart</a></div>
                                     </div>
-}
-                                    </div>
-                                </div>
+                                }
                             </div>
-                            }
                         </div>
-                    </div>
+                    }
                 </div>
-                
+
                 <!-- Tab Additional Info -->
 
                 <div id="tab_2" class="tab_container">
@@ -300,7 +303,6 @@
     </div>
 
 </div>
-
 
 
 
