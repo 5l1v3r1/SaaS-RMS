@@ -168,7 +168,68 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
-        
+        #region Edit
+
+        //GET: StockDetails/Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var stockDetail = await _db.StockDetails.SingleOrDefaultAsync(p => p.StockDetailId == id);
+            var restaurant = _session.GetInt32("restaurantsessionid");
+
+            var categories = await _db.Categories.Where(l => l.RestaurantId == restaurant).ToListAsync();
+            var vendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
+
+            ViewBag.Category = new SelectList(categories, "CategoryId", "Name");
+            ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name");
+
+            if (stockDetail == null)
+            {
+                return NotFound();
+            }
+
+            return View(stockDetail);
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, StockDetail stockDetail)
+        {
+            if (id != stockDetail.StockDetailId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var restaurant = _session.GetInt32("restaurantsessionid");
+                
+                if (restaurant != null)
+                {
+                    stockDetail.RestaurantId = Convert.ToInt32(restaurant);
+                }
+                _db.Update(stockDetail);
+                await _db.SaveChangesAsync();
+
+                var productName = _db.Products.Find(stockDetail.ProductId);
+
+                TempData["stockDetail"] = "You have successfully modified a Stock Detail for a Product !!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
 
         #region StockDetials Exists
 
