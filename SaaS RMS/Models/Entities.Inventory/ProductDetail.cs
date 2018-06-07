@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Inventory
 {
-    public class StockDetail
+    public class ProductDetail
     {
         #region Data Model
 
-        public int StockDetailId { get; set; }
+        public int ProductDetailId { get; set; }
         
         [Required(ErrorMessage="Amount field is required!!!")]
         public double Amount { get; set; }

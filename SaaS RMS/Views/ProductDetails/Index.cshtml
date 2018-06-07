@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.StockDetail>
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.ProductDetail>
 @using SaaS_RMS.Models.Enums;
 
     @{
@@ -10,27 +10,27 @@
 
 
 <div style="padding-top:55px;">
-    @if (TempData["stockDetail"] != null)
+    @if (TempData["productDetail"] != null)
     {
         if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["stockDetail"]
+                @TempData["productDetail"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
             <div class="alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["stockDetail"]
+                @TempData["productDetail"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
             <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["stockDetail"]
+                @TempData["productDetail"]
             </div>
         }
 
@@ -98,8 +98,8 @@
                                     @Html.DisplayFor(modelItem => item.Meaurement)
                                 </th>
                                 <td>
-                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.StockDetailId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.StockDetailId"><i class="fa fa-trash-o "></i> Delete</a>
+                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ProductDetailId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.ProductDetailId"><i class="fa fa-trash-o "></i> Delete</a>
                                 </td>
                             </tr>
                         }

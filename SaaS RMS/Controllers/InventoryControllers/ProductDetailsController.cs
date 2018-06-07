@@ -12,7 +12,7 @@ using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.InventoryControllers
 {
-    public class StockDetailsController : Controller
+    public class ProductDetailsController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,7 +20,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Constuctor
 
-        public StockDetailsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public ProductDetailsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -45,15 +45,15 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            var stockDetails = await _db.StockDetails.Where(s => s.RestaurantId == restaurant)
+            var productDetails = await _db.ProductDetails.Where(s => s.RestaurantId == restaurant)
                 .Include(s => s.Restuarant)
                 .Include(s => s.Vendor)
                 .Include(s => s.Product)
                 .ToListAsync();
 
-            if (stockDetails != null)
+            if (restaurant != null)
             {
-                return View(stockDetails);
+                return View(productDetails);
             }
             if (restaurant == null)
             {
@@ -67,7 +67,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Create
 
-        //GET: StockDetails/Create
+        //GET: ProductDetails/Create
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -79,39 +79,38 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             ViewBag.Category = new SelectList(categories, "CategoryId", "Name");
             ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name");
 
-            var stockDetail = new StockDetail();
-            return View(stockDetail);
+            var productDetail = new ProductDetail();
+            return View(productDetail);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(StockDetail stockDetail)
+        public async Task<IActionResult> Create(ProductDetail productDetail)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             if (ModelState.IsValid)
             {
-                var allStockDetails = await _db.StockDetails.Where(s => s.RestaurantId == restaurant).ToListAsync();
-                //allStockDetails.Find(s => s.ProductId == stockDetail.ProductId);
+                var allProductDetails = await _db.ProductDetails.Where(s => s.RestaurantId == restaurant).ToListAsync();
                 
-                if (allStockDetails.Any(s => s.ProductId == stockDetail.ProductId))
+                if (allProductDetails.Any(s => s.ProductId == productDetail.ProductId))
                 {
                     
-                    TempData["stockdetail"] = "You cannot add the Stock Detail because it already exist!!!";
+                    TempData["productdetail"] = "You cannot add the Product Detail because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index");
                 }
                 if (restaurant != null)
                 {
-                    stockDetail.RestaurantId = Convert.ToInt32(restaurant);
+                    productDetail.RestaurantId = Convert.ToInt32(restaurant);
                 }
-                await _db.AddAsync(stockDetail);
+                await _db.AddAsync(productDetail);
                 await _db.SaveChangesAsync();
 
-                var productName = _db.Products.Find(stockDetail.ProductId);
-
-                TempData["stockDetail"] = "You have successfully added a Stock Detail for Product "+ productName.Name +" !!!";
+                var productName = _db.Products.Find(productDetail.ProductId);
+                 
+                TempData["productDetail"] = "You have successfully added a Product Detail for Product "+ productName.Name +" !!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return RedirectToAction("Index");
@@ -120,7 +119,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             
             var vendors = await _db.Vendors.Where(v => v.RestaurantId == restaurant).ToListAsync();
             
-            ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name", stockDetail.VendorId);
+            ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name", productDetail.VendorId);
             return RedirectToAction("Index");
         }
 
@@ -128,7 +127,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Delete
 
-        //GET: StockDetails/Delete/5
+        //GET: ProductDetails/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -137,14 +136,14 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return NotFound();
             }
 
-            var stockDetail = await _db.StockDetails.SingleOrDefaultAsync(b => b.StockDetailId == id);
+            var productDetail = await _db.ProductDetails.SingleOrDefaultAsync(b => b.ProductDetailId == id);
 
-            if (stockDetail == null)
+            if (productDetail == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", stockDetail);
+            return PartialView("Delete", productDetail);
         }
 
         //POST:
@@ -152,13 +151,13 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var stockDetail = await _db.StockDetails.SingleOrDefaultAsync(b => b.StockDetailId == id);
-            if (stockDetail != null)
+            var productDetail = await _db.ProductDetails.SingleOrDefaultAsync(b => b.ProductDetailId == id);
+            if (productDetail != null)
             {
-                _db.StockDetails.Remove(stockDetail);
+                _db.ProductDetails.Remove(productDetail);
                 await _db.SaveChangesAsync();
 
-                TempData["stockDetail"] = "You have successfully deleted " + stockDetail.Product + " Stock Detail!!!";
+                TempData["productDetail"] = "You have successfully deleted " + productDetail.Product + " Product Detail!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -170,7 +169,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Edit
 
-        //GET: StockDetails/Edit
+        //GET: ProductDetails/Edit
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -179,7 +178,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return NotFound();
             }
 
-            var stockDetail = await _db.StockDetails.SingleOrDefaultAsync(p => p.StockDetailId == id);
+            var productDetail = await _db.ProductDetails.SingleOrDefaultAsync(p => p.ProductDetailId == id);
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             var categories = await _db.Categories.Where(l => l.RestaurantId == restaurant).ToListAsync();
@@ -188,20 +187,20 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             ViewBag.Category = new SelectList(categories, "CategoryId", "Name");
             ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name");
 
-            if (stockDetail == null)
+            if (productDetail == null)
             {
                 return NotFound();
             }
 
-            return View(stockDetail);
+            return View(productDetail);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, StockDetail stockDetail)
+        public async Task<IActionResult> Edit(int? id, ProductDetail productDetail)
         {
-            if (id != stockDetail.StockDetailId)
+            if (id != productDetail.ProductDetailId)
             {
                 return NotFound();
             }
@@ -212,14 +211,14 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 
                 if (restaurant != null)
                 {
-                    stockDetail.RestaurantId = Convert.ToInt32(restaurant);
+                    productDetail.RestaurantId = Convert.ToInt32(restaurant);
                 }
-                _db.Update(stockDetail);
+                _db.Update(productDetail);
                 await _db.SaveChangesAsync();
 
-                var productName = _db.Products.Find(stockDetail.ProductId);
+                var productName = _db.Products.Find(productDetail.ProductId);
 
-                TempData["stockDetail"] = "You have successfully modified a Stock Detail for a Product !!!";
+                TempData["productDetail"] = "You have successfully modified a Product Detail for a Product !!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return RedirectToAction("Index");
@@ -230,11 +229,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
         
-        #region StockDetials Exists
+        #region ProductDetials Exists
 
-        private bool StockDetailsExists(int? id)
+        private bool ProductDetailsExists(int? id)
         {
-            return _db.StockDetails.Any(s => s.StockDetailId == id);
+            return _db.ProductDetails.Any(s => s.ProductDetailId == id);
         }
 
         #endregion

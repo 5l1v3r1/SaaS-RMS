@@ -40,7 +40,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return RedirectToAction("Access", "Restaurants");
             }
 
-            var purchase = await _db.Purchases.Include(p => p.StockDetail)
+            var purchase = await _db.Purchases.Include(p => p.ProductDetail)
                        .Include(p => p.PurchaseEntry)
                        .ToListAsync();
 
@@ -66,7 +66,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            var stockDetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant).ToArray();
+            var stockDetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant).ToArray();
             var length = stockDetails.Length;
             List<SelectListItem> items = new List<SelectListItem>();
             for (int i = 0; i < length; i++)
@@ -76,7 +76,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 items.Add(new SelectListItem
                 {
                     Text = name,
-                    Value = stockDetails[i].StockDetailId.ToString()
+                    Value = stockDetails[i].ProductDetailId.ToString()
                 });
             }
             ViewBag.StockDetails = items;
@@ -91,7 +91,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var purchaseentryid = _session.GetInt32("purchaseentrysessionid");
             var restaurant = _session.GetInt32("restaurantsessionid");
-            var stockdetails = _db.StockDetails.Where(s => s.RestaurantId == restaurant);
+            var stockdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
 
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                     await _db.AddAsync(purchase);
                     await _db.SaveChangesAsync();
 
-                    TempData["purchase"] = "You have successfully added " + purchase.StockDetail.Product.Name + " as a new Product!!!";
+                    TempData["purchase"] = "You have successfully added " + purchase.ProductDetail.Product.Name + " as a new Product!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
@@ -116,11 +116,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Edit
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(int? id)
+        //{
 
-        }
+        //}
 
         #endregion
 
@@ -129,7 +129,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         public JsonResult GetAmountForStock(int id)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
-            var stockDetail = _db.StockDetails.Where(s => s.StockDetailId == id && s.RestaurantId == restaurant);
+            var stockDetail = _db.ProductDetails.Where(s => s.ProductDetailId == id && s.RestaurantId == restaurant);
 
             var amount = stockDetail.Any(s => s.Amount > 0);
             return Json(amount);

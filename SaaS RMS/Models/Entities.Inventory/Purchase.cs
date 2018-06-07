@@ -44,10 +44,10 @@ namespace SaaS_RMS.Models.Entities.Inventory
         [ForeignKey("PurchaseEntryId")]
         public virtual PurchaseEntry PurchaseEntry { get; set; }
 
-        [Display(Name = "Stock Detail")]
-        public int StockDetailId { get; set; }
-        [ForeignKey("StockDetailId")]
-        public virtual StockDetail StockDetail { get; set; }
+        [Display(Name = "Product Detail")]
+        public int ProductDetailId { get; set; }
+        [ForeignKey("ProductDetailId")]
+        public virtual ProductDetail ProductDetail { get; set; }
 
         #endregion
     }
