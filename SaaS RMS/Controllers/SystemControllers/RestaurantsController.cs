@@ -41,11 +41,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
             return Json(lgas);
         }
 
-        //public JsonResult GetDishesForMeal(int id)
-        //{
-        //    var dishes = _db.Dishes.Where()
-        //}
-
         #endregion
 
         #region Restaurant Index

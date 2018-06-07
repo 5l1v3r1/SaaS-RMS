@@ -28,6 +28,17 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
+        #region Fetch Data
+
+        public JsonResult GetProductsForCategory(int id)
+        {
+            var restaurant = _session.GetInt32("restaurantsessionid");
+            var products = _db.Products.Where(p => p.Category.RestaurantId == restaurant && p.CategoryId == id );
+            return Json(products);
+        }
+
+        #endregion
+
         #region Index
 
         public async Task<IActionResult> Index()
@@ -69,7 +80,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             ViewBag.VendorId = new SelectList(vendors, "VendorId", "Name");
 
             var stockDetail = new StockDetail();
-            return PartialView("Create", stockDetail);
+            return View(stockDetail);
         }
 
         //POST:
@@ -153,16 +164,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
-        #region Fetch Data
-
-        public JsonResult GetProductsForCategory(int id)
-        {
-            var restaurant = _session.GetInt32("restaurantsessionid");
-            var products = _db.Products.Where(p => p.CategoryId == id && p.Category.RestaurantId == restaurant);
-            return Json(products); 
-        }
-
-        #endregion
+        
 
         #region StockDetials Exists
 

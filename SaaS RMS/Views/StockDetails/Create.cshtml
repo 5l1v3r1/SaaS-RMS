@@ -7,7 +7,7 @@
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3> <strong> ADD LOCAL GOVERNMENT AREA </strong> </h3>
+    <h3> <strong> ADD STOCK DETAIL </strong> </h3>
 </div>
 
 <form asp-action="Create">
@@ -90,17 +90,19 @@
                     getProducts();
                 });
 
+                
+
                 function getProducts() {
                     $('#product').children("option").remove();
                     $.ajax({
                         type: 'GET',
-                        url: '@Url.Action("GetProductsForCategory", "StockDetails")',
+                        url: '/StockDetails/GetProductsForCategory',
                         dataType: 'json',
                         data: { id: $('#category').val() },
                         success: function (product) {
                             console.log(product);
                             $.each(product, function (i, product) {
-                                $('#product').append('<option value="' + product.ProductId + '">' + product.Name + '</option>');
+                                $('#product').append('<option value="' + product.productId + '">' + product.name + '</option>');
                             });
                         },
                         error: function (error) {
