@@ -66,22 +66,25 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
-            var stockDetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant).ToArray();
-            var length = stockDetails.Length;
+            var productDetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant).ToArray();
+            
+
+            var length = productDetails.Length;
             List<SelectListItem> items = new List<SelectListItem>();
             for (int i = 0; i < length; i++)
             {
-                var product = _db.Products.Where(s => s.ProductId == stockDetails[i].ProductId).SingleOrDefault();
+                var product = _db.Products.Where(s => s.ProductId == productDetails[i].ProductId).SingleOrDefault();
                 var name = product.Name;
                 items.Add(new SelectListItem
                 {
                     Text = name,
-                    Value = stockDetails[i].ProductDetailId.ToString()
+                    Value = productDetails[i].ProductDetailId.ToString()
                 });
             }
-            ViewBag.StockDetails = items;
+
+            ViewBag.ProductDetails = items;
             var purchase = new Purchase();
-            return PartialView("Create", purchase);
+            return View(purchase);
         }
 
         //POST:
@@ -91,7 +94,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         {
             var purchaseentryid = _session.GetInt32("purchaseentrysessionid");
             var restaurant = _session.GetInt32("restaurantsessionid");
-            var stockdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
+            var productdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
 
             if (ModelState.IsValid)
             {
@@ -108,7 +111,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                     return Json(new { success = true });
                 }
             }
-            ViewBag.StockDetail = new SelectList(stockdetails, "StockDetailId", "Product.Name");
+            ViewBag.ProductDetail = new SelectList(productdetails, "ProductDetaillId", "Product.Name");
             return RedirectToAction("Index", new { PurchaseEntryId = purchaseentryid });
         }
 
@@ -116,11 +119,23 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Edit
 
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(int? id)
-        //{
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //}
+            var purchases = await _db.Purchases.SingleOrDefaultAsync(p => p.PurchaseId == id);
+
+            if (purchases == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(purchases);
+        }
 
         #endregion
 
@@ -129,9 +144,9 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         public JsonResult GetAmountForStock(int id)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
-            var stockDetail = _db.ProductDetails.Where(s => s.ProductDetailId == id && s.RestaurantId == restaurant);
+            var productDetail = _db.ProductDetails.Where(s => s.ProductDetailId == id && s.RestaurantId == restaurant);
 
-            var amount = stockDetail.Any(s => s.Amount > 0);
+            var amount = productDetail.Any(s => s.Amount > 0);
             return Json(amount);
         }
 
