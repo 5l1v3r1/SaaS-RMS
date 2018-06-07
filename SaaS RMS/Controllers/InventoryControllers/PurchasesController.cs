@@ -114,6 +114,16 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
+        #region Edit
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+
+        }
+
+        #endregion
+
         #region Fetech Data
 
         public JsonResult GetAmountForStock(int id)

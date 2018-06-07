@@ -229,8 +229,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         }
 
         #endregion
-
-
+        
         #region StockDetials Exists
 
         private bool StockDetailsExists(int? id)
