@@ -59,7 +59,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             {
                 return RedirectToAction("Access", "Restaurants");
             }
-
+            
             return View();
         }
 
@@ -93,10 +93,12 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             if (ModelState.IsValid)
             {
                 var allStockDetails = await _db.StockDetails.Where(s => s.RestaurantId == restaurant).ToListAsync();
-
-                if (allStockDetails.Any(s => s.Product.Name == stockDetail.Product.Name))
+                //allStockDetails.Find(s => s.ProductId == stockDetail.ProductId);
+                
+                if (allStockDetails.Any(s => s.ProductId == stockDetail.ProductId))
                 {
-                    TempData["stockdetail"] = "You cannot add " + stockDetail.Product.Name + " Stock Detail because it already exist!!!";
+                    
+                    TempData["stockdetail"] = "You cannot add the Stock Detail because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
                     return RedirectToAction("Index");
                 }
@@ -107,10 +109,12 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 await _db.AddAsync(stockDetail);
                 await _db.SaveChangesAsync();
 
-                TempData["stockDetail"] = "You have successfully added the Stock Detail for " + stockDetail.Product.Name + " Product!!!";
+                var productName = _db.Products.Find(stockDetail.ProductId);
+
+                TempData["stockDetail"] = "You have successfully added a Stock Detail for Product "+ productName.Name +" !!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
-                return Json(new { success = true });
+                return RedirectToAction("Index");
             }
 
             
@@ -174,7 +178,6 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         }
 
         #endregion
-
         
     }
 }

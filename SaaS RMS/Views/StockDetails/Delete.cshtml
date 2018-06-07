@@ -13,7 +13,7 @@
 
 <!--MODAL BODY-->
 <div class="modal-body">
-    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Name) Stock Detail?</h3>
+    <h3 class="text-center"> Are you sure you want to delete @Html.DisplayFor(model => model.Product.Name) Stock Detail?</h3>
 </div>
 <form asp-action="Delete">
     <input type="hidden" asp-for="StockDetailId" />
