@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.PurchaseEntry>
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.OrderEntry>
 @using SaaS_RMS.Models.Enums
 
 @{
@@ -10,34 +10,34 @@
 
 
 <div style="padding-top:55px;">
-    @if (TempData["purchaseentry"] != null)
+    @if (TempData["orderentry"] != null)
     {
         if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
         {
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["purchaseentry"]
+                @TempData["orderentry"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
             <div class="alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["purchaseentry"]
+                @TempData["orderentry"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
             <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["purchaseentry"]
+                @TempData["orderentry"]
             </div>
         }
 
     }
     <div class="page-title">
         <div class="title_left">
-            <h3>PURCHASE ENTRIES</h3>
+            <h3>PURCHASE ORDER ENTRIES</h3>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -74,9 +74,9 @@
                                     @Html.DisplayFor(modelItem => item.Date)
                                 </td>
                                 <td>
-                                    <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Purchases" asp-route-id="@item.PurchaseEntryId"><i class="fa fa-check"></i> Purchases</a>
-                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PurchaseEntryId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PurchaseEntryId"><i class="fa fa-trash-o "></i> Delete</a>
+                                    <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Purchases" asp-route-id="@item.OrderEntryId"><i class="fa fa-check"></i> Purchases</a>
+                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.OrderEntryId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.OrderEntryId"><i class="fa fa-trash-o "></i> Delete</a>
                                 </td>
                             </tr>
                         }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Inventory
 {
-    public class PurchaseEntry
+    public class OrderEntry
     {
         #region Model Data
 
-        public int PurchaseEntryId { get; set; }
+        public int OrderEntryId { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

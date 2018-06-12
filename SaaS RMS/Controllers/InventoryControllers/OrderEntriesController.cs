@@ -11,7 +11,7 @@ using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.InventoryControllers
 {
-    public class PurchaseEntriesController : Controller
+    public class OrderEntriesController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Constructor
 
-        public PurchaseEntriesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public OrderEntriesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -39,10 +39,10 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             }
             else
             {
-                var purchaseEntry = await _db.PurchaseEntries.Where(p => p.RestaurantId == restaurant)
+                var orderEntry = await _db.OrderEntries.Where(p => p.RestaurantId == restaurant)
                     .ToListAsync();
 
-                return View(purchaseEntry);
+                return View(orderEntry);
             }
         }
 
@@ -54,26 +54,26 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         [HttpGet]
         public IActionResult Create()
         {
-            var purchaseEntry = new PurchaseEntry();
-            return PartialView("Create", purchaseEntry);
+            var orderEntry = new OrderEntry();
+            return PartialView("Create", orderEntry);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PurchaseEntry purchaseEntry)
+        public async Task<IActionResult> Create(OrderEntry orderEntry)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
             if (ModelState.IsValid)
             {
                 if (restaurant != null)
                 {
-                    purchaseEntry.RestaurantId = Convert.ToInt32(restaurant);
+                    orderEntry.RestaurantId = Convert.ToInt32(restaurant);
 
-                    await _db.AddAsync(purchaseEntry);
+                    await _db.AddAsync(orderEntry);
                     await _db.SaveChangesAsync();
 
-                    TempData["purchaseentry"] = "You have successfully added " + purchaseEntry.Name + " as a new Purchase Entry!!!";
+                    TempData["orderentry"] = "You have successfully added " + orderEntry.Name + " as a new Order Entry!!!";
                     TempData["notificationType"] = NotificationType.Success.ToString();
 
                     return Json(new { success = true });
@@ -86,7 +86,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Edit
 
-        //GET: PurchaseEntries/Edit/6
+        //GET: OrderEntries/Edit/6
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -95,22 +95,22 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return NotFound();
             }
 
-            var purchaseEntry = await _db.PurchaseEntries.SingleOrDefaultAsync(p => p.PurchaseEntryId == id);
+            var orderEntry = await _db.OrderEntries.SingleOrDefaultAsync(p => p.OrderEntryId == id);
 
-            if (purchaseEntry == null)
+            if (orderEntry == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Edit", purchaseEntry);
+            return PartialView("Edit", orderEntry);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, PurchaseEntry purchaseEntry)
+        public async Task<IActionResult> Edit(int? id, OrderEntry orderEntry)
         {
-            if (id != purchaseEntry.PurchaseEntryId)
+            if (id != orderEntry.OrderEntryId)
             {
                 return NotFound();
             }
@@ -121,11 +121,13 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
                 if (restaurant != null)
                 {
-                    purchaseEntry.RestaurantId = Convert.ToInt32(restaurant);
+                    orderEntry.RestaurantId = Convert.ToInt32(restaurant);
 
-                    _db.Update(purchaseEntry);
+                    _db.Update(orderEntry);
                     await _db.SaveChangesAsync();
 
+                    TempData["orderentry"] = "You have successfully modified " + orderEntry.Name + " Order Entry!!!";
+                    TempData["notificationType"] = NotificationType.Success.ToString();
                     return Json(new { success = true });
                 }
             }
@@ -136,7 +138,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Delete
 
-        //GET: PurchaseEntries/Delete/5
+        //GET: OrderEntries/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -145,14 +147,14 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return NotFound();
             }
 
-            var purchaseEntry = await _db.PurchaseEntries.SingleOrDefaultAsync(b => b.PurchaseEntryId == id);
+            var orderEntry = await _db.OrderEntries.SingleOrDefaultAsync(b => b.OrderEntryId == id);
 
-            if (purchaseEntry == null)
+            if (orderEntry == null)
             {
                 return NotFound();
             }
 
-            return PartialView("Delete", purchaseEntry);
+            return PartialView("Delete", orderEntry);
         }
 
         //POST:
@@ -160,13 +162,13 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var purchaseEntry = await _db.PurchaseEntries.SingleOrDefaultAsync(b => b.PurchaseEntryId == id);
-            if (purchaseEntry != null)
+            var orderEntry = await _db.OrderEntries.SingleOrDefaultAsync(b => b.OrderEntryId == id);
+            if (orderEntry != null)
             {
-                _db.PurchaseEntries.Remove(purchaseEntry);
+                _db.OrderEntries.Remove(orderEntry);
                 await _db.SaveChangesAsync();
 
-                TempData["purchaseentry"] = "You have successfully deleted " + purchaseEntry.Name + " Purchase Entry!!!";
+                TempData["orderentry"] = "You have successfully deleted " + orderEntry.Name + " Order Entry!!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return Json(new { success = true });
@@ -176,11 +178,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
-        #region Purchase Entries Exists
+        #region Order Entries Exists
 
-        private bool PurchaseEntriesExists(int id)
+        private bool OrderEntriesExists(int id)
         {
-            return _db.PurchaseEntries.Any(p => p.PurchaseEntryId == id);
+            return _db.OrderEntries.Any(p => p.OrderEntryId == id);
         }
 
         #endregion

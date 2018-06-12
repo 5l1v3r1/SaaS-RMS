@@ -42,7 +42,7 @@ namespace SaaS_RMS.Models.Entities.Inventory
         [Display(Name = "Purchase Entry")]
         public int PurchaseEntryId { get; set; }
         [ForeignKey("PurchaseEntryId")]
-        public virtual PurchaseEntry PurchaseEntry { get; set; }
+        public virtual OrderEntry OrderEntry { get; set; }
 
         [Display(Name = "Product Detail")]
         public int ProductDetailId { get; set; }

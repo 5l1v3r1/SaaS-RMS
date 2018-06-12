@@ -41,7 +41,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             }
 
             var purchase = await _db.Purchases.Include(p => p.ProductDetail)
-                       .Include(p => p.PurchaseEntry)
+                       .Include(p => p.OrderEntry)
                        .ToListAsync();
 
             if (purchase == null)
