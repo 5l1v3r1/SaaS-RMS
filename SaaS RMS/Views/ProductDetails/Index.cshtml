@@ -37,7 +37,7 @@
     }
     <div class="page-title">
         <div class="title_left">
-            <h3>STOCK DETAILS</h3>
+            <h3>PRODUCT DETAILS</h3>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -52,10 +52,10 @@
                                 S/N
                             </th>
                             <th>
-                                Category Name
+                                Category
                             </th>
                             <th>
-                                Product Name
+                                Product
                             </th>
                             <th>
                                 Vendor
@@ -64,7 +64,7 @@
                                 Price Per Unit
                             </th>
                             <th>
-                                Avaliable Quantity
+                                Available Quantity
                             </th>
                             <th>
                                 Unit Measurement
@@ -92,7 +92,7 @@
                                     @Html.DisplayFor(modelItem => item.Amount)
                                 </td>
                                 <th>
-                                    @Html.DisplayFor(modelItem => item.Product.Quantity)
+                                    @Html.DisplayFor(modelItem => item.Quantity)
                                 </th>
                                 <th>
                                     @Html.DisplayFor(modelItem => item.Meaurement)
@@ -109,16 +109,3 @@
         </div>
     </div>
 </div>
-
-    <script src="~/Admin/vendors/jquery/dist/jquery.min.js"></script>
-    <script src="~/Modal/Modal.js"></script>
-
-    <!-- modal placeholder-->
-    <div id='myModal' class='modal fade in'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id='myModalContent'>
-                </div>
-            </div>
-        </div>
-    </div>

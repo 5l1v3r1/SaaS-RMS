@@ -28,7 +28,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         #endregion
 
         #region Index
-
+        
         public async Task<IActionResult> Index()
         {
             var restaurant = _session.GetInt32("restaurantsessionid");

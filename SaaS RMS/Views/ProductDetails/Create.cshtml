@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
 }
 
+<style>
+    .centerlizer{
+        text-align:center;
+    }
+</style>
+
 <div class="page-title">
     <div class="title_left">
         <h3><strong> ADD A PRODUCT DETAIL </strong></h3>
@@ -20,7 +26,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="ProductDetailId" />
                         <div class="row">
-                            <div class="control-label col-md-2">
+                            <div class="control-label centerlizer col-md-2">
                                 <label class="control-label">Category</label>
                             </div>
                             <div class="col-md-10">
@@ -29,7 +35,7 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="control-label col-md-2">
+                            <div class="control-label centerlizer col-md-2">
                                 <label class="control-label"> Product</label>
                             </div>
                             <div class="col-md-10">
@@ -39,8 +45,8 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="control-label col-md-2">
-                                <label class="control-label col-md-2">Vendor</label>
+                            <div class="control-label centerlizer col-md-2">
+                                <label class="control-label">Vendor</label>
                             </div>
                             <div class="col-md-10">
                                 <select asp-items="ViewBag.VendorId" asp-for="VendorId" class="form-control "></select>
@@ -49,8 +55,18 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="control-label col-md-2">
-                                <label class="control-label col-md-2" asp-for="Amount"></label>
+                            <div class="control-label centerlizer col-md-2">
+                                <label class="control-label " asp-for="Quantity"></label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="Quantity" class="form-control " />
+                                <span asp-validation-for="Quantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="control-label centerlizer col-md-2">
+                                <label class="control-label" asp-for="Amount"></label>
                             </div>
                             <div class="col-md-10">
                                 <input asp-for="Amount" class="form-control " />
@@ -59,8 +75,8 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="control-label col-md-2">
-                                <label class="control-label col-md-2" asp-for="Meaurement"></label>
+                            <div class="control-label centerlizer col-md-2">
+                                <label class="control-label" asp-for="Meaurement"></label>
                             </div>
                             <div class="col-md-10">
                                 <input asp-for="Meaurement" class="form-control " />

@@ -16,8 +16,6 @@ namespace SaaS_RMS.Models.Entities.Inventory
         [Required(ErrorMessage="Name field is required!!!")]
         public string Name { get; set; }
 
-        public double Quantity { get; set; }
-
         #endregion
 
         #region Foreign Keys

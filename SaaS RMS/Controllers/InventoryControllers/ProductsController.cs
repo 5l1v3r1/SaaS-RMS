@@ -83,7 +83,6 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 if (categorysessionid != null)
                 {
                     product.CategoryId = Convert.ToInt32(categorysessionid);
-                    product.Quantity = 0;
                 }
 
                 await _db.AddAsync(product);
@@ -140,7 +139,6 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                     if (categorysessionid != null)
                     {
                         product.CategoryId = Convert.ToInt32(categorysessionid);
-                        product.Quantity = 0;
 
                         _db.Update(product);
                         await _db.SaveChangesAsync();

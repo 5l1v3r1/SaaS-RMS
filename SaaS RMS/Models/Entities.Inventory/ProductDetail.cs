@@ -12,17 +12,22 @@ namespace SaaS_RMS.Models.Entities.Inventory
         #region Data Model
 
         public int ProductDetailId { get; set; }
-        
+
+        [Display(Name = "Amount Per Unit")]
         [Required(ErrorMessage="Amount field is required!!!")]
         public double Amount { get; set; }
 
         [Required(ErrorMessage ="Measurement field is required!!!")]
         public string Meaurement { get; set; }
 
+        [Display(Name = "Available Quantity")]
+        [Required(ErrorMessage = "Quantity field is required!!!")]
+        public double Quantity { get; set; }
+
         #endregion
 
         #region Foreign Keys
-        
+
         public int VendorId { get; set; }
         [ForeignKey("VendorId")]
         public virtual Vendor Vendor { get; set; }

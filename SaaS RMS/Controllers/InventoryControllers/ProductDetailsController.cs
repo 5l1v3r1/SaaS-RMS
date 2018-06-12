@@ -110,7 +110,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
                 var productName = _db.Products.Find(productDetail.ProductId);
                  
-                TempData["productDetail"] = "You have successfully added a Product Detail for Product "+ productName.Name +" !!!";
+                TempData["productDetail"] = "You have successfully added a Product Detail for "+ productName.Name +" !!!";
                 TempData["notificationType"] = NotificationType.Success.ToString();
 
                 return RedirectToAction("Index");
