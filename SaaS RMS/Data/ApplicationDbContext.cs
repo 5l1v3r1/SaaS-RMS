@@ -47,7 +47,7 @@ namespace SaaS_RMS.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<OrderEntry> OrderEntries { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
         #endregion
 

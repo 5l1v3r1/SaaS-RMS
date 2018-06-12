@@ -12,7 +12,7 @@ using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.InventoryControllers
 {
-    public class PurchasesController : Controller
+    public class PurchaseOrdersController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,7 +20,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Constructor
 
-        public PurchasesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public PurchaseOrdersController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
@@ -30,8 +30,8 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #region Index
 
-        [Route("purchases/index/{PurchaseEntryId}")]
-        public async Task<IActionResult> Index(int PurchaseEntryId)
+        [Route("purchaseOrders/index/{OrderEntryId}")]
+        public async Task<IActionResult> Index(int OrderEntryId)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
 
@@ -40,27 +40,27 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return RedirectToAction("Access", "Restaurants");
             }
 
-            var purchase = await _db.Purchases.Include(p => p.ProductDetail)
+            var purchaseOrder = await _db.PurchaseOrders.Include(p => p.ProductDetail)
                        .Include(p => p.OrderEntry)
                        .ToListAsync();
 
-            if (purchase == null)
+            if (purchaseOrder == null)
             {
                 return NotFound();
             }
             else
             {
-                _session.SetInt32("purchaseentrysessionid", PurchaseEntryId);
+                _session.SetInt32("orderentrysessionid", OrderEntryId);
             }
 
-            return View(purchase);
+            return View(purchaseOrder);
         }
 
         #endregion
 
         #region Create
 
-        //GET: Purchases/Create
+        //GET: PurchaseOrder/Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -83,16 +83,16 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             }
 
             ViewBag.ProductDetails = items;
-            var purchase = new Purchase();
+            var purchase = new PurchaseOrder();
             return View(purchase);
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Purchase purchase)
+        public async Task<IActionResult> Create(PurchaseOrder purchase)
         {
-            var purchaseentryid = _session.GetInt32("purchaseentrysessionid");
+            var purchaseentryid = _session.GetInt32("orderentrysessionid");
             var restaurant = _session.GetInt32("restaurantsessionid");
             var productdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
 
@@ -127,21 +127,21 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                 return NotFound();
             }
 
-            var purchases = await _db.Purchases.SingleOrDefaultAsync(p => p.PurchaseId == id);
+            var purchaseOrder = await _db.PurchaseOrders.SingleOrDefaultAsync(p => p.PurchaseOrderId == id);
 
-            if (purchases == null)
+            if (purchaseOrder == null)
             {
                 return NotFound();
             }
 
-            return PartialView(purchases);
+            return PartialView(purchaseOrder);
         }
 
         #endregion
 
         #region Fetech Data
 
-        public JsonResult GetAmountForStock(int id)
+        public JsonResult GetAmountForProduct(int id)
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
             var productDetail = _db.ProductDetails.Where(s => s.ProductDetailId == id && s.RestaurantId == restaurant);
@@ -152,11 +152,11 @@ namespace SaaS_RMS.Controllers.InventoryControllers
 
         #endregion
 
-        #region Purchase Exists
+        #region PurchaseOrders Exists
 
         private bool PurchaseExists(int? id)
         {
-            return _db.Purchases.Any(p => p.PurchaseEntryId == id);
+            return _db.PurchaseOrders.Any(p => p.PurchaseEntryId == id);
         }
 
         #endregion

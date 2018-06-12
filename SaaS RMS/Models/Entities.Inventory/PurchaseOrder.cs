@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Inventory
 {
-    public class Purchase
+    public class PurchaseOrder
     {
         #region Model Data
 
-        public int PurchaseId { get; set; }
+        public int PurchaseOrderId { get; set; }
 
         [Required(ErrorMessage="Select a payment mode!!!")]
         [Display(Name="Payment Mode")]
