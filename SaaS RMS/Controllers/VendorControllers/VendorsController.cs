@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Entities.Inventory;
+using SaaS_RMS.Models.Entities.Vendor;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.InventoryControllers
+namespace SaaS_RMS.Controllers.VendorControllers
 {
     public class VendorsController : Controller
     {

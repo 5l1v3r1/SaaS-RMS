@@ -10,6 +10,7 @@ using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
+using SaaS_RMS.Models.Entities.Vendor;
 
 namespace SaaS_RMS.Data
 {
@@ -41,13 +42,18 @@ namespace SaaS_RMS.Data
         #endregion
 
         #region RESTAURANT INVENTORY DATA CONTEXT
-
-        public DbSet<Vendor> Vendors { get; set; }
+        
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<OrderEntry> OrderEntries { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+
+        #endregion
+
+        #region VENDOR DATA CONTEXT
+
+        public DbSet<Vendor> Vendors { get; set; }
 
         #endregion
 

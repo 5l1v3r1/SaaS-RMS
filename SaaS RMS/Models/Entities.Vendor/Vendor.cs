@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SaaS_RMS.Models.Entities.Inventory
+namespace SaaS_RMS.Models.Entities.Vendor
 {
     public class Vendor
     {

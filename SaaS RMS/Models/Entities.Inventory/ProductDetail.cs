@@ -30,7 +30,7 @@ namespace SaaS_RMS.Models.Entities.Inventory
 
         public int VendorId { get; set; }
         [ForeignKey("VendorId")]
-        public virtual Vendor Vendor { get; set; }
+        public virtual Vendor.Vendor Vendor { get; set; }
 
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
