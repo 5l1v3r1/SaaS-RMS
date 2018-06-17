@@ -54,6 +54,7 @@ namespace SaaS_RMS.Data
         #region VENDOR DATA CONTEXT
 
         public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<CompanyVendor> CompanyVendors { get; set; }
 
         #endregion
 
