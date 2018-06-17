@@ -93,14 +93,25 @@ namespace SaaS_RMS.Controllers.InventoryControllers
         public async Task<IActionResult> Create(PurchaseOrder purchase)
         {
             var purchaseentryid = _session.GetInt32("orderentrysessionid");
-            var restaurant = _session.GetInt32("restaurantsessionid");
-            var productdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
+            //var restaurant = _session.GetInt32("restaurantsessionid");
+            //var productdetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant);
 
             if (ModelState.IsValid)
             {
                 if (purchaseentryid != null)
                 {
+
+                    //var detail = _db.ProductDetails.Find(purchase.ProductDetailId);
+                    //var totalPrice = purchase.Quantity * detail.Amount;
+                    //var balance = totalPrice - purchase.Payment;
+
+                    var id = purchase.ProductDetailId;
+
                     purchase.PurchaseEntryId = Convert.ToInt32(purchaseentryid);
+                    //purchase.Balance = balance;
+                    //purchase.TotalPrice = totalPrice;
+
+
 
                     await _db.AddAsync(purchase);
                     await _db.SaveChangesAsync();
@@ -111,7 +122,7 @@ namespace SaaS_RMS.Controllers.InventoryControllers
                     return Json(new { success = true });
                 }
             }
-            ViewBag.ProductDetail = new SelectList(productdetails, "ProductDetaillId", "Product.Name");
+            //ViewBag.ProductDetail = new SelectList(productdetails, "ProductDetaillId", "Product.Name");
             return RedirectToAction("Index", new { PurchaseEntryId = purchaseentryid });
         }
 
