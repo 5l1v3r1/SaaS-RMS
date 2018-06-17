@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,6 +29,8 @@ namespace SaaS_RMS.Models.Entities.Vendor
         public string OfficeNumber { get; set; }
 
         public string VendorItem { get; set; }
+
+        public VendorType VendorType { get; set; }
 
         #endregion
 

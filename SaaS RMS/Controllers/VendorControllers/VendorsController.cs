@@ -80,6 +80,8 @@ namespace SaaS_RMS.Controllers.VendorControllers
                         return RedirectToAction("Index");
                     }
 
+                    
+
                     await _db.AddAsync(vendor);
                     await _db.SaveChangesAsync();
 
