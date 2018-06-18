@@ -5,16 +5,17 @@
     Layout = "~/Views/Shared/LandingLayout/_LandingLayout.cshtml";
 }
 
-
 <style>
     .pad {
         padding-top: 20px;
     }
-    .morepadding{
+
+    .morepadding {
         padding-top: 20px;
     }
-    .back{
-        background-color:  ActiveBorder;
+
+    .back {
+        background-color: ActiveBorder;
     }
 </style>
 
@@ -33,6 +34,10 @@
 
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                    @if (ViewData["doublename"] != null && Convert.ToString(ViewData["doublename"]) != " ")
+                    {
+                        <h5 style="padding-left:1em;" class="text-danger">@ViewData["doublename"]</h5>
+                    }
                     <input asp-for="Name" id="input_name" class="form-control form_input input_message input_ph" placeholder="Name" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
@@ -48,21 +53,21 @@
                     <span asp-validation-for="ContactNumber" class="text-danger "></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12 col-xs-12 form-group">
                     <textarea asp-for="Address" id="input_motto" class="form-control form_input input_message input_ph" placeholder="Address"></textarea>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12 col-ms-12 ">
                     <textarea asp-for="VendorItem" id="input_Cnumber" class="form-control form_input input_message input_ph" placeholder="What do you offer?"></textarea>
                     <span asp-validation-for="VendorItem" class="text-danger "></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-6 col-ms-6 ">
                     <input asp-for="Password" id="input_ContactNumber" class="form-control form_input input_message input_ph" placeholder="Password" />
@@ -83,4 +88,6 @@
     </form>
 </div>
 
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

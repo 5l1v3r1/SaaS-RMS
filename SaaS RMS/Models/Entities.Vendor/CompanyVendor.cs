@@ -29,8 +29,7 @@ namespace SaaS_RMS.Models.Entities.Vendor
 
         [Required(ErrorMessage ="Field is required!!!")]
         public string VendorItem { get; set; }
-
-        [Required]
+        
         public string Request { get; set; }
 
         [Required(ErrorMessage ="Password field is required")]
