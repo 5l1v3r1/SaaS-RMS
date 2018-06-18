@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,7 +78,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
                         return RedirectToAction("Index");
                     }
 
-                    
+                    vendor.VendorType = VendorType.Created;
 
                     await _db.AddAsync(vendor);
                     await _db.SaveChangesAsync();
@@ -137,7 +135,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
                     if (restaurant != null)
                     {
                         vendor.RestaurantId = restaurant;
-
+                        vendor.VendorType = VendorType.Created;
                         _db.Update(vendor);
                         await _db.SaveChangesAsync();
                     }

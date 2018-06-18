@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SaaS_RMS.Models.Entities.Inventory.Vendor>
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.Vendor.Vendor>
 @using SaaS_RMS.Models.Enums;
 
 @{
@@ -64,6 +64,12 @@
                                 @Html.DisplayNameFor(model => model.OfficeNumber)
                             </th>
                             <th>
+                                Vendor Type
+                            </th>
+                            <th>
+                                Vendor Item
+                            </th>
+                            <th>
                                 Actions
                             </th>
                         </tr>
@@ -84,6 +90,12 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.OfficeNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VendorType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VendorItem)
                             </td>
                             <td>
                                 <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.VendorId"><i class="fa fa-pencil-square-o "></i> Edit</a>
