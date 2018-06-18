@@ -14,7 +14,7 @@
         padding-top: 20px;
     }
     .back{
-        background-color:  whitesmoke;
+        background-color:  ActiveBorder;
     }
 </style>
 
@@ -22,6 +22,7 @@
     <form asp-action="Register" class="form-horizontal form-label-left back">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="container contact_container">
+
             <div class="row">
                 <div class=" col-md-12 col-sm-12 col-xs-12 text-center">
                     <hr />
@@ -29,12 +30,14 @@
                     <hr />
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                     <input asp-for="Name" id="input_name" class="form-control form_input input_message input_ph" placeholder="Name" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-6 col-ms-6 ">
                     <input asp-for="OfficeNumber" id="input_OfficeNumber" class="form-control form_input input_message input_ph" placeholder="Office Number" />
@@ -45,18 +48,32 @@
                     <span asp-validation-for="ContactNumber" class="text-danger "></span>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-12 col-xs-12 form-group">
                     <textarea asp-for="Address" id="input_motto" class="form-control form_input input_message input_ph" placeholder="Address"></textarea>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-12 col-ms-12 ">
                     <textarea asp-for="VendorItem" id="input_Cnumber" class="form-control form_input input_message input_ph" placeholder="What do you offer?"></textarea>
                     <span asp-validation-for="VendorItem" class="text-danger "></span>
                 </div>
             </div>
+            
+            <div class="row">
+                <div class="col-md-6 col-ms-6 ">
+                    <input asp-for="Password" id="input_ContactNumber" class="form-control form_input input_message input_ph" placeholder="Password" />
+                    <span asp-validation-for="Password" class="text-danger "></span>
+                </div>
+                <div class="col-md-6 col-ms-6 ">
+                    <input asp-for="ConfirmPassword" id="input_ContactNumber" class="form-control form_input input_message input_ph" placeholder="Confirm Password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger "></span>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12 col-ms-12 form-group">
                     <input type="submit" value="Register" class="btn btn-primary pull-right" />

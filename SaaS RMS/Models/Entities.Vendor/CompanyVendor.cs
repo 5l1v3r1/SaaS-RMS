@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace SaaS_RMS.Models.Entities.Vendor
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage ="Password doenst match")]
         public string ConfirmPassword { get; set; }
+
+        public VendorType VendorType { get; set; }
 
         #endregion
     }
