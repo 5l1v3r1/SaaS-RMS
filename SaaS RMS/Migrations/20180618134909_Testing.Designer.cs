@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180618134909_Testing")]
+    partial class Testing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -836,9 +837,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("Address")
                         .IsRequired();
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired();
-
                     b.Property<string>("ContactNumber")
                         .IsRequired();
 
@@ -846,9 +844,6 @@ namespace SaaS_RMS.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("OfficeNumber");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
 
                     b.Property<string>("Request")
                         .IsRequired();

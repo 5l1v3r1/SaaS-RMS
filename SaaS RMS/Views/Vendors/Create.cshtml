@@ -4,6 +4,12 @@
     ViewData["Title"] = "Create";
 }
 
+<style>
+    .centerlizer {
+        text-align: center;
+    }
+</style>
+
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -17,50 +23,50 @@
     <div class="modal-body">
         <div class="form-horizontal">
             <div class="row">
-                <div class="control-label col-md-2">
+                <div class="control-label centerlizer col-md-3">
                     <label asp-for="Name"></label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input asp-for="Name" class="form-control " />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
+                <div class="control-label centerlizer col-md-3">
                     <label>Tel. Number</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input asp-for="ContactNumber" class="form-control " />
                     <span asp-validation-for="ContactNumber" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label>Tel. Number 2</label>
+                <div class="control-label centerlizer col-md-3">
+                    <label class="control-label">Tel. Number 2</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input asp-for="OfficeNumber" class="form-control " />
                     <span asp-validation-for="OfficeNumber" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Address"></label>
+                <div class="control-label centerlizer col-md-3">
+                    <label class="control-label" asp-for="Address"></label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <textarea asp-for="Address" class="form-control "></textarea>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="VendorItem"></label>
+                <div class="control-label centerlizer col-md-3">
+                    <label class="control-label">Selling Item?</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <textarea asp-for="VendorItem" class="form-control "></textarea>
                     <span asp-validation-for="VendorItem" class="text-danger"></span>
                 </div>

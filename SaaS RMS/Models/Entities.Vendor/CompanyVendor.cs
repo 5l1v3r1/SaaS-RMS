@@ -32,6 +32,15 @@ namespace SaaS_RMS.Models.Entities.Vendor
         [Required]
         public string Request { get; set; }
 
+        [Required(ErrorMessage ="Password field is required")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Confirm Password field is required")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage ="Password doenst match")]
+        public string ConfirmPassword { get; set; }
+
         #endregion
     }
 }

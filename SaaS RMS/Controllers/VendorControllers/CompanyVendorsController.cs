@@ -34,34 +34,49 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         // GET: CompanyVendors/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var companyVendor = await _db.CompanyVendors
-                .SingleOrDefaultAsync(m => m.CompanyVendorId == id);
-            if (companyVendor == null)
-            {
-                return NotFound();
-            }
+        //    var companyVendor = await _db.CompanyVendors
+        //        .SingleOrDefaultAsync(m => m.CompanyVendorId == id);
+        //    if (companyVendor == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(companyVendor);
-        }
+        //    return View(companyVendor);
+        //}
 
-        // GET: CompanyVendors/Create
-        public IActionResult Create()
+
+        #region Register
+
+        //GET: Vendors/Register
+        [HttpGet]
+        [Route("Vendors/Register")]
+        public IActionResult Register()
         {
             return View();
         }
 
-        // POST: CompanyVendors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST: RegisterAsAVendor
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(CompanyVendor companyVendor)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Add(companyVendor);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("", "");
+            }
+            return View(companyVendor);
+        }
+
+        #endregion
         public async Task<IActionResult> Create([Bind("CompanyVendorId,Name,Address,ContactNumber,OfficeNumber,VendorItem,Request")] CompanyVendor companyVendor)
         {
             if (ModelState.IsValid)
