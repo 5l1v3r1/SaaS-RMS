@@ -166,6 +166,11 @@ namespace SaaS_RMS.Controllers.VendorControllers
         {
             var companyvendorid = _session.GetInt32("companyvendorid");
 
+            if(companyvendorid == null)
+            {
+                return RedirectToAction("SignIn", "CompanyVendors");
+            }
+
             var _companyVendor = await _db.CompanyVendors.FindAsync(companyvendorid);
 
             ViewData["companyvendorname"] = _companyVendor.Name;
@@ -187,5 +192,17 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
         #endregion
 
+        #region Sign Out
+
+        [Route("Vendor/SignOut")]
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult SignOut()
+        {
+            _session.Remove("companyvendorid");
+            return RedirectToAction("SignIn", "CompanyVendors");
+        }
+
+        #endregion
     }
 }
