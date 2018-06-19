@@ -283,6 +283,12 @@ html , body{
     margin: 0;
     font-weight: 300
 }
+.profile_info h1 {
+    font-size: 20px;
+    color: #ECF0F1;
+    margin: 0;
+    font-weight: 300
+}
 .profile.img_2 {
     text-align: center
 }

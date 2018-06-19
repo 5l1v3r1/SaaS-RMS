@@ -92,5 +92,15 @@ namespace SaaS_RMS.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        internal Task FindAsync(int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal object Find(int? companyvendorid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

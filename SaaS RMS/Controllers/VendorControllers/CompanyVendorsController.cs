@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Vendor;
 
@@ -92,35 +93,45 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         //POST:
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[AllowAnonymous]
-        //public IActionResult SignIn(CompanyVendor companyVendor)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var _companyVendor = _db.CompanyVendors.Where(cv => cv.Name == companyVendor.Name).SingleOrDefault();
-        //            var _password = BCrypt.Net.BCrypt.EnhancedVerify(companyVendor.Password, _companyVendor.Password);
-        //            if (_password == true)
-        //            {
-        //                _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
-        //                ModelState.Clear();
-        //                return RedirectToAction("Dashboard", "CompanyVendor");
-        //            }
-        //            else
-        //            {
-        //                ViewData["mismatch"] = "The Vendor Name and Password do not match";
-        //            }
-        //        }
-        //        return View();
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [Route("Vendor/SignIn")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public IActionResult SignIn(CompanyVendor companyVendor)
+        {
+            try
+            {
+                var _companyVendor = _db.CompanyVendors.Where(cv => cv.Name == companyVendor.Name && cv.Password == companyVendor.Password).SingleOrDefault();
+                if (_companyVendor != null)
+                {
+                    _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
+
+                    ModelState.Clear();
+                    return RedirectToAction("Dashboard", "CompanyVendors");
+                }
+                else
+                {
+                    ViewData["mismatch"] = "The Vendor Name and Password do not match";
+                }
+                //var _password = BCrypt.Net.BCrypt.EnhancedVerify(companyVendor.Password, _companyVendor.Password);
+                //if (_password == true)
+                //{
+                //    _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
+                //    ModelState.Clear();
+                //    return RedirectToAction("Dashboard", "CompanyVendor");
+                //}
+                //else
+                //{
+                //    ViewData["mismatch"] = "The Vendor Name and Password do not match";
+                //}
+                
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         #endregion
 
@@ -128,11 +139,24 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
         [Route("Vendor/Dashboard")]
         [HttpGet]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
+            var companyvendorid = _session.GetInt32("companyvendorid");
+
+            if (companyvendorid == null)
+            {
+                return RedirectToAction("signIn", "CompanyVendors");
+            }
+
+            var _companyVendor = await _db.CompanyVendors.FindAsync(companyvendorid);
+            ViewData["companyvendorname"] = _companyVendor.Name;
+
+
             return View();
         }
         
         #endregion
+
+
     }
 }
