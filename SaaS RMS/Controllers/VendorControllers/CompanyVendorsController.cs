@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SaaS_RMS.Data;
@@ -28,6 +29,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
         #region Register
 
         //GET: CompanyVendor/Register
+        [Route("Vendor/Register")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -36,6 +38,8 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
         //POST: 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(CompanyVendor companyVendor)
         {
             try
@@ -48,9 +52,21 @@ namespace SaaS_RMS.Controllers.VendorControllers
                     }
                     else
                     {
-                        await _db.CompanyVendors.AddAsync(companyVendor);
+                        var _companyVendor = new CompanyVendor
+                        {
+                            Name = companyVendor.Name,
+                            Address = companyVendor.Address,
+                            ContactNumber = companyVendor.ContactNumber,
+                            OfficeNumber = companyVendor.OfficeNumber,
+                            VendorType = Models.Enums.VendorType.Registered,
+                            //Password = BCrypt.Net.BCrypt.EnhancedHashPassword(companyVendor.Password),
+                            //ConfirmPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(companyVendor.ConfirmPassword)
+                        };
+
+                        await _db.CompanyVendors.AddAsync(_companyVendor);
                         await _db.SaveChangesAsync();
-                        return RedirectToAction("Restaurant", "Access");
+                        ModelState.Clear();
+                        return RedirectToAction("SignIn", "CompanyVendor");
                     }
 
                     return View();
@@ -63,6 +79,60 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
             return View();
         }
+        #endregion
+
+        #region SignIn
+
+        //GET: CompanyVendor/SignIn
+        [Route("Vendor/SignIn")]
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        //POST:
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[AllowAnonymous]
+        //public IActionResult SignIn(CompanyVendor companyVendor)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var _companyVendor = _db.CompanyVendors.Where(cv => cv.Name == companyVendor.Name).SingleOrDefault();
+        //            var _password = BCrypt.Net.BCrypt.EnhancedVerify(companyVendor.Password, _companyVendor.Password);
+        //            if (_password == true)
+        //            {
+        //                _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
+        //                ModelState.Clear();
+        //                return RedirectToAction("Dashboard", "CompanyVendor");
+        //            }
+        //            else
+        //            {
+        //                ViewData["mismatch"] = "The Vendor Name and Password do not match";
+        //            }
+        //        }
+        //        return View();
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
+
+        #endregion
+
+        #region Dashboard
+
+        [Route("Vendor/Dashboard")]
+        [HttpGet]
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+        
         #endregion
     }
 }

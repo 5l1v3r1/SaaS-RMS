@@ -8,6 +8,6 @@ namespace SaaS_RMS.Models.Enums
 {
     public enum VendorType
     {
-        [Display(Name="Self Created")] Created, Accept, Declined
+        [Display(Name="Self Created")] Created, Accept, Declined, Registered
     }
 }
