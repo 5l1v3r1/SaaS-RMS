@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Vendor;
 
@@ -154,9 +155,37 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
             return View();
         }
-        
+
         #endregion
 
+        #region Profile
+
+        [HttpGet]
+        [Route("Vendor/Profile")]
+        public async Task<IActionResult> Profile()
+        {
+            var companyvendorid = _session.GetInt32("companyvendorid");
+
+            var _companyVendor = await _db.CompanyVendors.FindAsync(companyvendorid);
+
+            ViewData["companyvendorname"] = _companyVendor.Name;
+
+            if (companyvendorid == null)
+            {
+                return NotFound();
+            }
+
+            var profile = await _db.CompanyVendors.SingleOrDefaultAsync(cv => cv.CompanyVendorId == companyvendorid);
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return View(profile);
+        }
+
+        #endregion
 
     }
 }
