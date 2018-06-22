@@ -17,6 +17,18 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -73,6 +85,27 @@
                             <div class="col-md-10">
                                 <textarea asp-for="VendorItem" class="form-control"></textarea>
                                 <span asp-validation-for="VendorItem" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <h2> Change Password</h2>
+                        <div class="row">
+                            <div class="control-label col-md-2">
+                                <label>New Password</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="Password" class="form-control " />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="control-label col-md-2">
+                                <label>Confirm Password</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="ConfirmPassword" class="form-control " />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
                         </div>
                     </div>

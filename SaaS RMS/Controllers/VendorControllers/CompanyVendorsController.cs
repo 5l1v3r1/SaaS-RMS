@@ -195,7 +195,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
         #region Sign Out
 
         [Route("Vendor/SignOut")]
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult SignOut()
         {
