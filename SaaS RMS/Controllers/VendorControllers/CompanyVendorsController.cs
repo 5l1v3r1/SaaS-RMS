@@ -201,12 +201,28 @@ namespace SaaS_RMS.Controllers.VendorControllers
                 return NotFound();
             }
 
+            var x = _db.CompanyVendors.Find(companyvendorid);
+            
+            
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    companyVendor.VendorType = Models.Enums.VendorType.Registered;
-                    _db.Update(companyVendor);
+                    var _companyVendor = new CompanyVendor
+                    {
+                        Name = companyVendor.Name,
+                        Address = companyVendor.Address,
+                        OfficeNumber = companyVendor.OfficeNumber,
+                        ContactNumber = companyVendor.ContactNumber,
+                        VendorItem = companyVendor.VendorItem,
+                        VendorType = VendorType.Registered,
+                        Password = x.Password,
+                        ConfirmPassword = x.ConfirmPassword
+
+                    };
+                    
+                    _db.Update(_companyVendor);
                     await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -225,6 +241,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
                 return View("Dashboard");
             }
+
             return RedirectToAction("Dashboard");
 
         }
@@ -242,6 +259,67 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         #endregion
+
+        #region Testing
+
+        // GET: CompanyVendors1/Edit/5
+        public async Task<IActionResult> Edit()
+        {
+            var companyvendorid = _session.GetInt32("companyvendorid");
+            int? id = companyvendorid;
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var companyVendor = await _db.CompanyVendors.SingleOrDefaultAsync(m => m.CompanyVendorId == id);
+            if (companyVendor == null)
+            {
+                return NotFound();
+            }
+            return View(companyVendor);
+        }
+
+        // POST: CompanyVendors1/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("CompanyVendorId,Name,Address,ContactNumber,OfficeNumber,VendorItem,Request,Password,ConfirmPassword,VendorType")] CompanyVendor companyVendor)
+        {
+            var companyvendorid = _session.GetInt32("companyvendorid");
+            int? id = companyvendorid;
+            if (id != companyVendor.CompanyVendorId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    companyVendor.VendorType = VendorType.Registered;
+                    _db.Update(companyVendor);
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CompanyVendorExists(companyVendor.CompanyVendorId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(SignIn));
+            }
+            return View(companyVendor);
+        }
+
+        #endregion
+
 
         #region CompanyVendor Exists
 
