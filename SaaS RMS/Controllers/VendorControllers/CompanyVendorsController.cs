@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Vendor;
+using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.VendorControllers
 {
@@ -40,8 +41,8 @@ namespace SaaS_RMS.Controllers.VendorControllers
 
         //POST: 
         [HttpPost]
+        [Route("Vendor/Register")]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public async Task<IActionResult> Register(CompanyVendor companyVendor)
         {
             try
@@ -61,14 +62,16 @@ namespace SaaS_RMS.Controllers.VendorControllers
                             ContactNumber = companyVendor.ContactNumber,
                             OfficeNumber = companyVendor.OfficeNumber,
                             VendorType = Models.Enums.VendorType.Registered,
-                            //Password = BCrypt.Net.BCrypt.EnhancedHashPassword(companyVendor.Password),
-                            //ConfirmPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(companyVendor.ConfirmPassword)
+                            Password = BCrypt.Net.BCrypt.HashPassword(companyVendor.Password),
+                            ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(companyVendor.ConfirmPassword),
+                            VendorItem = companyVendor.VendorItem,
+
                         };
 
                         await _db.CompanyVendors.AddAsync(_companyVendor);
                         await _db.SaveChangesAsync();
                         ModelState.Clear();
-                        return RedirectToAction("SignIn", "CompanyVendor");
+                        return RedirectToAction("SignIn", "CompanyVendors");
                     }
 
                     return View();
@@ -102,11 +105,12 @@ namespace SaaS_RMS.Controllers.VendorControllers
         {
             try
             {
-                var _companyVendor = _db.CompanyVendors.Where(cv => cv.Name == companyVendor.Name && cv.Password == companyVendor.Password).SingleOrDefault();
-                if (_companyVendor != null)
+                var _companyVendor = _db.CompanyVendors.Where(cv => cv.Name == companyVendor.Name).SingleOrDefault();
+
+                var _password = BCrypt.Net.BCrypt.Verify(companyVendor.Password, _companyVendor.Password);
+                if (_password == true)
                 {
                     _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
-
                     ModelState.Clear();
                     return RedirectToAction("Dashboard", "CompanyVendors");
                 }
@@ -114,18 +118,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
                 {
                     ViewData["mismatch"] = "The Vendor Name and Password do not match";
                 }
-                //var _password = BCrypt.Net.BCrypt.EnhancedVerify(companyVendor.Password, _companyVendor.Password);
-                //if (_password == true)
-                //{
-                //    _session.SetInt32("companyvendorid", _companyVendor.CompanyVendorId);
-                //    ModelState.Clear();
-                //    return RedirectToAction("Dashboard", "CompanyVendor");
-                //}
-                //else
-                //{
-                //    ViewData["mismatch"] = "The Vendor Name and Password do not match";
-                //}
-                
+
                 return View();
             }
             catch
@@ -190,6 +183,51 @@ namespace SaaS_RMS.Controllers.VendorControllers
             return View(profile);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Vendor/Profile")]
+        public async Task<IActionResult> Profile(CompanyVendor companyVendor)
+        {
+            var companyvendorid = _session.GetInt32("companyvendorid");
+
+            if (companyvendorid == null)
+            {
+                return RedirectToAction("Signin", "CompanyVendors");
+            }
+
+            if (companyvendorid != companyVendor.CompanyVendorId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    companyVendor.VendorType = Models.Enums.VendorType.Registered;
+                    _db.Update(companyVendor);
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CompanyVendorExists(companyVendor.CompanyVendorId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                TempData["companyvendor"] = "Profile Updated!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return View("Dashboard");
+            }
+            return RedirectToAction("Dashboard");
+
+        }
         #endregion
 
         #region Sign Out
@@ -204,5 +242,15 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         #endregion
+
+        #region CompanyVendor Exists
+
+        private bool CompanyVendorExists(int id)
+        {
+            return _db.CompanyVendors.Any(b => b.CompanyVendorId == id);
+        }
+
+        #endregion
+
     }
 }
