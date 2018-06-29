@@ -22,19 +22,17 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_content">
-                <form asp-action="Profile" role="form" enctype="multipart/form-data">
+                <form asp-action="Profile" onsubmit="return(validate());" name="myForm" role="form" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="CompanyVendorId" />
-                    <input asp-for="Password" type="hidden" />
-                    <input asp-for="ConfirmPassword" type="hidden" />
-
+                    
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="control-label centerlizer col-md-2 col-sm-2">
                                 <label class="control-label " asp-for="Name"></label>
                             </div>
                             <div class="col-md-10 col-sm-10">
-                                <input asp-for="Name" class="form-control " />
+                                <input asp-for="Name" class="form-control" name="name" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                         </div>
@@ -44,7 +42,7 @@
                                 <label>Contact Number</label>
                             </div>
                             <div class="col-md-10">
-                                <input asp-for="ContactNumber" class="form-control " />
+                                <input asp-for="ContactNumber" class="form-control" name="contactnumber" />
                                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
                             </div>
                         </div>
@@ -54,7 +52,7 @@
                                 <label>Office Number</label>
                             </div>
                             <div class="col-md-10">
-                                <input asp-for="OfficeNumber" class="form-control " />
+                                <input asp-for="OfficeNumber" class="form-control" name="officenumber"/>
                                 <span asp-validation-for="OfficeNumber" class="text-danger"></span>
                             </div>
                         </div>
@@ -64,7 +62,7 @@
                                 <label asp-for="Address"></label>
                             </div>
                             <div class="col-md-10">
-                                <textarea asp-for="Address" class="form-control "></textarea>
+                                <textarea asp-for="Address" class="form-control" name="address"></textarea>
                                 <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
                         </div>
@@ -74,7 +72,7 @@
                                 <label>What do you offer</label>
                             </div>
                             <div class="col-md-10">
-                                <textarea asp-for="VendorItem" class="form-control"></textarea>
+                                <textarea asp-for="VendorItem" class="form-control" name="vendoritem"></textarea>
                                 <span asp-validation-for="VendorItem" class="text-danger"></span>
                             </div>
                         </div>
@@ -95,4 +93,37 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Landing/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+   <!--
+        // Form validation code will come here.
+        function validate() {
+
+            if (document.myForm.name.value == "") {
+                alert("Please provide your name!");
+                document.myForm.name.focus();
+                return false;
+            }
+
+            if (document.myForm.address.value == "") {
+                alert("Please provide your address!");
+                document.myForm.address.focus();
+                return false;
+            }
+
+            if (document.myForm.contactnumber.value == "") {
+                alert("Please provide your contact number!");
+                document.myForm.contactnumber.focus();
+                return false;
+            }
+
+            if (document.myForm.vendoritem.value == "") {
+                alert("What do you offer field is required!");
+                document.myForm.vendoritem.focus();
+                return false;
+            }
+            return (true);
+        }
+       //-->
+    </script>
 }
