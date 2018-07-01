@@ -67,7 +67,8 @@ namespace SaaS_RMS.Controllers.InventoryControllers
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             var productDetails = _db.ProductDetails.Where(s => s.RestaurantId == restaurant).ToArray();
-            
+
+            ViewData["orderentrysessionid"] = _session.GetInt32("orderentrysessionid");
 
             var length = productDetails.Length;
             List<SelectListItem> items = new List<SelectListItem>();
