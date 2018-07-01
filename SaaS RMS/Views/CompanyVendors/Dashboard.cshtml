@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SaaS_RMS.Models.Entities.Vendor.CompanyVendor>
+@using SaaS_RMS.Models.Enums
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -6,7 +7,34 @@
 }
 
 <!-- page content -->
-<div role="main">
+<div role="main" style="padding-top:55px;">
+    @if (TempData["companyvendor"] != null)
+    {
+        if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
+        {
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["companyvendor"]
+            </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["companyvendor"]
+            </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["companyvendor"]
+            </div>
+        }
+
+    }
+
+
     <!-- top tiles -->
     <div class="row tile_count">
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
