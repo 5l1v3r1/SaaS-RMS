@@ -94,7 +94,7 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                     if (_password == true)
                     {
                         _session.SetInt32("customersessionid", _customer.CustomerId);
-                        return RedirectToAction("Home", "Landing");
+                        return RedirectToAction("Landing", "Home");
                     }
                     else
                     {
@@ -114,5 +114,7 @@ namespace SaaS_RMS.Controllers.CustomerControllers
         }
 
         #endregion
+
+
     }
 }
