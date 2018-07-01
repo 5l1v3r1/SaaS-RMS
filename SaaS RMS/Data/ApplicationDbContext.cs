@@ -11,6 +11,7 @@ using SaaS_RMS.Models.Entities.Inventory;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Entities.Vendor;
+using SaaS_RMS.Models.Entities.Customer;
 
 namespace SaaS_RMS.Data
 {
@@ -81,6 +82,12 @@ namespace SaaS_RMS.Data
         #region LANDING PAGE MODELS
 
         public DbSet<LandingInfo> LandingInfo { get; set; }
+
+        #endregion
+
+        #region CUSTOMER DATA CONTEXT
+
+        public DbSet<Customer> Customer { get; set; }
 
         #endregion
 

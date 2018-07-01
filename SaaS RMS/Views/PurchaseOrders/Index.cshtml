@@ -45,6 +45,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_content">
+                    <a asp-action="Index" asp-controller="OrderEntries" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-backward"></i> BACK</a>
                     <a asp-action="Create" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD</a>
                     <table class="table" id="myTable">
                         <tr>
@@ -78,36 +79,36 @@
                         </tr>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @(x++)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ProductDetail.Product.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Quantity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Mode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Payment)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Balance)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DueDate)
-                            </td>
-                            <td>
-                                <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PurchaseOrderId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PurchaseOrderId"><i class="fa fa-trash-o "></i> Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @(x++)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductDetail.Product.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Mode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Payment)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Balance)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DueDate)
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PurchaseOrderId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PurchaseOrderId"><i class="fa fa-trash-o "></i> Delete</a>
+                                </td>
+                            </tr>
                         }
                     </table>
                 </div>
