@@ -49,6 +49,9 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                     }
                     else
                     {
+                        customer.Password = BCrypt.Net.BCrypt.HashPassword(customer.Password);
+                        customer.ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(customer.ConfirmPassword);
+
                         await _db.Customer.AddAsync(customer);
                         await _db.SaveChangesAsync();
 
@@ -66,6 +69,50 @@ namespace SaaS_RMS.Controllers.CustomerControllers
 
         #endregion
 
+        #region SignIn
 
+        //GET: Customers/Signin
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SignIn(Customer customer)
+        {
+            try
+            {
+                var _customer = _db.Customer.Where(c => c.Email == customer.Email).SingleOrDefault();
+
+                if (_customer != null)
+                {
+                    var _password = BCrypt.Net.BCrypt.Verify(customer.Password, _customer.Password);
+
+                    if (_password == true)
+                    {
+                        _session.SetInt32("customersessionid", _customer.CustomerId);
+                        return RedirectToAction("Home", "Landing");
+                    }
+                    else
+                    {
+                        ViewData["mismatch"] = "Email and Password do not match";
+                    }
+                }
+                else
+                {
+                    ViewData["mismatch"] = "Email doesn't exist";
+                }
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,0 +1,139 @@
+﻿@model SaaS_RMS.Models.Entities.Customer.Customer
+
+@{
+    ViewData["Title"] = "SignIn";
+}
+
+<form class="form-login" asp-action="SignIn" role="form">
+    <h2 class="form-login-heading"> VENDOR SIGN IN </h2>
+    @if (ViewData["mismatch"] != null && Convert.ToString(ViewData["mismatch"]) != " ")
+    {
+        <h5 style="padding-left:1em;" class="text-danger">@ViewData["mismatch"]</h5>
+    }
+    <div class="login-wrap">
+        <input asp-for="Email" type="text" class="form-control" placeholder="Email" autofocus />
+        <br />
+
+        <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+
+        <input asp-for="FirstName" type="text" hidden />
+        <input asp-for="LastName" type="text" hidden />
+        <input asp-for="CustomerId" type="text" hidden />
+        <input asp-for="PhoneNumber" type="text" hidden />
+        <input asp-for="ConfirmPassword" type="text" hidden />
+
+
+        @*<label class="checkbox">
+                <span class="pull-right">
+                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a
+                </span>
+            </label>*@
+        <br />
+        <button class="btn btn-theme btn-block" type="submit" value="SignIn"><i class="fa fa-lock"></i> SIGN IN</button>
+        <hr />
+
+        @*<div class="login-social-link centered">
+                <p>or you can sign in via your social network</p>
+                <button class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</button>
+                <button class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</button>
+            </div>*@
+        <div class="registration">
+            Don't have an account yet?<br />
+            <a class="" asp-action="Register">
+                Create an account
+            </a>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>SignIn</h2>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SignIn">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
