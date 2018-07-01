@@ -336,7 +336,80 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         #endregion
-        
+
+        #region Index
+
+        [HttpGet]
+        [Route("Vendor/Index")]
+        public async Task <IActionResult> Index()
+        {
+            return View(await _db.CompanyVendors.ToListAsync());
+        }
+
+        #endregion
+
+        #region Add As Vendor
+
+        [HttpGet]
+        [Route("Vendor/AddAsVendor")]
+        public async Task<IActionResult> AddAsVendor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var companyVendor = await _db.CompanyVendors
+                .SingleOrDefaultAsync(cv => cv.CompanyVendorId == id);
+
+            _session.SetInt32("companyvendorid", companyVendor.CompanyVendorId);
+
+            if (companyVendor == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(companyVendor);
+        }
+
+        [HttpPost]
+        [Route("Vendor/AddAsVendor")]
+        public async Task<IActionResult> AddAsVendor(CompanyVendor companyVendor)
+        {
+            if (ModelState.IsValid)
+            {
+                var id = _session.GetInt32("companyvendorid");
+                
+
+                var x = await _db.CompanyVendors.FindAsync(Convert.ToInt32(id));
+
+                var _vendor = new Vendor
+                {
+                    Name = x.Name,
+                    Address = x.Address,
+                    ContactNumber = x.ContactNumber,
+                    OfficeNumber = x.OfficeNumber,
+                    VendorItem = x.VendorItem,
+                    VendorType = x.VendorType,
+                    RestaurantId = _session.GetInt32("restaurantsessionid"),
+                };
+
+                await _db.Vendors.AddAsync(_vendor);
+                await _db.SaveChangesAsync();
+
+                _session.Remove("companyvendorid");
+
+                TempData["companyvendor"] = "You have successfully added " + _vendor.Name + " as a new Vendor!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+
+                return Json(new { success = true });
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
         #region CompanyVendor Exists
 
         private bool CompanyVendorExists(int id)

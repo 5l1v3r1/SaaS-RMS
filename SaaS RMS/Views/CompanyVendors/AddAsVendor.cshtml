@@ -1,0 +1,41 @@
+﻿@model SaaS_RMS.Models.Entities.Vendor.CompanyVendor
+
+@{
+    ViewData["Title"] = "AddAsVendor";
+}
+
+<!--MODAL HEADER-->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3> <strong> ADD AS A VENDOR </strong> </h3>
+</div>
+
+<form asp-action="AddAsVendor">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!--MODAL BODY-->
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <h2 style="text-align: center">
+                    Are you sure you want to accept @Html.DisplayFor(model => model.Name) as your restaurant Vendors?
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL FOOTER-->
+    <div class="modal-footer">
+        <div class="row pull-right">
+            <div class="col-md-12">
+                <input type="submit" value="Yes" class="btn btn-primary" />
+                <input type="hidden" asp-for="CompanyVendorId" />
+                <a class="btn btn-danger" data-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
