@@ -45,7 +45,7 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                 {
                     if(_db.Customer.Any( c => c.Email  == customer.Email))
                     {
-                        ViewData["doublename"] = "Email already exists";
+                        ViewData["doubleemail"] = "Sorry Email already exists";
                     }
                     else
                     {
