@@ -94,6 +94,9 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                     if (_password == true)
                     {
                         _session.SetInt32("customersessionid", _customer.CustomerId);
+
+                        ViewData["checker"] = _session.GetInt32("customersessionid");
+
                         return RedirectToAction("Landing", "Home");
                     }
                     else
@@ -112,6 +115,27 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                 return View();
             }
         }
+
+        #endregion
+
+        #region Dashboard
+
+        [HttpGet]
+        public async Task<IActionResult> Dashboard()
+        {
+            var customerid = _session.GetInt32("customersessionid");
+
+            var _customer = await _db.Customer.FindAsync(customerid);
+
+            ViewData["customerfirstname"] = _customer.FirstName;
+            ViewData["customerlastname"] =  _customer.LastName;
+
+            return View();
+        }
+
+        #endregion
+
+        #region MyRegion
 
         #endregion
 
