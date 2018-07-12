@@ -125,6 +125,11 @@ namespace SaaS_RMS.Controllers.CustomerControllers
         {
             var customerid = _session.GetInt32("customersessionid");
 
+            if(customerid == null)
+            {
+                return RedirectToAction("Home", "Landing");
+            }
+
             var _customer = await _db.Customer.FindAsync(customerid);
 
             ViewData["customerfirstname"] = _customer.FirstName;
@@ -134,7 +139,7 @@ namespace SaaS_RMS.Controllers.CustomerControllers
         }
 
         #endregion
-
+        
         #region MyRegion
 
         #endregion

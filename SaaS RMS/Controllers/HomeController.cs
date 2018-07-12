@@ -48,7 +48,27 @@ namespace SaaS_RMS.Controllers
         [HttpGet]
         public async Task<IActionResult> Restaurants()
         {
-            ViewBag.StateId = new SelectList(_db.States, "StateId", "Name");
+            var restaurantLength = _db.Restaurants.ToArray();
+
+            var length = restaurantLength.Length;
+
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            for (int i = 0; i < length; i++)
+            {
+                var restaurantid = _db.Restaurants.Where(id => id.RestaurantId == restaurantLength[i].RestaurantId).SingleOrDefault();
+                var lgaid = restaurantid.LgaId;
+                var stateid = _db.States.Find(lgaid);
+
+                var name = stateid.Name;
+
+                items.Add(new SelectListItem
+                {
+                    Text = name,
+                    Value = stateid.ToString()
+                });
+            }
+            ViewBag.StateId = items;
             var landinginfo = await _db.LandingInfo.SingleOrDefaultAsync(l => l.Approval == ApprovalEnum.Apply);
             return View(landinginfo);
         }
