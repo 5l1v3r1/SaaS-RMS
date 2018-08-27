@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Customer;
+using SaaS_RMS.Services;
 
 namespace SaaS_RMS.Controllers.CustomerControllers
 {
@@ -14,13 +15,15 @@ namespace SaaS_RMS.Controllers.CustomerControllers
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private readonly IEmailSender _emailSender;
 
         #region Constructor
 
-        public CustomersController (ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CustomersController (ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
+            _emailSender = emailSender;
         }
 
         #endregion
@@ -29,18 +32,20 @@ namespace SaaS_RMS.Controllers.CustomerControllers
 
         //GET: Customers/Register
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         //POST: 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Customer customer)
+        public async Task<IActionResult> Register(Customer customer, string returnUrl = null)
         {
             try
             {
+                ViewData["ReturnUrl"] = returnUrl;
                 if (ModelState.IsValid)
                 {
                     if(_db.Customer.Any( c => c.Email  == customer.Email))
@@ -49,6 +54,7 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                     }
                     else
                     {
+                        
                         customer.Password = BCrypt.Net.BCrypt.HashPassword(customer.Password);
                         customer.ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(customer.ConfirmPassword);
 
@@ -94,6 +100,10 @@ namespace SaaS_RMS.Controllers.CustomerControllers
                     if (_password == true)
                     {
                         _session.SetInt32("customersessionid", _customer.CustomerId);
+                        _session.SetString("customerfirstname", _customer.FirstName);
+                        _session.SetString("customerlastname", _customer.LastName);
+                        _session.SetString("customeremailaddress", _customer.Email);
+                        _session.SetString("customerphonenumber", _customer.PhoneNumber);
 
                         ViewData["checker"] = _session.GetInt32("customersessionid");
 
