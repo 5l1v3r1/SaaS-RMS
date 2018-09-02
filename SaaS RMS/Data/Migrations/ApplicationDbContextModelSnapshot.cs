@@ -779,10 +779,18 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("ConfirmPassword")
                         .IsRequired();
 
+                    b.Property<int?>("CreatedBy");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateLastModified");
+
                     b.Property<string>("Email")
                         .IsRequired();
 
                     b.Property<int>("EmployeeId");
+
+                    b.Property<int>("LastModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -791,6 +799,8 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
+                    b.Property<int>("RestaurantId");
+
                     b.Property<int>("RoleId");
 
                     b.Property<string>("Status");
@@ -798,6 +808,8 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasKey("AppUserId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RestaurantId");
 
                     b.HasIndex("RoleId");
 
@@ -1216,6 +1228,11 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.Employee.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SaaS_RMS.Models.Entities.Restuarant.Role", "Role")

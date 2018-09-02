@@ -10,6 +10,7 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Extensions;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 using SaaS_RMS.Services;
 
@@ -53,7 +54,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         //POST: EmployeeManagement/AddEmployee
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddEmployee(PreEmployee preEmployee)
+        public async Task <IActionResult> AddEmployee(PreEmployee preEmployee)
         {
             var userId = _session.GetInt32("loggedinusersessionid");
             var restaurantId = _session.GetInt32("restaurantsessionid");
@@ -74,12 +75,12 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                     };
 
                     _db.Employees.Add(_employee);
-                    _db.SaveChangesAsync();
+                    await _db.SaveChangesAsync();
 
                     if (_employee.EmployeeId > 0)
                     {
                         //Popluate the personal data object
-                        var employeePersonalData = new EmployeePersonalData
+                        var _employeePersonalData = new EmployeePersonalData
                         {
                             RestaurantId = Convert.ToInt32(restaurantId),
                             CreatedBy = userId,
@@ -97,8 +98,40 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             WorkPhone = "N/A",
                             DOB = DateTime.Now,
                             Title = 0.ToString(),
-
+                            MaritalStatus = 0.ToString(),
+                            Gender = 0.ToString(),
+                            POB = "N/A",
+                            EmployeeId = _employee.EmployeeId
                         };
+
+                        _db.EmployeePersonalDatas.Add(_employeePersonalData);
+                        await _db.SaveChangesAsync();
+
+                        //var password = new Md5Encrytion().RandomString(7);
+                        var _appUser = new AppUser
+                        {
+                            EmployeeId = _employee.EmployeeId,
+                            Email = _employeePersonalData.Email,
+                            Name = _employeePersonalData.DisplayName,
+                            RestaurantId = Convert.ToInt32(restaurantId),
+                            CreatedBy = userId,
+                            LastModifiedBy = Convert.ToInt32(userId),
+                            DateCreated = DateTime.Now,
+                            DateLastModified = DateTime.Now,
+                            //Password = new Hashing().HashPassword(password),
+                            //ConfirmPassword = new Hashing().HashPassword(password),
+                            Status = UserStatus.Inactive.ToString()
+                        };
+
+                        _db.AppUsers.Add(_appUser);
+                        await _db.SaveChangesAsync();
+
+                        if(_appUser.AppUserId > 0)
+                        {
+                            //define acceskeys and save transactions
+                            
+                        }
+
                     }
                 }
             }
