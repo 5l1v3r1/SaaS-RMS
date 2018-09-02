@@ -55,7 +55,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         [ValidateAntiForgeryToken]
         public IActionResult AddEmployee(PreEmployee preEmployee)
         {
-            //var userId = _session.GetInt32("loggedinusersessionid");
+            var userId = _session.GetInt32("loggedinusersessionid");
             var restaurantId = _session.GetInt32("restaurantsessionid");
             var restaurant = _db.Restaurants.Find(restaurantId);
 
@@ -67,8 +67,8 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                     var _employee = new Employee
                     {
                         RestaurantId = Convert.ToInt32(restaurantId),
-                        //CreatedBy = userId,
-                        //LastModifiedBy = userId,
+                        CreatedBy = userId,
+                        LastModifiedBy = Convert.ToInt32(userId),
                         DateCreated = DateTime.Now,
                         DateLastModified = DateTime.Now
                     };
@@ -81,7 +81,23 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                         //Popluate the personal data object
                         var employeePersonalData = new EmployeePersonalData
                         {
-                            
+                            RestaurantId = Convert.ToInt32(restaurantId),
+                            CreatedBy = userId,
+                            LastModifiedBy = Convert.ToInt32(userId),
+                            DateCreated = DateTime.Now,
+                            DateLastModified = DateTime.Now,
+                            FirstName = preEmployee.Firstname,
+                            LastName = preEmployee.Lastname,
+                            Email = preEmployee.Email,
+                            PrimaryAddress = preEmployee.PrimaryAddress,
+                            SecondaryAddress = "N/A",
+                            State = "N/A",
+                            LGA = "N/A",
+                            HomePhone = preEmployee.HomePhoneNumber,
+                            WorkPhone = "N/A",
+                            DOB = DateTime.Now,
+                            Title = 0.ToString(),
+
                         };
                     }
                 }

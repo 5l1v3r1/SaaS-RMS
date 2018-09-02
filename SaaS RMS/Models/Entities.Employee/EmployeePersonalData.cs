@@ -31,7 +31,7 @@ namespace SaaS_RMS.Models.Entities.Employee
 
         [DisplayName("Date Of Birth"), Required(ErrorMessage = "Date Of Birth is required")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}")]
-        public string DOB { get; set; }
+        public DateTime DOB { get; set; }
 
         [DisplayName("Primary Address"), Required(ErrorMessage = "Primary Address is required")]
         public string PrimaryAddress { get; set; }
