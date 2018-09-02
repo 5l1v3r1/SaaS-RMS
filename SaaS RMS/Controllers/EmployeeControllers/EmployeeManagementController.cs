@@ -75,6 +75,15 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
 
                     _db.Employees.Add(_employee);
                     _db.SaveChangesAsync();
+
+                    if (_employee.EmployeeId > 0)
+                    {
+                        //Popluate the personal data object
+                        var employeePersonalData = new EmployeePersonalData
+                        {
+                            
+                        };
+                    }
                 }
             }
             catch

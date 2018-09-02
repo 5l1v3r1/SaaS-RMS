@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Employee
 {
-    public class EmployeePersonalData
+    public class EmployeePersonalData : Transport
     {
         #region Model Data
 
@@ -58,6 +58,12 @@ namespace SaaS_RMS.Models.Entities.Employee
         [DisplayName("Marital Status"), Required(ErrorMessage = "Marital Status is required")]
         public string MaritalStatus { get; set; }
 
+        [Required(ErrorMessage = "State is required")]
+        public string State { get; set; }
+
+        [Required(ErrorMessage = "LGA is required")]
+        public string LGA { get; set; }
+
         [DisplayName("Image")]
         public string EmployeeImage { get; set; }
 
@@ -72,15 +78,15 @@ namespace SaaS_RMS.Models.Entities.Employee
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
 
-        [DisplayName("State")]
-        public int StateId { get; set; }
-        [ForeignKey("StateId")]
-        public virtual State State { get; set; }
+        //[DisplayName("State")]
+        //public int StateId { get; set; }
+        //[ForeignKey("StateId")]
+        //public virtual State State { get; set; }
 
-        [DisplayName("LGA")]
-        public int LgaId { get; set; }
-        [ForeignKey("LgaId")]
-        public virtual Lga Lga { get; set; }
+        //[DisplayName("LGA")]
+        //public int LgaId { get; set; }
+        //[ForeignKey("LgaId")]
+        //public virtual Lga Lga { get; set; }
 
         #endregion
     }

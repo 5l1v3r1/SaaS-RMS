@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180902220630_Add Transport to EmployeePersonalData")]
+    partial class AddTransporttoEmployeePersonalData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,13 +429,12 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<string>("HomePhone")
                         .IsRequired();
 
-                    b.Property<string>("LGA")
-                        .IsRequired();
-
                     b.Property<int>("LastModifiedBy");
 
                     b.Property<string>("LastName")
                         .IsRequired();
+
+                    b.Property<int>("LgaId");
 
                     b.Property<string>("MaritalStatus")
                         .IsRequired();
@@ -453,8 +453,7 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<string>("SecondaryAddress");
 
-                    b.Property<string>("State")
-                        .IsRequired();
+                    b.Property<int>("StateId");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -466,7 +465,11 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("LgaId");
+
                     b.HasIndex("RestaurantId");
+
+                    b.HasIndex("StateId");
 
                     b.ToTable("EmployeePersonalDatas");
                 });
@@ -1094,9 +1097,19 @@ namespace SaaS_RMS.Data.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("SaaS_RMS.Models.Entities.System.Lga", "Lga")
+                        .WithMany()
+                        .HasForeignKey("LgaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SaaS_RMS.Models.Entities.System.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
