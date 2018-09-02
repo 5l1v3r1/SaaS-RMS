@@ -5,7 +5,7 @@
 }
 
 <form class="form-login" asp-action="SignIn" role="form">
-    <h2 class="form-login-heading"> VENDOR SIGN IN </h2>
+    <h2 class="form-login-heading"> CUSTOMER SIGN IN </h2>
     @if (ViewData["mismatch"] != null && Convert.ToString(ViewData["mismatch"]) != " ")
     {
         <h5 style="padding-left:1em;" class="text-danger">@ViewData["mismatch"]</h5>

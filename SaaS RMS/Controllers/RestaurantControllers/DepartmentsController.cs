@@ -231,35 +231,35 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
 
         #region Department Employees
 
-        public async Task<IActionResult> Employees(int? id)
-        {
-            var restaurant = _session.GetInt32("restaurantsessionid");
+        //public async Task<IActionResult> Employees(int? id)
+        //{
+        //    var restaurant = _session.GetInt32("restaurantsessionid");
 
             
-            //var employeesss = employee.Where(employee.RestaurantId == restaurant);
+        //    //var employeesss = employee.Where(employee.RestaurantId == restaurant);
 
-            //var allEmployeeInDepartment = employee.Departments.Where(employee.RestaurantId == restaurant);
+        //    //var allEmployeeInDepartment = employee.Departments.Where(employee.RestaurantId == restaurant);
 
 
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            Department department = await _db.Departments
-                .Include(d => d.RestaurantId)
-                .SingleOrDefaultAsync(d => d.DepartmentId == id);
+        //    Department department = await _db.Departments
+        //        .Include(d => d.RestaurantId)
+        //        .SingleOrDefaultAsync(d => d.DepartmentId == id);
             
-            if (department == null)
-            {
-                return NotFound();
-            }
+        //    if (department == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var allEmployeeInDepartment = _db.Employees.Where(r => r.RestaurantId == restaurant).ToListAsync();
+        //    var allEmployeeInDepartment = _db.Employees.Where(r => r.RestaurantId == restaurant).ToListAsync();
 
 
-            return PartialView("Employees", allEmployeeInDepartment);
-        }
+        //    return PartialView("Employees", allEmployeeInDepartment);
+        //}
 
         #endregion
 

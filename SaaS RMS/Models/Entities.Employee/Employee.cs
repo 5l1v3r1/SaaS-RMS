@@ -15,29 +15,30 @@ namespace SaaS_RMS.Models.Entities.Employee
         #region Model Data
 
         public int EmployeeId { get; set; }
-        public List<EmployeePersonalData> EmployeePersonalDatas { get; set; }
-        public List<EmployeeMedicalData> EmployeeMedicalDatas { get; set; }
-        public List<EmployeeBankData> EmployeeBankDatas { get; set; }
-        public List<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
-        public List<EmployeeWorkData> EmployeeWorkDatas { get; set; }
-        public List<EmployeePastWorkExperience> EmployeePastWorkExperiences { get; set; }
-        public List<EmploymentPosition> EmploymentPositions { get; set; }
-        public List<EmployeeEducationalQualification> EmployeeEducationalQualifications { get; set; }
+
+        //public List<EmployeePersonalData> EmployeePersonalDatas { get; set; }
+        //public List<EmployeeMedicalData> EmployeeMedicalDatas { get; set; }
+        //public List<EmployeeBankData> EmployeeBankDatas { get; set; }
+        //public List<EmployeeFamilyData> EmployeeFamilyDatas { get; set; }
+        //public List<EmployeeWorkData> EmployeeWorkDatas { get; set; }
+        //public List<EmployeePastWorkExperience> EmployeePastWorkExperiences { get; set; }
+        //public List<EmploymentPosition> EmploymentPositions { get; set; }
+        //public List<EmployeeEducationalQualification> EmployeeEducationalQualifications { get; set; }
 
 
         #endregion
 
         #region Foreign Keys
 
-        [DisplayName("Restaurant")]
-        public int RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual Restaurant Restaurant { get; set; }
+        //[DisplayName("Restaurant")]
+        //public int RestaurantId { get; set; }
+        //[ForeignKey("RestaurantId")]
+        //public virtual Restaurant Restaurant { get; set; }
 
-        [DisplayName("Assigned Department")]
-        public int DepartmentId { get; set; }
-        [ForeignKey("DepartmentId"), Required]
-        public virtual Department Department { get; set; }
+        //[DisplayName("Assigned Department")]
+        //public int DepartmentId { get; set; }
+        //[ForeignKey("DepartmentId"), Required]
+        //public virtual Department Department { get; set; }
 
         //[DisplayName("Assigned Role")]
         //public int RoleId { get; set; }
