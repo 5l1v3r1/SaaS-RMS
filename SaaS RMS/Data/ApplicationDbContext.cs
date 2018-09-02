@@ -29,6 +29,7 @@ namespace SaaS_RMS.Data
         public DbSet<Lga> Lgas { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Subscription> Subcriptions { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
 
         #endregion
 
