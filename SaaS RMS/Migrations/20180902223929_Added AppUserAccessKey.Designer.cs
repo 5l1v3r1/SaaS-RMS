@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180902223929_Added AppUserAccessKey")]
+    partial class AddedAppUserAccessKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -814,24 +815,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AppUsers");
-                });
-
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.System.AppUserAccessKey", b =>
-                {
-                    b.Property<int>("AppUserAccessKeyId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AccountActivationAccessCode");
-
-                    b.Property<int>("AppUserId");
-
-                    b.Property<DateTime?>("ExpiryDate");
-
-                    b.Property<string>("PasswordAccessCode");
-
-                    b.HasKey("AppUserAccessKeyId");
-
-                    b.ToTable("AppUserAccessKeys");
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Lga", b =>

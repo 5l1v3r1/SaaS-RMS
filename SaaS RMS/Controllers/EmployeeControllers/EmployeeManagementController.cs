@@ -129,17 +129,43 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                         if(_appUser.AppUserId > 0)
                         {
                             //define acceskeys and save transactions
-                            
+                            var accesskey = new AppUserAccessKey
+                            {
+                                //PasswordAccessCode = new Md5Encryption().RandomString(15),
+                                //AccountActivationAccessCode = new Md5Ecryption().RandomString(20),
+                                CreatedBy = _appUser.AppUserId,
+                                LastModifiedBy = _appUser.AppUserId,
+                                DateCreated = DateTime.Now,
+                                DateLastModified = DateTime.Now,
+                                ExpiryDate = DateTime.Now.AddDays(1),
+                                AppUserId = _appUser.AppUserId 
+                            };
+
+                            _db.AppUserAccessKeys.Add(accesskey);
+                            await _db.SaveChangesAsync();
+                            //new Mailer()
                         }
 
+                        TempData["display"] = "You have successfully added a new employee!";
+                        TempData["notificationType"] = NotificationType.Success.ToString();
+                        return View();
                     }
-                }
-            }
-            catch
-            {
 
+                    TempData["display"] = "There is an error performing this action. Try again!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return View(preEmployee);
+                }
+
+                TempData["display"] = "The employee already exist, try a different email!";
+                TempData["notificationtype"] = NotificationType.Error.ToString();
+                return View(preEmployee);
             }
-            return View();
+            catch(Exception ex)
+            {
+                TempData["display"] = ex.Message;
+                TempData["notificationtype"] = NotificationType.Error.ToString();
+                return View();
+            }
         }
 
         #endregion
