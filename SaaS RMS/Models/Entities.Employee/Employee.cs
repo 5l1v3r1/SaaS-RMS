@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Employee
 {
-    public class Employee
+    public class Employee : Transport
     {
         #region Model Data
 

@@ -55,14 +55,32 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         [ValidateAntiForgeryToken]
         public IActionResult AddEmployee(PreEmployee preEmployee)
         {
-            //var signedInUserId = _session.GetInt32("loggedinusersessionid");
+            //var userId = _session.GetInt32("loggedinusersessionid");
             var restaurantId = _session.GetInt32("restaurantsessionid");
             var restaurant = _db.Restaurants.Find(restaurantId);
 
-            //try
-            //{
-            //    if(_db.EmployeePersonalDatas.Any(n => n.Email == preEmployee.Email) == false && _db)
-            //}
+            try
+            {
+                if (_db.EmployeePersonalDatas.Any(n => n.Email == preEmployee.Email) == false && 
+                    _db.AppUsers.Any(n => n.Email == preEmployee.Email) == false)
+                {
+                    var _employee = new Employee
+                    {
+                        RestaurantId = Convert.ToInt32(restaurantId),
+                        //CreatedBy = userId,
+                        //LastModifiedBy = userId,
+                        DateCreated = DateTime.Now,
+                        DateLastModified = DateTime.Now
+                    };
+
+                    _db.Employees.Add(_employee);
+                    _db.SaveChangesAsync();
+                }
+            }
+            catch
+            {
+
+            }
             return View();
         }
 
