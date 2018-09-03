@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Extensions;
@@ -39,6 +40,20 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         {
             var lgas = _db.Lgas.Where(l => l.StateId == id);
             return Json(lgas);
+        }
+
+        #endregion
+
+        #region Employee
+            
+        public IActionResult Employee()
+        {
+            var transport = new ApplicationTransport
+            {
+                //EmployeeWorkDatas = _db.EmployeeWorkDatas.Include(n => n.)
+            };
+
+            return View(transport);
         }
 
         #endregion
