@@ -46,6 +46,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         #region Add Employee
 
         //GET: EmployeeManagement/AddEmployee
+        [Route("Employee/Add")]
         [HttpGet]
         public IActionResult AddEmployee()
         {
@@ -53,6 +54,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         }
 
         //POST: EmployeeManagement/AddEmployee
+        [Route("Employee/Add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> AddEmployee(PreEmployee preEmployee)
@@ -94,6 +96,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             PrimaryAddress = preEmployee.PrimaryAddress,
                             SecondaryAddress = "N/A",
                             State = "N/A",
+                            MiddleName = "N/A",
                             LGA = "N/A",
                             HomePhone = preEmployee.HomePhoneNumber,
                             WorkPhone = "N/A",

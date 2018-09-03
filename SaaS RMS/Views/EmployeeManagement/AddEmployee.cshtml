@@ -1,0 +1,92 @@
+﻿@model SaaS_RMS.Models.Entities.Employee.PreEmployee
+@{
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+    ViewData["Title"] = "Add Employee";
+}
+
+<style>
+    .pad {
+        padding-top: 15px;
+    }
+</style>
+
+<div class="page-title">
+    <div class="title_left">
+        <h3><strong> ADD EMPLOYEE </strong></h3>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <form asp-action="AddEmployee" asp-controller="EmployeeManagement" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="control-label col-md-2">
+                                <label>First Name</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="Firstname" class="form-control " />
+                                <span asp-validation-for="Firstname" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pad">
+                            <div class="control-label col-md-2">
+                                <label>Last Name</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="Lastname" class="form-control " />
+                                <span asp-validation-for="Lastname" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pad">
+                            <div class="control-label col-md-2">
+                                <label>Email Address</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="Email" class="form-control " />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pad">
+                            <div class="control-label col-md-2">
+                                <label>Home Phone Number</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="HomePhoneNumber" class="form-control " />
+                                <span asp-validation-for="HomePhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pad">
+                            <div class="control-label col-md-2 pull-left">
+                                <label>Primary Address</label>
+                            </div>
+                            <div class="col-md-10">
+                                <textarea asp-for="PrimaryAddress" class="form-control "></textarea>
+                                <span asp-validation-for="PrimaryAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pull-right pad">
+                            <div class="col-md-12">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <a class="btn btn-danger" asp-action="Index">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
