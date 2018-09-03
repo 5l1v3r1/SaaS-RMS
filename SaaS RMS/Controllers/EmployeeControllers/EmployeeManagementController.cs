@@ -46,11 +46,15 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
 
         #region Employee
             
+        [HttpGet]
+        [Route("Employee/List")]
         public IActionResult Employee()
         {
             var transport = new ApplicationTransport
             {
-                //EmployeeWorkDatas = _db.EmployeeWorkDatas.Include(n => n.)
+                EmployeeWorkDatas = _db.EmployeeWorkDatas.Include(ewd => ewd.Department).ToList(),
+                Employees = _db.Employees.ToList(),
+                EmployeePersonalDatas = _db.EmployeePersonalDatas.ToList()
             };
 
             return View(transport);

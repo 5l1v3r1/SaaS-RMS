@@ -1,0 +1,94 @@
+﻿@model SaaS_RMS.Models.Entities.System.ApplicationTransport
+@using SaaS_RMS.Models.Enums
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "~/Views/Shared/AdminLayout/_AdminLayout.cshtml";
+    var x = 1;
+}
+
+<div style="padding-top:55px">
+    @if (TempData["dish"] != null)
+    {
+        if (TempData["notificationType"].Equals(NotificationType.Success.ToString()))
+        {
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["dish"]
+            </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["dish"]
+            </div>
+        }
+        else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                @TempData["dish"]
+            </div>
+        }
+
+    }
+    <div class="page-title">
+        <div class="title_left">
+            <h3>EMPLOYEES</h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <a asp-controller="EmployeeManagement" asp-action="AddEmployee" class="btn btn-primary btn pull-right"><i style="color: red;" class="fa fa-plus"></i> ADD NEW EMPLOYEE</a>
+                    <table class="table" id="myTable">
+                        <tr>
+                            <th>
+                                S/N
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                        @foreach (var item in Model.Employees)
+                        {
+                            var employeePersonalData = Model.EmployeePersonalDatas.SingleOrDefault(epd => epd.EmployeeId == item.EmployeeId);
+                            var employeeWorkData = Model.EmployeeWorkDatas.SingleOrDefault(ewd => ewd.EmployeeId == item.EmployeeId);
+                            <tr>
+                                <td>
+                                    @(x++)
+                                </td>
+                                <td>
+                                    @if(employeePersonalData != null)
+                                    {
+                                        @employeePersonalData.DisplayName
+                                    }
+                                </td>
+                                <td>
+                                    @if(employeeWorkData != null)
+                                    {
+                                        @employeeWorkData.Department.Name
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" asp-action="EmployeeWorkData" asp-controller="EmployeeManagement" asp-route-id="@item.EmployeeId"><i class="fa fa-pencil-square-o "></i> Update Employee Info</a>
+                                    <a class="btn btn-warning btn-sm" asp-action="EmployeeIncomeData" asp-controller="EmployeeManagement" asp-route-id="@item.EmployeeId"><i class="fa fa-pencil-square-o "></i> Manage Income Info</a>
+                                    <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.EmployeeId"><i class="fa fa-trash-o "></i> Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

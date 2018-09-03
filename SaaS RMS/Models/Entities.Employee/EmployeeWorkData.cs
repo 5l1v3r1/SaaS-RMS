@@ -1,4 +1,5 @@
 ﻿using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models.Entities.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.Employee
 {
-    public class EmployeeWorkData
+    public class EmployeeWorkData : Transport
     {
         #region Model Data
 
