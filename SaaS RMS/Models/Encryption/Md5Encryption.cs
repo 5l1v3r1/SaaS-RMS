@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Encryption
 {
-    public class Md5Encrytion
+    public class Md5Encryption
     {
         private static readonly byte[] bytes = Encoding.ASCII.GetBytes("ZeroCool");
         private readonly Random random = new Random();

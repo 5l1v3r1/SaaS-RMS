@@ -71,6 +71,7 @@ namespace SaaS_RMS.Models.Encryption
     ///         as much work. The default workFactor is 10, and the valid range is 4 to 31.
     ///     </para>
     /// </remarks>
+    
     public sealed class BCrypt
     {
         // BCrypt parameters

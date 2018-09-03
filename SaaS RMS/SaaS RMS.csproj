@@ -12,10 +12,6 @@
     <None Remove="wwwroot\Main\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Models\Encryption\Hashing.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.4.0" />
@@ -34,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Models\Encryption\Hashing.cs" />
     <None Include="wwwroot\Authentication\assets\.DS_Store" />
     <None Include="wwwroot\Authentication\assets\css\.DS_Store" />
     <None Include="wwwroot\Authentication\assets\font-awesome\.DS_Store" />

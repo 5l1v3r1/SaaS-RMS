@@ -108,7 +108,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                         _db.EmployeePersonalDatas.Add(_employeePersonalData);
                         await _db.SaveChangesAsync();
 
-                        var password = new Md5Encrytion().RandomString(7);
+                        var password = new Md5Encryption().RandomString(7);
                         var _appUser = new AppUser
                         {
                             EmployeeId = _employee.EmployeeId,
@@ -133,7 +133,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             var accesskey = new AppUserAccessKey
                             {
                                 PasswordAccessCode = new Md5Encryption().RandomString(15),
-                                AccountActivationAccessCode = new Md5Ecryption().RandomString(20),
+                                AccountActivationAccessCode = new Md5Encryption().RandomString(20),
                                 CreatedBy = _appUser.AppUserId,
                                 LastModifiedBy = _appUser.AppUserId,
                                 DateCreated = DateTime.Now,
