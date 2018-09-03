@@ -62,13 +62,14 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public IActionResult Create()
         {
             ViewBag.RoleId = new SelectList(_db.Roles, "RoleId", "Name");
+            ViewBag.EmployeeId = new SelectList(_db.EmployeePersonalDatas, "EmployeeId", "DisplayName");
             return View();
         }
 
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AppUser appUser, IFormFile Logo)
+        public async Task<IActionResult> Create(AppUser appUser)
         {
             try
             {
@@ -95,25 +96,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     return View(appUser);
                 }
 
-                //Upload user Logo if any file is uploaded
-                if(Logo != null && !string.IsNullOrEmpty(Logo.FileName))
-                {
-                    var fileInfo = new FileInfo(Logo.FileName);
-                    var ext = fileInfo.Extension.ToLower();
-                    var name = DateTime.Now.ToFileTime().ToString();
-                    var fileName = name + ext;
-                    var uploads = _hostingEnv.WebRootPath + $@"\UpLoads\ProfilePicture\{fileName}";
-
-                    using (var fileStream = System.IO.File.Create(uploads))
-                    {
-                        if( fileStream != null)
-                        {
-                            Logo.CopyTo(fileStream);
-                            fileStream.Flush();
-                        }
-                    }
-                }
-
+                
                 _db.AppUsers.Add(appUser);
                 await _db.SaveChangesAsync();
 

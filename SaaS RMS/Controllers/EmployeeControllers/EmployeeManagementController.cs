@@ -79,8 +79,8 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
         public async Task <IActionResult> AddEmployee(PreEmployee preEmployee)
         {
             var userId = _session.GetInt32("loggedinusersessionid");
-            var restaurantId = _session.GetInt32("restaurantsessionid");
-            var restaurant = _db.Restaurants.Find(restaurantId);
+            var restaurantid = _session.GetInt32("restaurantsessionid");
+            var restaurant = _db.Restaurants.Find(restaurantid);
 
             try
             {
@@ -89,7 +89,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                 {
                     var _employee = new Employee
                     {
-                        RestaurantId = Convert.ToInt32(restaurantId),
+                        RestaurantId = Convert.ToInt32(restaurantid),
                         CreatedBy = userId,
                         LastModifiedBy = Convert.ToInt32(userId),
                         DateCreated = DateTime.Now,
@@ -104,7 +104,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                         //Popluate the personal data object
                         var _employeePersonalData = new EmployeePersonalData
                         {
-                            RestaurantId = Convert.ToInt32(restaurantId),
+                            RestaurantId = Convert.ToInt32(restaurantid),
                             CreatedBy = userId,
                             LastModifiedBy = Convert.ToInt32(userId),
                             DateCreated = DateTime.Now,
@@ -136,11 +136,11 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             EmployeeId = _employee.EmployeeId,
                             Email = _employeePersonalData.Email,
                             Name = _employeePersonalData.DisplayName,
-                            //RestaurantId = Convert.ToInt32(restaurantId),
-                            //CreatedBy = userId,
-                            //LastModifiedBy = Convert.ToInt32(userId),
-                            //DateCreated = DateTime.Now,
-                            //DateLastModified = DateTime.Now,
+                            RestaurantId = Convert.ToInt32(restaurantid),
+                            CreatedBy = userId,
+                            LastModifiedBy = Convert.ToInt32(userId),
+                            DateCreated = DateTime.Now,
+                            DateLastModified = DateTime.Now,
                             Password = new Hashing().HashPassword(password),
                             ConfirmPassword = new Hashing().HashPassword(password),
                             Status = UserStatus.Inactive.ToString()
