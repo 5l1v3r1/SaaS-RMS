@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaaS_RMS.Models.Entities.System
 {
-    public class AppUser :Transport
+    public class AppUser : Transport
     {
         #region Data Models
 

@@ -42,9 +42,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
             var restaurant = _session.GetInt32("restaurantsessionid");
 
             var appUser = _db.AppUsers.Where(au => au.RestaurantId == restaurant)
-                .Include(au => au.RoleId)
-                .Include(au => au.EmployeeId);
-            if(appUser != null)
+                .Include(au => au.Role);
+            if (appUser != null)
             {
                 return View(await appUser.ToListAsync());
             }
@@ -229,7 +228,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
             }
 
             var appUser = await _db.AppUsers
-                .Include(a => a.Employee)
                 .Include(a => a.Restaurant)
                 .Include(a => a.Role)
                 .SingleOrDefaultAsync(m => m.AppUserId == id);
