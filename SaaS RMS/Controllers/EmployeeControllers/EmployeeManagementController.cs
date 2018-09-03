@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Extensions;
+using SaaS_RMS.Models.Encryption;
 using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
@@ -107,7 +108,7 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                         _db.EmployeePersonalDatas.Add(_employeePersonalData);
                         await _db.SaveChangesAsync();
 
-                        //var password = new Md5Encrytion().RandomString(7);
+                        var password = new Md5Encrytion().RandomString(7);
                         var _appUser = new AppUser
                         {
                             EmployeeId = _employee.EmployeeId,
@@ -118,8 +119,8 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             LastModifiedBy = Convert.ToInt32(userId),
                             DateCreated = DateTime.Now,
                             DateLastModified = DateTime.Now,
-                            //Password = new Hashing().HashPassword(password),
-                            //ConfirmPassword = new Hashing().HashPassword(password),
+                            Password = new Hashing().HashPassword(password),
+                            ConfirmPassword = new Hashing().HashPassword(password),
                             Status = UserStatus.Inactive.ToString()
                         };
 
@@ -131,8 +132,8 @@ namespace SaaS_RMS.Controllers.EmployeeControllers
                             //define acceskeys and save transactions
                             var accesskey = new AppUserAccessKey
                             {
-                                //PasswordAccessCode = new Md5Encryption().RandomString(15),
-                                //AccountActivationAccessCode = new Md5Ecryption().RandomString(20),
+                                PasswordAccessCode = new Md5Encryption().RandomString(15),
+                                AccountActivationAccessCode = new Md5Ecryption().RandomString(20),
                                 CreatedBy = _appUser.AppUserId,
                                 LastModifiedBy = _appUser.AppUserId,
                                 DateCreated = DateTime.Now,
