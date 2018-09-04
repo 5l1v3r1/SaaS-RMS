@@ -129,7 +129,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 .SingleOrDefaultAsync(au => au.Email.ToLower() == model.Email.ToLower());
             try
             {
-                if(user == null)
+                if (user == null)
                 {
                     access.Message = "The Account does not exist, Try again!";
                     access.Status = AccessStatus.Denied.ToString();

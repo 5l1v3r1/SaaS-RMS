@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.System
 {
-    public class AccessLog
+    public class AccessLog : Transport
     {
         #region Data Model
 
