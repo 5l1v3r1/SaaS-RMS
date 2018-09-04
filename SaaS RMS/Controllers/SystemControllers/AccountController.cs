@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Encryption;
 using SaaS_RMS.Models.Entities.System;
@@ -134,97 +136,101 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     access.Message = "The Account does not exist, Try again!";
                     access.Status = AccessStatus.Denied.ToString();
                     access.Category = AccessCategory.Login.ToString();
+                    access.DateCreated = DateTime.Now;
+                    access.DateLastModified = DateTime.Now;
 
+                    await _db.AccessLogs.AddAsync(access);
+                    await _db.SaveChangesAsync();
                 }
-            }
+                else
+                {
+                    if(user.Status == UserStatus.Inactive.ToString())
+                    {
+                        access.Message ="You are yet to activate your account from the the link sent to your email when you created the account!";
+                        access.Status = AccessStatus.Denied.ToString();
+                        access.Category = AccessCategory.Login.ToString();
+                        access.DateCreated = DateTime.Now;
+                        access.DateLastModified = DateTime.Now;
+                        access.CreatedBy = user.AppUserId;
+                        access.LastModifiedBy = user.AppUserId;
 
+                        await _db.AccessLogs.AddAsync(access);
+                        await _db.SaveChangesAsync();
+                        user = null;
+                    }
+                    var passwordCorrect = user != null && new Hashing().ValidatePassword(model.Password, user.ConfirmPassword);
+                    if(passwordCorrect == false)
+                    {
+                        if(user != null)
+                        {
+                            access.Message = "Your login information is Incorrect, Check and Try again!";
+                            access.Status = AccessStatus.Denied.ToString();
+                            access.Category = AccessCategory.Login.ToString();
+                            access.DateCreated = DateTime.Now;
+                            access.DateLastModified = DateTime.Now;
+                            access.CreatedBy = user.AppUserId;
+                            access.LastModifiedBy = user.AppUserId;
+
+                            await _db.AccessLogs.AddAsync(access);
+                            await _db.SaveChangesAsync();
+                            user = null;
+                        }
+                    }
+                    if(passwordCorrect == true)
+                    {
+                        access.Message = "Dear " + user.Name + ", You have successfully logged in!";
+                        access.Status = AccessStatus.Approved.ToString();
+                        access.Category = AccessCategory.Login.ToString();
+                        access.DateCreated = DateTime.Now;
+                        access.AppUserId = user.AppUserId;
+                        access.DateLastModified = DateTime.Now;
+                        access.CreatedBy = user.AppUserId;
+                        access.LastModifiedBy = user.AppUserId;
+
+                        await _db.AccessLogs.AddAsync(access);
+                        await _db.SaveChangesAsync();
+
+                        //store user sessions
+                        _session.SetInt32("loggedinuserid", user.AppUserId);
+                        _session.SetInt32("loggedinemployeeid", user.EmployeeId);
+                        _session.SetString("loggedinuser", JsonConvert.SerializeObject(user));
+
+                        //display notification
+                        TempData["account"] = access.Message;
+                        TempData["notificationtype"] = NotificationType.Success.ToString();
+                        return RedirectToAction("Dashboard", "Home");
+                    }
+                }
+
+                //display notification
+                TempData["account"] = access.Message;
+                TempData["notificationtype"] = NotificationType.Error.ToString();
+                return View(model);
+            }
+            catch (Exception)
+            {
+                //display notification
+                TempData["account"] = "Unexpected Error Occured while trying to login!";
+                TempData["notificationtype"] = NotificationType.Error.ToString();
+                return View(model);
+            }
         }
+
 
         #endregion
 
+        #region LogOut
 
-
-
-
-        // GET: Account
-        public ActionResult Index()
+        [HttpGet]
+        public IActionResult LogOut()
         {
-            return View();
+            _db.Dispose();
+            _session.Clear();
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
         }
 
-        // GET: Account/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Account/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Account/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Account/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Account/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Account/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Account/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        #endregion
+        
     }
 }
