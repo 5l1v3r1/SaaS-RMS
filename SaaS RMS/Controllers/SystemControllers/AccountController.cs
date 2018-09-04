@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Encryption;
+using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.SystemControllers
@@ -119,7 +120,25 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(Acco)
+        public async Task<IActionResult> Login(AccountModel model, IFormCollection collection)
+        {
+            var access = new AccessLog();
+            var user = await _db.AppUsers
+                .Include(au => au.Restaurant)
+                .Include(au => au.Role)
+                .SingleOrDefaultAsync(au => au.Email.ToLower() == model.Email.ToLower());
+            try
+            {
+                if(user == null)
+                {
+                    access.Message = "The Account does not exist, Try again!";
+                    access.Status = AccessStatus.Denied.ToString();
+                    access.Category = AccessCategory.Login.ToString();
+
+                }
+            }
+
+        }
 
         #endregion
 

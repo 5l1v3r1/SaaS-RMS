@@ -31,6 +31,7 @@ namespace SaaS_RMS.Data
         public DbSet<Subscription> Subcriptions { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AppUserAccessKey> AppUserAccessKeys { get; set; }
+        public DbSet<AccessLog> AccessLogs { get; set; }
 
         #endregion
 
