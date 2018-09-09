@@ -83,8 +83,19 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
                 else
                 {
+                    var _restaurant = new Restaurant
+                    {
+                        Name = restaurant.Name,
+                        Motto = restaurant.Motto,
+                        ContactEmail = restaurant.ContactEmail,
+                        ContactNumber = restaurant.ContactNumber,
+                        AccessCode = restaurant.AccessCode,
+                        LgaId = restaurant.LgaId,
+                        Location = restaurant.Location,
+                        
+                    };
 
-                    _db.Restaurants.Add(restaurant);
+                    _db.Restaurants.Add(_restaurant);
                     _db.SaveChanges();
 
                     TempData["Success"] = restaurant.Name + " have successfully joined the Odarms community";
