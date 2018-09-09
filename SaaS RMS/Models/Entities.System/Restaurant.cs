@@ -1,4 +1,5 @@
 ﻿using SaaS_RMS.Models.Entities.Restuarant;
+using SaaS_RMS.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,7 +40,7 @@ namespace SaaS_RMS.Models.Entities.System
         [Required(ErrorMessage = "Contact Number field is required")]
         public string ContactNumber { get; set; }
 
-        public string SetUpStatus { get; set; }
+        public RestaurantStatus Status { get; set; }
 
         [Required(ErrorMessage = "Access Code field is required")]
         public string AccessCode { get; set; }
