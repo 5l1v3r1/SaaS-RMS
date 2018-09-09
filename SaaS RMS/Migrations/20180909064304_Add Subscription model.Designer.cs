@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180909064304_Add Subscription model")]
+    partial class AddSubscriptionmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -991,15 +992,11 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<int?>("PackageId");
 
-                    b.Property<int?>("RestaurantId");
-
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("RestaurantSubscriptionId");
 
                     b.HasIndex("PackageId");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("RestaurantSubscriptions");
                 });
@@ -1395,10 +1392,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId");
-
-                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId");
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Subscription", b =>

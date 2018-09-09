@@ -23,14 +23,7 @@ namespace SaaS_RMS.Models.Entities.System
         public string Motto { get; set; }
 
         public string Logo { get; set; }
-
-        public DateTime SubscriprionStartDate { get; set; }
-
-        public DateTime SubscriptonEndDate { get; set; }
-
-        [DisplayName("Subscription Duration")]
-        public string SubscriptionDuration { get; set; }
-
+        
         [Required(ErrorMessage = "Location field is required")]
         public string Location { get; set; }
 

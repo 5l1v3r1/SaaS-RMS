@@ -92,11 +92,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
                         AccessCode = restaurant.AccessCode,
                         LgaId = restaurant.LgaId,
                         Location = restaurant.Location,
+                        Status = RestaurantStatus.Inactive
                         
                     };
 
                     _db.Restaurants.Add(_restaurant);
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
 
                     TempData["Success"] = restaurant.Name + " have successfully joined the Odarms community";
                     TempData["notificationType"] = NotificationType.Success.ToString();
@@ -104,6 +105,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 }
 
             }
+            return View();
+        }
+
+        #endregion
+
+        #region Restaurant Subscription
+
+        public IActionResult Subscription()
+        {
             return View();
         }
 
