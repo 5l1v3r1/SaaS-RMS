@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180910130730_added rmsrole")]
+    partial class addedrmsrole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1022,35 +1023,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.ToTable("RMSRoles");
                 });
 
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.System.RMSUser", b =>
-                {
-                    b.Property<int>("RMSUserId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired();
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.Property<int>("RMSRoleId");
-
-                    b.Property<int?>("RoleId");
-
-                    b.HasKey("RMSUserId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RMSUsers");
-                });
-
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.State", b =>
                 {
                     b.Property<int>("StateId")
@@ -1442,13 +1414,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId");
-                });
-
-            modelBuilder.Entity("SaaS_RMS.Models.Entities.System.RMSUser", b =>
-                {
-                    b.HasOne("SaaS_RMS.Models.Entities.System.RMSRole", "RMSRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Subscription", b =>

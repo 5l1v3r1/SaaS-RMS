@@ -33,6 +33,8 @@ namespace SaaS_RMS.Data
         public DbSet<AppUserAccessKey> AppUserAccessKeys { get; set; }
         public DbSet<AccessLog> AccessLogs { get; set; }
         public DbSet<RestaurantSubscription> RestaurantSubscriptions { get; set; }
+        public DbSet<RMSRole> RMSRoles { get; set; }
+        public DbSet<RMSUser> RMSUsers { get; set; }
 
         #endregion
 
