@@ -24,7 +24,9 @@ namespace SaaS_RMS.Models.Entities.System
 
         [Required(ErrorMessage = "Type field is required")]
         public string Type { get; set; }
-        
+
         #endregion
+
+        
     }
 }

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SaaS_RMS.Models.Entities.System.RestaurantSubscription>
+@{
+    ViewData["Title"] = "Subscription";
+    Layout = "~/Views/Shared/SubscriptionLayout/_SubscriptionLayout.cshtml";
+}
+
+<div class="right_col" role="main">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>
+                Subscriptions
+            </h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height:600px;">
+                <div class="x_title">
+                    <h2>Pricing Tables Design</h2>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- price element -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="pricing">
+                                    <div class="title">
+                                        <h2>@Html.DisplayFor(modelItem => item.Package.Name)</h2>
+                                        <h1>free</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+

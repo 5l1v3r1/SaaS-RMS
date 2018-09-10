@@ -27,11 +27,7 @@ namespace SaaS_RMS.Models.Entities.System
         public int? PackageId { get; set; }
         [ForeignKey("PackageId")]
         public virtual Package Package { get; set; }
-
-        public int? RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual Restaurant Restaurant { get; set; }
-
+        
         #endregion
     }
 }

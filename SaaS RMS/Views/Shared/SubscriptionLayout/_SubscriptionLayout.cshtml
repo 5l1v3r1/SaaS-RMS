@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SaaS RMS</title>
+
+    <environment names="Development">
+        <!-- Bootstrap -->
+        <link href="~/Admin/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="~/Admin/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- NProgress -->
+        <link href="~/Admin/vendors/nprogress/nprogress.css" rel="stylesheet">
+        <!-- bootstrap-daterangepicker -->
+        <script src="~/Admin/vendors/moment/min/moment.min.js"></script>
+        <link href="~/Admin/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Ion.RangeSlider -->
+        <link href="~/Admin/vendors/normalize-css/normalize.css" rel="stylesheet">
+        <link href="~/Admin/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
+        <link href="~/Admin/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+        <!-- iCheck -->
+        <link href="~/Admin/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+        <!-- DataTables -->
+        <link href="~/DataTables/jquery.dataTables.css" rel="stylesheet" />
+        <link href="~/DataTables/table-responsive.css" rel="stylesheet" />
+        <!-- bootstrap-progressbar -->
+        <link href="~/Admin/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- JQVMap -->
+        <link href="~/Admin/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+        <!-- bootstrap-daterangepicker -->
+        <link href="~/Admin/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Custom Theme Style -->
+        <link href="~/Admin/build/css/custom.min.css" rel="stylesheet">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Odarms</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h1>@ViewData["restaurantname"]</h1>
+                        </div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <br />
+                    <!-- sidebar menu -->
+                    @*@Html.Partial("~/Views/Shared/AdminLayout/_AdminLayoutSidebar.cshtml")*@
+                    <!-- /sidebar menu -->
+
+
+                </div>
+            </div>
+            <!-- top navigation -->
+            @Html.Partial("~/Views/Shared/SubscriptionLayout/_SubscriptionLayoutHeader.cshtml")
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <h5> <strong> Odarms</strong> </h5>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+
+    <environment names="Development">
+        <!-- jQuery -->
+        <script src="~/Admin/vendors/jquery/dist/jquery.min.js"></script>
+        <!-- DataTables -->
+        <script src="~/DataTables/jquery.dataTables.js"></script>
+        <!-- Bootstrap -->
+        <script src="~/Admin/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- FastClick -->
+        <script src="~/Admin/vendors/fastclick/lib/fastclick.js"></script>
+        <!-- NProgress -->
+        <script src="~/Admin/vendors/nprogress/nprogress.js"></script>
+        <!-- jQuery Smart Wizard -->
+        <script src="~/Admin/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+        <!-- Chart.js -->
+        <script src="~/Admin/vendors/Chart.js/dist/Chart.min.js"></script>
+        <!-- gauge.js -->
+        <script src="~/Admin/vendors/gauge.js/dist/gauge.min.js"></script>
+        <!-- bootstrap-progressbar -->
+        <script src="~/Admin/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+        <!-- iCheck -->
+        <script src="~/Admin/vendors/iCheck/icheck.min.js"></script>
+        <!-- Skycons -->
+        <script src="~/Admin/vendors/skycons/skycons.js"></script>
+        <!-- Flot -->
+        <script src="~/Admin/vendors/Flot/jquery.flot.js"></script>
+        <script src="~/Admin/vendors/Flot/jquery.flot.pie.js"></script>
+        <script src="~/Admin/vendors/Flot/jquery.flot.time.js"></script>
+        <script src="~/Admin/vendors/Flot/jquery.flot.stack.js"></script>
+        <script src="~/Admin/vendors/Flot/jquery.flot.resize.js"></script>
+        <!-- Flot plugins -->
+        <script src="~/Admin/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+        <script src="~/Admin/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+        <script src="~/Admin/vendors/flot.curvedlines/curvedLines.js"></script>
+        <!-- DateJS -->
+        <script src="~/Admin/vendors/DateJS/build/date.js"></script>
+        <!-- JQVMap -->
+        <script src="~/Admin/vendors/jqvmap/dist/jquery.vmap.js"></script>
+        <script src="~/Admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+        <script src="~/Admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+        <!-- bootstrap-daterangepicker -->
+        <script src="~/Admin/vendors/moment/min/moment.min.js"></script>
+        <script src="~/Admin/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <!-- Custom Theme Scripts -->
+        <script src="~/Admin/build/js/custom.min.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

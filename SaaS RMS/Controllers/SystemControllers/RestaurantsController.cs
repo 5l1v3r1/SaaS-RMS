@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -101,7 +102,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
                     TempData["Success"] = restaurant.Name + " have successfully joined the Odarms community";
                     TempData["notificationType"] = NotificationType.Success.ToString();
-                    return Json(new { success = true });
+                    return RedirectToAction("Access");
                 }
 
             }
@@ -109,16 +110,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         }
 
         #endregion
-
-        #region Restaurant Subscription
-
-        public IActionResult Subscription()
-        {
-            return View();
-        }
-
-        #endregion
-
+        
         #region Restaurant Access
 
         //GET: Restaurant/Access
@@ -135,10 +127,21 @@ namespace SaaS_RMS.Controllers.SystemControllers
             //int restaurantId;
 
             //var rest = _db.Restaurants.SingleAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
-            var rest = await _db.Restaurants.FirstOrDefaultAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
-            if (rest != null)
+            var _restuarant = await _db.Restaurants.FirstOrDefaultAsync(r => r.Name == restaurant.Name && r.AccessCode == restaurant.AccessCode);
+            if (_restuarant != null)
             {
-                return RedirectToAction("Admin", new { ID = rest.RestaurantId });
+                _session.SetString("restaurantobject", JsonConvert.SerializeObject(_restuarant));
+                _session.SetInt32("restaurantsessionid", _restuarant.RestaurantId);
+
+                if (_restuarant.Status == RestaurantStatus.Active)
+                {
+                    return RedirectToAction("Admin");
+                }
+                else
+                {
+                    return RedirectToAction("Subscription");
+                }
+                
             }
             else
             {
@@ -148,19 +151,40 @@ namespace SaaS_RMS.Controllers.SystemControllers
             return View();
         }
         #endregion
-
+        
         #region Restaurant Admin
 
-        public IActionResult Admin(int? ID)
+        [Route("Restaurant/Admin_Dashboard")]
+        public IActionResult Admin()
         {
-            int _ID = Convert.ToInt32(ID);
-            _session.SetInt32("restaurantsessionid", _ID);
             ViewData["restaurantid"] = _session.GetInt32("restaurantsessionid");
             return View();
         }
 
         #endregion
 
+        #region Restaurant Subscription
+
+        [HttpGet]
+        public async Task <IActionResult> Subscription()
+        {
+            var restaurantString = _session.GetString("restaurantobject");
+
+            var restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantString);
+
+            ViewData["restaurantname"] = restaurant.Name;
+            ViewData["restaurantlogo"] = restaurant.Logo;
+            ViewData["restaurantemail"] = restaurant.ContactEmail;
+
+            var subscription = await _db.RestaurantSubscriptions.ToListAsync();
+
+            return View(subscription);
+        }
+
+        
+
+        #endregion
+        
         #region Restaurant Profile
 
         // GET: Restaurants/Profile/5
@@ -243,6 +267,20 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return RedirectToAction("Profile", new { id = ID });
             }
             return RedirectToAction("Profile");
+        }
+
+        #endregion
+
+        #region Logout
+
+        [HttpGet]
+        [Route("Restaurant/LogOut")]
+        public IActionResult LogOut()
+        {
+            _db.Dispose();
+            _session.Clear();
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Access");
         }
 
         #endregion
