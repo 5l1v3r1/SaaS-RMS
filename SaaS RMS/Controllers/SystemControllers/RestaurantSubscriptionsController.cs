@@ -75,6 +75,14 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     return RedirectToAction("Index");
                 }
 
+                var _restaurantSubcription = new RestaurantSubscription
+                {
+                    DateCreated = DateTime.Now,
+                    CreatedBy = _session.GetInt32("loggedinuser"),
+                    DateLastModified = DateTime.Now,
+                    LastModifiedBy = Convert.ToInt32(_session.GetInt32("loggedinuser"))
+                };
+
                 await _db.RestaurantSubscriptions.AddAsync(restaurantSubscription);
                 await _db.SaveChangesAsync();
 

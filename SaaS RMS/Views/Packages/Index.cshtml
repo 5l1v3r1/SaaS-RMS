@@ -85,6 +85,7 @@
                                     @Html.DisplayFor(modelItem => item.Type)
                                 </td>
                                 <td>
+                                    <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="RestaurantSubscriptions" asp-route-id="@item.PackageId"><i class="fa fa-check"></i> Subscriptions</a>
                                     <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PackageId"><i class="fa fa-pencil-square-o "></i> Edit</a>
                                     <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PackageId"><i class="fa fa-trash-o "></i> Delete</a>
                                 </td>

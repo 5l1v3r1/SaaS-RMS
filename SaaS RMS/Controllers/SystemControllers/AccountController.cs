@@ -231,6 +231,41 @@ namespace SaaS_RMS.Controllers.SystemControllers
         }
 
         #endregion
-        
+
+        #region RMS Super User
+
+        //GET: Account/RMS_Admin
+        [HttpGet]
+        public async Task<IActionResult> RMS_Admin()
+        {
+            var role = await _db.AppUsers.CountAsync();
+
+            return View();
+        }
+
+        #endregion
+
+
+        #region Creating Super User
+
+        //GET: Account/FirstRegister
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult FirstRegistration()
+        {
+            return View();
+        }
+
+        //POST:
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult FirstRegistration(AppUser appUser)
+        {
+            return View();
+        }
+
+        #endregion
+
     }
 }
