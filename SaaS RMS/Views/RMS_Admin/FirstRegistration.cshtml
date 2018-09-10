@@ -1,0 +1,36 @@
+﻿@model SaaS_RMS.Models.Entities.System.RMSUser
+
+@{
+    ViewData["Title"] = "FirstRegistration";
+    Layout = "~/Views/Shared/AuthenticationLayout/_AuthenticationLayout.cshtml";
+}
+
+<form class="form-login" asp-action="FirstRegistration" role="form" asp-controller="RMS_Admin">
+    <h2 class="form-login-heading"> RMS FIRST REGISTRATION </h2>
+    <div class="login-wrap">
+        <input asp-for="Name" type="text" class="form-control" placeholder="Enter Full Name" autofocus />
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <br />
+
+        <input asp-for="Email" type="text" class="form-control" placeholder="Enter Email Address" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+        <br />
+
+        <input asp-for="Password" type="password" class="form-control" placeholder="Enter Password" autofocus />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <br />
+
+        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Enter Confirm Password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <br />
+
+        <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> REGISTER</button>
+        <input type="hidden" asp-for="RMSRoleId" />
+        <hr />
+        <div class="registration">
+            Welcome to RMS ADMIN FIRST REGISTRATION
+        </div>
+    </div>
+
+</form>
+
