@@ -47,7 +47,6 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 return Json(e);
             }
-            return View();
         }
 
         #endregion
