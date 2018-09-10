@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180910010926_Made changes to restaurantSubscription model")]
+    partial class MadechangestorestaurantSubscriptionmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -985,29 +986,17 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<int>("RestaurantSubscriptionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CreatedBy");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateLastModified");
-
                     b.Property<string>("Duration");
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<int>("LastModifiedBy");
-
                     b.Property<int?>("PackageId");
-
-                    b.Property<int>("RestaurantId");
 
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("RestaurantSubscriptionId");
 
                     b.HasIndex("PackageId");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("RestaurantSubscriptions");
                 });
@@ -1403,11 +1392,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId");
-
-                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Subscription", b =>

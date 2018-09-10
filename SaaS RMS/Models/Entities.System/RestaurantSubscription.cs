@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.System
 {
-    public class RestaurantSubscription
+    public class RestaurantSubscription : Transport
     {
         #region Data model
 
