@@ -29,11 +29,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Index
 
-        public async Task<IActionResult> Index(int PackageId)
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var restaurantsubscriptions = await _db.RestaurantSubscriptions.Where(rs => rs.PackageId == PackageId).ToListAsync();
+                var restaurant = _session.GetInt32("restaurantsessionid");
+                var restaurantsubscriptions = await _db.RestaurantSubscriptions.Where(rs => rs.RestaurantId == restaurant).ToListAsync();
 
                 if (restaurantsubscriptions == null)
                 {

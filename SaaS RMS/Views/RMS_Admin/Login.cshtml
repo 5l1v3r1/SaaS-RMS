@@ -1,0 +1,43 @@
+﻿@model SaaS_RMS.Models.Entities.System.RMSUser
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/AuthenticationLayout/_AuthenticationLayout.cshtml";
+}
+
+<form class="form-login" asp-action="Login" role="form" asp-controller="RMS_Admin">
+    <h2 class="form-login-heading"> RMS LOGIN </h2>
+    @if (ViewData["mismatch"] != null && Convert.ToString(ViewData["mismatch"]) != " ")
+    {
+        <h5 style="padding-left:1em;" class="text-danger">@ViewData["mismatch"]</h5>
+    }
+    <div class="login-wrap">
+        <input asp-for="Email" type="text" class="form-control" placeholder="Enter Email" autofocus />
+        <br />
+
+        <input asp-for="Password" type="password" class="form-control" placeholder="Access Code" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <input asp-for="ConfirmPassword" type="text" hidden />
+        <input asp-for="Email" type="text" hidden />
+
+        @*<label class="checkbox">
+                <span class="pull-right">
+                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a
+                </span>
+            </label>*@
+        <br />
+        <button class="btn btn-theme btn-block" type="submit" value="Login"><i class="fa fa-lock"></i> Login</button>
+        <hr />
+
+        @*<div class="login-social-link centered">
+                <p>or you can sign in via your social network</p>
+                <button class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</button>
+                <button class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</button>
+            </div>*@
+        <div class="registration">
+            FOODEE ADMIN
+        </div>
+    </div>
+
+</form>
+

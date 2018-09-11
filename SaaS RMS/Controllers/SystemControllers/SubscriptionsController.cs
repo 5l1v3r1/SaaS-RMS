@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
 
@@ -12,19 +14,46 @@ namespace SaaS_RMS.Controllers.SystemControllers
 {
     public class SubscriptionsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public SubscriptionsController(ApplicationDbContext context)
+        #region Constructor
+
+        public SubscriptionsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
+            _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        #endregion
+
+        #region Index
 
         // GET: Subscriptions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int PackageId)
         {
-            var applicationDbContext = _context.Subcriptions.Include(s => s.Package);
-            return View(await applicationDbContext.ToListAsync());
+            try
+            {
+                var subscriptions = _db.Subcriptions.Where(s => s.PackageId == PackageId);
+                
+                if (subscriptions == null)
+                {
+                    return NotFound();
+                }
+
+                _session.SetInt32("packageid", PackageId);
+                return View(await subscriptions.ToListAsync());
+            }
+            catch(Exception e)
+            {
+                return Json(e);
+            }
         }
+
+        #endregion
+
+
 
         // GET: Subscriptions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,7 +63,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return NotFound();
             }
 
-            var subscription = await _context.Subcriptions
+            var subscription = await _db.Subcriptions
                 .Include(s => s.Package)
                 .SingleOrDefaultAsync(m => m.SubscriptionId == id);
             if (subscription == null)
@@ -48,7 +77,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         // GET: Subscriptions/Create
         public IActionResult Create()
         {
-            ViewData["PackageId"] = new SelectList(_context.Packages, "PackageId", "Description");
+            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description");
             return View();
         }
 
@@ -61,11 +90,11 @@ namespace SaaS_RMS.Controllers.SystemControllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(subscription);
-                await _context.SaveChangesAsync();
+                _db.Add(subscription);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PackageId"] = new SelectList(_context.Packages, "PackageId", "Description", subscription.PackageId);
+            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
             return View(subscription);
         }
 
@@ -77,12 +106,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return NotFound();
             }
 
-            var subscription = await _context.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
+            var subscription = await _db.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
             if (subscription == null)
             {
                 return NotFound();
             }
-            ViewData["PackageId"] = new SelectList(_context.Packages, "PackageId", "Description", subscription.PackageId);
+            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
             return View(subscription);
         }
 
@@ -102,8 +131,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
             {
                 try
                 {
-                    _context.Update(subscription);
-                    await _context.SaveChangesAsync();
+                    _db.Update(subscription);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +147,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PackageId"] = new SelectList(_context.Packages, "PackageId", "Description", subscription.PackageId);
+            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
             return View(subscription);
         }
 
@@ -130,7 +159,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return NotFound();
             }
 
-            var subscription = await _context.Subcriptions
+            var subscription = await _db.Subcriptions
                 .Include(s => s.Package)
                 .SingleOrDefaultAsync(m => m.SubscriptionId == id);
             if (subscription == null)
@@ -146,15 +175,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var subscription = await _context.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
-            _context.Subcriptions.Remove(subscription);
-            await _context.SaveChangesAsync();
+            var subscription = await _db.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
+            _db.Subcriptions.Remove(subscription);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SubscriptionExists(int id)
         {
-            return _context.Subcriptions.Any(e => e.SubscriptionId == id);
+            return _db.Subcriptions.Any(e => e.SubscriptionId == id);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
@@ -28,7 +29,7 @@ namespace SaaS_RMS.Controllers
 
         #endregion
 
-        #region Dashbaord
+        #region Welcome
 
         //GET: RMS_Admin/Login
         [HttpGet]
@@ -55,6 +56,23 @@ namespace SaaS_RMS.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        //POST:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(RMSUser user)
+        {
+            var _admin = await _db.RMSUsers.FirstOrDefaultAsync(ru => ru.Email == user.Email && ru.Password == user.Password);
+            if(_admin != null)
+            {
+                _session.SetString("rmsloggedinuser", JsonConvert.SerializeObject(_admin));
+                _session.SetInt32("rmsloggedinuserid", _admin.RMSUserId);
+
+                return RedirectToAction("Dashboard", "RMS_Admin");
+            }
+
+            return View(user);
         }
 
         #endregion
@@ -103,6 +121,16 @@ namespace SaaS_RMS.Controllers
                 return RedirectToAction("Login", "RMS_Admin");
             }
             return View(user);
+        }
+
+        #endregion
+
+        #region Dashboard
+
+        [HttpGet]
+        public IActionResult Dashbaord()
+        {
+            return View();
         }
 
         #endregion
