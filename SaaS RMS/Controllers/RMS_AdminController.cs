@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace SaaS_RMS.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
@@ -130,13 +132,39 @@ namespace SaaS_RMS.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
+            ViewData["restaurantcount"] = _db.Restaurants.Count();
+            ViewData["packagecount"] = _db.Packages.Count();
+            ViewData["statescount"] = _db.States.Count();
+
+            var _userObject = _session.GetString("rmsloggedinuser");
+
+            if (_userObject == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _user = JsonConvert.DeserializeObject<RMSUser>(_userObject);
+
+            ViewData["name"] = _user.Name;
+            ViewData["useremail"] = _user.Email;
+
             return View();
         }
 
         #endregion
 
+        #region Logout
 
+        [HttpGet]
+        public IActionResult LogOut()
+        {
+            _db.Dispose();
+            _session.Clear();
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
+        }
 
-
+        #endregion
+        
     }
 }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
@@ -14,12 +16,15 @@ namespace SaaS_RMS.Controllers.SystemControllers
     public class StatesController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
 
-        public StatesController(ApplicationDbContext context)
+        public StatesController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -27,8 +32,28 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region States Index
 
         // GET: States
+        [Route("RMS/AllStates")]
         public async Task<IActionResult> Index()
         {
+            var rmsadmin = _session.GetInt32("rmsloggedinuserid");
+
+            if (rmsadmin == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _userObject = _session.GetString("rmsloggedinuser");
+
+            if (_userObject == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _user = JsonConvert.DeserializeObject<RMSUser>(_userObject);
+
+            ViewData["name"] = _user.Name;
+            ViewData["useremail"] = _user.Email;
+
             return View(await _db.States.ToListAsync());
         }
 

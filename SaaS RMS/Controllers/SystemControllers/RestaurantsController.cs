@@ -48,6 +48,25 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         public async Task<IActionResult> Index()
         {
+            var rmsadmin = _session.GetInt32("rmsloggedinuserid");
+
+            if(rmsadmin == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _userObject = _session.GetString("rmsloggedinuser");
+
+            if (_userObject == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _user = JsonConvert.DeserializeObject<RMSUser>(_userObject);
+
+            ViewData["name"] = _user.Name;
+            ViewData["useremail"] = _user.Email;
+
             return View(await _db.Restaurants.ToListAsync());
         }
 
