@@ -59,7 +59,6 @@ namespace SaaS_RMS.Controllers
 
         #endregion
 
-
         #region Creating Super User
 
         //GET: Account/FirstRegister

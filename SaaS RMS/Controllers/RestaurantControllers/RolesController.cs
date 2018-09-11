@@ -34,8 +34,7 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
         {
             var restaurant = _session.GetInt32("restaurantsessionid");
             
-            var roles = _db.Roles.Where(r => r.Name != "Manager" && r.Name != "CEO" && r.RestaurantId == restaurant)
-                                        .Include(r => r.Restuarant);
+            var roles = _db.Roles.Where(r => r.Name != "Manager" && r.Name != "CEO" && r.RestaurantId == restaurant);
 
             if (roles != null)
             {
@@ -71,7 +70,7 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
             {
                 if (restaurant != null)
                 {
-                    role.RestaurantId = restaurant;
+                    role.RestaurantId = Convert.ToInt32(restaurant);
                 }
 
                 var roles = _db.Roles;
@@ -85,7 +84,19 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
                     }
                 }
 
-                await _db.Roles.AddAsync(role);
+                var _role = new Role()
+                {
+                    Name = role.Name,
+                    CreatedBy = _session.GetInt32("loggedinuserid"),
+                    LastModifiedBy = Convert.ToInt32(_session.GetInt32("loggedinuserid")),
+                    DateCreated = DateTime.Now,
+                    DateLastModified = DateTime.Now,
+                    CanManageEmployee = role.CanManageEmployee,
+                    CanManageOrders = role.CanManageOrders,
+                    CanDoSomething = true
+                };
+
+                await _db.Roles.AddAsync(_role);
                 await _db.SaveChangesAsync();
                 TempData["role"] = "You have successfully created a role!";
                 TempData["notificationtype"] = NotificationType.Success.ToString();
@@ -134,7 +145,7 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
                     var restaurant = _session.GetInt32("restaurantsessionid");
                     if (restaurant != null)
                     {
-                        role.RestaurantId = restaurant;
+                        role.RestaurantId = Convert.ToInt32(restaurant);
                     }
 
                     _db.Entry(role).State = EntityState.Modified;
@@ -193,7 +204,6 @@ namespace SaaS_RMS.Controllers.RestaurantControllers
             }
 
             Role role = await _db.Roles
-                .Include(r => r.Restuarant)
                 .SingleOrDefaultAsync(r => r.RoleId == id);
 
             if (role == null)

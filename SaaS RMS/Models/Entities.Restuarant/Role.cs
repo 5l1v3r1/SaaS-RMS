@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SaaS_RMS.Models.Entities.Restuarant
+namespace SaaS_RMS.Models.Entities.Restuarant 
 {
-    public class Role
+    public class Role : Transport
     {
         #region Model Data
 
@@ -21,13 +22,14 @@ namespace SaaS_RMS.Models.Entities.Restuarant
         [DisplayName("Order Management")]
         public bool CanManageOrders { get; set; }
 
+        [DisplayName("Can Do Something")]
+        public bool CanDoSomething { get; set; }
+
         #endregion
 
         #region Foreign Keys
 
-        public int? RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual System.Restaurant Restuarant { get; set; }
+        
 
         #endregion
 
