@@ -128,7 +128,7 @@ namespace SaaS_RMS.Controllers
         #region Dashboard
 
         [HttpGet]
-        public IActionResult Dashbaord()
+        public IActionResult Dashboard()
         {
             return View();
         }
