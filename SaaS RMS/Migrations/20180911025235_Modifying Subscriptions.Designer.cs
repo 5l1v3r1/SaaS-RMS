@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180911025235_Modifying Subscriptions")]
+    partial class ModifyingSubscriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1003,17 +1004,15 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<DateTime>("DateLastModified");
 
-                    b.Property<int>("Duration");
+                    b.Property<double>("Discount");
 
-                    b.Property<string>("EndDate");
+                    b.Property<int>("Duration");
 
                     b.Property<int>("LastModifiedBy");
 
                     b.Property<int?>("PackageId");
 
                     b.Property<int>("RestaurantId");
-
-                    b.Property<string>("StartDate");
 
                     b.HasKey("RestaurantSubscriptionId");
 

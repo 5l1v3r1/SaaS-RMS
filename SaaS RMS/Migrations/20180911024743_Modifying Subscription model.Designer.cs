@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180911024743_Modifying Subscription model")]
+    partial class ModifyingSubscriptionmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1003,23 +1004,17 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<DateTime>("DateLastModified");
 
-                    b.Property<int>("Duration");
+                    b.Property<double>("Discount");
 
-                    b.Property<string>("EndDate");
+                    b.Property<int>("Duration");
 
                     b.Property<int>("LastModifiedBy");
 
                     b.Property<int?>("PackageId");
 
-                    b.Property<int>("RestaurantId");
-
-                    b.Property<string>("StartDate");
-
                     b.HasKey("RestaurantSubscriptionId");
 
                     b.HasIndex("PackageId");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("RestaurantSubscriptions");
                 });
@@ -1085,9 +1080,11 @@ namespace SaaS_RMS.Data.Migrations
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Duration");
+                    b.Property<string>("EndDate");
 
                     b.Property<int>("PackageId");
+
+                    b.Property<string>("StartDate");
 
                     b.HasKey("SubscriptionId");
 
@@ -1453,11 +1450,6 @@ namespace SaaS_RMS.Data.Migrations
                     b.HasOne("SaaS_RMS.Models.Entities.System.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId");
-
-                    b.HasOne("SaaS_RMS.Models.Entities.System.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.RMSUser", b =>

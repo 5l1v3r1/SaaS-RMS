@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SaaS_RMS.Models.Entities.System
 {
-    public class RestaurantSubscription
+    public class RestaurantSubscription : Transport
     {
         #region Data model
 
@@ -17,24 +17,13 @@ namespace SaaS_RMS.Models.Entities.System
         
         [DisplayName("Subscription Duration")]
         public RestauarantSubscriptionDuration Duration { get; set; }
+        
+        public string StartDate { get; set; }
+
+        public string EndDate { get; set; }
 
         [Required(ErrorMessage = "Amount field is required")]
         public double Amount { get; set; }
-
-        [Required(ErrorMessage = "Discount field is required")]
-        public double Discount { get; set; }
-
-        [DisplayName("Created By")]
-        public int? CreatedBy { get; set; }
-
-        [DisplayName("Date Created")]
-        public DateTime DateCreated { get; set; }
-
-        [DisplayName("Date Last Modified")]
-        public DateTime DateLastModified { get; set; }
-
-        [DisplayName("Last Modified By")]
-        public int LastModifiedBy { get; set; }
 
         #endregion
 

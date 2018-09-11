@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,19 +13,13 @@ namespace SaaS_RMS.Models.Entities.System
         #region Model Data
 
         public int SubscriptionId { get; set; }
-
-        public string StartDate { get; set; }
-
-        public string EndDate { get; set; }
+        
+        [DisplayName("Subscription Duration")]
+        public RestauarantSubscriptionDuration Duration { get; set; }
 
         #endregion
 
         #region Foreign Key
-
-        [DisplayName("Restaurant")]
-        public int RestaurantId { get; set; }
-        [ForeignKey("RestaurantId")]
-        public virtual Restaurant Restaurant { get; set; }
 
         [DisplayName("Package")]
         public int PackageId { get; set; }
