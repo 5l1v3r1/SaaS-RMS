@@ -8,7 +8,7 @@
 <!--MODAL HEADER-->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3> <strong> ADD LOCAL GOVERNMENT AREA </strong> </h3>
+    <h3> <strong> ADD SUBSCRIPTION </strong> </h3>
 </div>
 
 <form asp-action="Create">
@@ -18,11 +18,11 @@
     <div class="modal-body">
         <div class="form-horizontal">
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Duration"></label>
+                <div class="control-label col-md-4">
+                    <label>Subscription Duration</label>
                 </div>
-                <div class="col-md-10">
-                    <select asp-for="Duration" class="form-control"></select>
+                <div class="col-md-8">
+                    <select asp-for="Duration" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.RestauarantSubscriptionDuration)))"></select>
                     <span asp-validation-for="Duration" class="text-danger"></span>
                 </div>
             </div>

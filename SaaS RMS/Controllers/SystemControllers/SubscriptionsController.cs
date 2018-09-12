@@ -32,18 +32,18 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Index
 
         // GET: Subscriptions
-        public async Task<IActionResult> Index(int PackageId)
+        public async Task<IActionResult> Index(int id)
         {
             try
             {
-                var subscriptions = _db.Subcriptions.Where(s => s.PackageId == PackageId);
+                var subscriptions = _db.Subcriptions.Where(s => s.PackageId == id);
                 
                 if (subscriptions == null)
                 {
                     return NotFound();
                 }
 
-                _session.SetInt32("packageid", PackageId);
+                _session.SetInt32("packageid", id);
                 return View(await subscriptions.ToListAsync());
             }
             catch(Exception e)
@@ -71,10 +71,18 @@ namespace SaaS_RMS.Controllers.SystemControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SubscriptionId,StartDate,EndDate,PackageId")] Subscription subscription)
+        public async Task<IActionResult> Create(Subscription subscription)
         {
             if (ModelState.IsValid)
             {
+                var allSubscriptions = await _db.Subcriptions.ToListAsync();
+                if (allSubscriptions.Any(s => s.Duration == subscription.Duration))
+                {
+                    TempData["subscriptions"] = "You cannot the subscription because it already exist!!!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return RedirectToAction("Index");
+                }
+
                 var packageid = _session.GetInt32("packageid");
                 var _package = await _db.Packages.FindAsync(packageid);
 
@@ -95,17 +103,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
                     var _newAmount = _package.Amount * 10;
                     subscription.Amount = _newAmount;
                 }
-
-                var allSubscriptions = await _db.Subcriptions.ToListAsync();
-                if (allSubscriptions.Any(s => s.Duration == subscription.Duration))
-                {
-                    TempData["subscriptions"] = "You cannot the subscription because it already exist!!!";
-                    TempData["notificationType"] = NotificationType.Error.ToString();
-                    return RedirectToAction("Index", new { PackageId = subscription.PackageId });
-                }
-
+                
                 _db.Add(subscription);
                 await _db.SaveChangesAsync();
+
+                TempData["subscriptions"] = "You have successfully added the " + subscription.Duration +  " subscription!!!";
+                TempData["notificationType"] = NotificationType.Error.ToString();
                 return Json(new { success = true });
 
             }
@@ -114,85 +117,10 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
-        // GET: Subscriptions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subscription = await _db.Subcriptions
-                .Include(s => s.Package)
-                .SingleOrDefaultAsync(m => m.SubscriptionId == id);
-            if (subscription == null)
-            {
-                return NotFound();
-            }
-
-            return View(subscription);
-        }
-
-        
-
-
-
-
-
-        // GET: Subscriptions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subscription = await _db.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
-            if (subscription == null)
-            {
-                return NotFound();
-            }
-            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
-            return View(subscription);
-        }
-
-        // POST: Subscriptions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SubscriptionId,StartDate,EndDate,PackageId")] Subscription subscription)
-        {
-            if (id != subscription.SubscriptionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _db.Update(subscription);
-                    await _db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubscriptionExists(subscription.SubscriptionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
-            return View(subscription);
-        }
+        #region Delete
 
         // GET: Subscriptions/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -208,7 +136,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return NotFound();
             }
 
-            return View(subscription);
+            return PartialView("Delete", subscription);
         }
 
         // POST: Subscriptions/Delete/5
@@ -217,14 +145,29 @@ namespace SaaS_RMS.Controllers.SystemControllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var subscription = await _db.Subcriptions.SingleOrDefaultAsync(m => m.SubscriptionId == id);
-            _db.Subcriptions.Remove(subscription);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if(subscription != null)
+            {
+                _db.Subcriptions.Remove(subscription);
+                await _db.SaveChangesAsync();
+
+                TempData["subscriptions"] = "You have successfully deleted the " + subscription.Duration + " subscription!!!";
+                TempData["notificationType"] = NotificationType.Success.ToString();
+                return Json(new { success = true });
+            }
+            
+            return RedirectToAction(nameof(Index), new { PackageId = subscription.PackageId });
         }
+
+        #endregion
+
+        #region Subscription Exists
 
         private bool SubscriptionExists(int id)
         {
             return _db.Subcriptions.Any(e => e.SubscriptionId == id);
         }
+
+        #endregion
+        
     }
 }

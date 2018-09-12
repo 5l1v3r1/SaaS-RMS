@@ -37,6 +37,13 @@
         <div class="title_left">
             <h3>SUBSCRIPTIONS</h3>
         </div>
+        <div style="float:right">
+            <ul class="breadcrumb">
+                <li><a asp-action="Dashboard" asp-controller="RMS_Admin" style="color:blue">Dashboard</a></li>
+                <li><a asp-action="Index" asp-controller="Packages" style="color:blue">Packages</a></li>
+                <li>Subscriptions</li>
+            </ul>
+        </div>
     </div>
     <div class="clearfix"></div>
     <div class="row">
@@ -56,9 +63,6 @@
                                 Amount
                             </th>
                             <th>
-                                Discount
-                            </th>
-                            <th>
                                 Actions
                             </th>
                         </tr>
@@ -72,13 +76,9 @@
                                     @Html.DisplayFor(modelItem => item.Duration)
                                 </td>
                                 <td>
-                                    
+                                    @Html.DisplayFor(modelItem => item.Amount)
                                 </td>
                                 <td>
-                                    
-                                </td>
-                                <td>
-                                    <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Subscriptions" asp-route-id="@item.SubscriptionId"><i class="fa fa-check"></i> Subscriptions</a>
                                     <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.SubscriptionId"><i class="fa fa-pencil-square-o "></i> Edit</a>
                                     <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.SubscriptionId"><i class="fa fa-trash-o "></i> Delete</a>
                                 </td>
