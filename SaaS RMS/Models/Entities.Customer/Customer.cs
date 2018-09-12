@@ -1,6 +1,10 @@
-﻿using System;
+﻿using SaaS_RMS.Models.Entities.System;
+using SaaS_RMS.Models.Enums;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,9 +12,11 @@ namespace SaaS_RMS.Models.Entities.Customer
 {
     public class Customer
     {
+        #region Model Data
+
         public int CustomerId { get; set; }
 
-        [Required(ErrorMessage="First Name field is required")]
+        [Required(ErrorMessage = "First Name field is required")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Last Name field is required")]
@@ -30,5 +36,27 @@ namespace SaaS_RMS.Models.Entities.Customer
 
         [Required(ErrorMessage = "Phone number field is required")]
         public string PhoneNumber { get; set; }
+
+        public String Address { get; set; }
+
+        public BloodGroup BloodGroup { get; set; } 
+
+        public Genotype Genotype { get; set; }
+
+        public String Allegies { get; set; }
+
+        public string DisplayName
+            => FirstName + " " + LastName;
+
+        #endregion
+
+        #region Foreign Key
+
+        [DisplayName("LGA")]
+        public int LgaId { get; set; }
+        [ForeignKey("LgaId")]
+        public virtual Lga Lga { get; set; }
+
+        #endregion
     }
 }

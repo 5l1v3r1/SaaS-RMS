@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.Landing;
+using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.LandingControllers
@@ -17,25 +19,45 @@ namespace SaaS_RMS.Controllers.LandingControllers
     public class LandingInfoController : Controller
     {
         private readonly ApplicationDbContext _db;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-        //private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
         private readonly IHostingEnvironment _environment;
 
         #region Constructor
 
-        public LandingInfoController(ApplicationDbContext context, IHostingEnvironment environment /*IHttpContextAccessor httpContextAccessor*/)
+        public LandingInfoController(ApplicationDbContext context, IHostingEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _db = context;
             _environment = environment;
-            //_httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
 
         #region Index
 
+        [Route("RMS/AllLandingInfo")]
         public async Task<IActionResult> Index()
         {
+            var rmsadmin = _session.GetInt32("rmsloggedinuserid");
+
+            if (rmsadmin == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _userObject = _session.GetString("rmsloggedinuser");
+
+            if (_userObject == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _user = JsonConvert.DeserializeObject<RMSUser>(_userObject);
+
+            ViewData["name"] = _user.Name;
+            ViewData["useremail"] = _user.Email;
+
             var landingInfo = await _db.LandingInfo.ToListAsync();
             return View(landingInfo);
         }

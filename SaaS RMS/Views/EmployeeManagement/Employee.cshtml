@@ -13,21 +13,21 @@
         {
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["dish"]
+                @TempData["employee"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Error.ToString()))
         {
             <div class="alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["dish"]
+                @TempData["employee"]
             </div>
         }
         else if (TempData["notificationtype"].Equals(NotificationType.Info.ToString()))
         {
             <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                @TempData["dish"]
+                @TempData["employee"]
             </div>
         }
 

@@ -46,6 +46,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #region Restaurant Index
 
+        [Route("RMS/AllRestaurants")]
         public async Task<IActionResult> Index()
         {
             var rmsadmin = _session.GetInt32("rmsloggedinuserid");

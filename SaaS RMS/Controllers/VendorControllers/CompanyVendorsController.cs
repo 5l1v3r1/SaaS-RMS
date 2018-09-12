@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaaS_RMS.Data;
+using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Entities.Vendor;
 using SaaS_RMS.Models.Enums;
 
@@ -25,6 +27,36 @@ namespace SaaS_RMS.Controllers.VendorControllers
         {
             _db = context;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        #endregion
+
+        #region Index
+
+        [HttpGet]
+        [Route("RMS/AllVendors")]
+        public async Task <IActionResult> Index()
+        {
+            var rmsadmin = _session.GetInt32("rmsloggedinuserid");
+
+            if (rmsadmin == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _userObject = _session.GetString("rmsloggedinuser");
+
+            if (_userObject == null)
+            {
+                return RedirectToAction("Login", "RMS_Admin");
+            }
+
+            var _user = JsonConvert.DeserializeObject<RMSUser>(_userObject);
+
+            ViewData["name"] = _user.Name;
+            ViewData["useremail"] = _user.Email;
+
+            return View(await _db.CompanyVendors.ToListAsync());
         }
 
         #endregion
@@ -336,18 +368,7 @@ namespace SaaS_RMS.Controllers.VendorControllers
         }
 
         #endregion
-
-        #region Index
-
-        [HttpGet]
-        [Route("Vendor/Index")]
-        public async Task <IActionResult> Index()
-        {
-            return View(await _db.CompanyVendors.ToListAsync());
-        }
-
-        #endregion
-
+        
         #region Add As Vendor
 
         [HttpGet]

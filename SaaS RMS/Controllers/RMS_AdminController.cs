@@ -18,7 +18,6 @@ namespace SaaS_RMS.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         #region Constructor
@@ -54,6 +53,7 @@ namespace SaaS_RMS.Controllers
         #region Login
 
         //GET: RMS_Admin/Login
+        [Route("Admin/Login")]
         [HttpGet]
         public IActionResult Login()
         {
@@ -61,6 +61,7 @@ namespace SaaS_RMS.Controllers
         }
 
         //POST:
+        [Route("Admin/Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(RMSUser user)
@@ -83,6 +84,7 @@ namespace SaaS_RMS.Controllers
 
         //GET: Account/FirstRegister
         [HttpGet]
+        [Route("Admin/FirstRegistration")]
         [AllowAnonymous]
         public IActionResult FirstRegistration()
         {
@@ -91,6 +93,7 @@ namespace SaaS_RMS.Controllers
 
         //POST:
         [HttpPost]
+        [Route("Admin/FirstRegistration")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> FirstRegistration(RMSUser user)
         {
@@ -130,11 +133,15 @@ namespace SaaS_RMS.Controllers
         #region Dashboard
 
         [HttpGet]
+        [Route("Admin/Dashboard")]
         public IActionResult Dashboard()
         {
             ViewData["restaurantcount"] = _db.Restaurants.Count();
             ViewData["packagecount"] = _db.Packages.Count();
             ViewData["statescount"] = _db.States.Count();
+            ViewData["landinginfocount"] = _db.LandingInfo.Count();
+            ViewData["companyvendorcount"] = _db.CompanyVendors.Count();
+
 
             var _userObject = _session.GetString("rmsloggedinuser");
 
@@ -156,6 +163,7 @@ namespace SaaS_RMS.Controllers
         #region Logout
 
         [HttpGet]
+        [Route("Admin/Logout")]
         public IActionResult LogOut()
         {
             _db.Dispose();
