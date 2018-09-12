@@ -37,7 +37,7 @@ namespace SaaS_RMS.Models.Entities.System
         #region Foreign key
 
         public int RMSRoleId { get; set; }
-        [ForeignKey("RoleId")]
+        [ForeignKey("RMSRoleId")]
         public RMSRole RMSRole { get; set; }
 
         #endregion

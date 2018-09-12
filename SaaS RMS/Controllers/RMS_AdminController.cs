@@ -33,6 +33,7 @@ namespace SaaS_RMS.Controllers
         #region Welcome
 
         //GET: RMS_Admin/Login
+        [Route("RMS/Admin")]
         [HttpGet]
         public async Task<IActionResult> Welcome()
         {

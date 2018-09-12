@@ -17,6 +17,8 @@ namespace SaaS_RMS.Models.Entities.System
         [DisplayName("Subscription Duration")]
         public RestauarantSubscriptionDuration Duration { get; set; }
 
+        public double Amount { get; set; }
+
         #endregion
 
         #region Foreign Key

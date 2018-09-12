@@ -99,7 +99,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 {
                     TempData["lga"] = "You cannot add "+ lga.Name +" local government area because it already exist!!!";
                     TempData["notificationType"] = NotificationType.Error.ToString();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { StateId = lga.StateId });
                 }
 
                 await _db.AddAsync(lga);

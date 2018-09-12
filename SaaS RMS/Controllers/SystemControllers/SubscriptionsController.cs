@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
+using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers.SystemControllers
 {
@@ -53,7 +54,65 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
+        #region Create
 
+        // GET: Subscriptions/Create
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewData["packageid"] = _session.GetInt32("packageid");
+            
+            var subscription = new Subscription();
+            return View("Create", subscription);
+        }
+
+        // POST: Subscriptions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("SubscriptionId,StartDate,EndDate,PackageId")] Subscription subscription)
+        {
+            if (ModelState.IsValid)
+            {
+                var packageid = _session.GetInt32("packageid");
+                var _package = await _db.Packages.FindAsync(packageid);
+
+                if (subscription.Duration == Models.Enums.RestauarantSubscriptionDuration.OneMonth)
+                {
+                    var _newAmount = _package.Amount * 1;
+                    subscription.Amount = _newAmount;
+                }
+
+                else if (subscription.Duration == Models.Enums.RestauarantSubscriptionDuration.SixMonths)
+                {
+                    var _newAmount = _package.Amount * 5;
+                    subscription.Amount = _newAmount;
+                }
+
+                else if (subscription.Duration == Models.Enums.RestauarantSubscriptionDuration.TwelveMonths)
+                {
+                    var _newAmount = _package.Amount * 10;
+                    subscription.Amount = _newAmount;
+                }
+
+                var allSubscriptions = await _db.Subcriptions.ToListAsync();
+                if (allSubscriptions.Any(s => s.Duration == subscription.Duration))
+                {
+                    TempData["subscriptions"] = "You cannot the subscription because it already exist!!!";
+                    TempData["notificationType"] = NotificationType.Error.ToString();
+                    return RedirectToAction("Index", new { PackageId = subscription.PackageId });
+                }
+
+                _db.Add(subscription);
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
+
+            }
+            return RedirectToAction(nameof(Index), new { PackageId = subscription.PackageId });
+        }
+
+        #endregion
 
         // GET: Subscriptions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -74,29 +133,11 @@ namespace SaaS_RMS.Controllers.SystemControllers
             return View(subscription);
         }
 
-        // GET: Subscriptions/Create
-        public IActionResult Create()
-        {
-            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description");
-            return View();
-        }
+        
 
-        // POST: Subscriptions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SubscriptionId,StartDate,EndDate,PackageId")] Subscription subscription)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.Add(subscription);
-                await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PackageId"] = new SelectList(_db.Packages, "PackageId", "Description", subscription.PackageId);
-            return View(subscription);
-        }
+
+
+
 
         // GET: Subscriptions/Edit/5
         public async Task<IActionResult> Edit(int? id)

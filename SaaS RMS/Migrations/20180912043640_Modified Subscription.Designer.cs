@@ -9,12 +9,13 @@ using SaaS_RMS.Data;
 using SaaS_RMS.Models.Enums;
 using System;
 
-namespace SaaS_RMS.Data.Migrations
+namespace SaaSRMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180912043640_Modified Subscription")]
+    partial class ModifiedSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1066,9 +1067,11 @@ namespace SaaS_RMS.Data.Migrations
 
                     b.Property<int>("RMSRoleId");
 
+                    b.Property<int?>("RoleId");
+
                     b.HasKey("RMSUserId");
 
-                    b.HasIndex("RMSRoleId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("RMSUsers");
                 });
@@ -1472,8 +1475,7 @@ namespace SaaS_RMS.Data.Migrations
                 {
                     b.HasOne("SaaS_RMS.Models.Entities.System.RMSRole", "RMSRole")
                         .WithMany()
-                        .HasForeignKey("RMSRoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("SaaS_RMS.Models.Entities.System.Subscription", b =>
