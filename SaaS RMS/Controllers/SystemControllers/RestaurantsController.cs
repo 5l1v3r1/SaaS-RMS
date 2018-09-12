@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
-using System.Web;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Entities.Restuarant;
-using SaaS_RMS.Models;
 using Microsoft.AspNetCore.Authentication;
 
 namespace SaaS_RMS.Controllers.SystemControllers
@@ -186,8 +182,9 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Subscription
 
         [HttpGet]
-        public async Task <IActionResult> Subscription()
+        public IActionResult Subscription()
         {
+            var restaurantid = _session.GetInt32("restaurantsessionid");
             var restaurantString = _session.GetString("restaurantobject");
 
             var restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantString);
@@ -196,15 +193,20 @@ namespace SaaS_RMS.Controllers.SystemControllers
             ViewData["restaurantlogo"] = restaurant.Logo;
             ViewData["restaurantemail"] = restaurant.ContactEmail;
 
-            var subscription = await _db.RestaurantSubscriptions.ToListAsync();
+            var _users = _db.AppUsers.Where(ap => ap.RestaurantId == restaurantid);
 
-            return View(subscription);
+            if (_users.Count() < 0)
+            {
+                return RedirectToAction("Account", "FirstRegisteration");
+            }
+
+            return View();
         }
 
-        
+
 
         #endregion
-        
+
         #region Restaurant Profile
 
         // GET: Restaurants/Profile/5

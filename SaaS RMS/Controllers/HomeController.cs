@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -10,8 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models;
-using SaaS_RMS.Models.Entities.Landing;
-using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
 namespace SaaS_RMS.Controllers

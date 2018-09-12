@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace SaaS_RMS.Models.Entities.System
+namespace SaaS_RMS.Models.Entities.Restuarant
 {
     public class AccountModel
     {

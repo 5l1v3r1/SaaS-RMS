@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,11 +9,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
-using SaaS_RMS.Models.Entities.Landing;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.LandingControllers
+namespace SaaS_RMS.Controllers.SystemControllers
 {
     public class LandingInfoController : Controller
     {

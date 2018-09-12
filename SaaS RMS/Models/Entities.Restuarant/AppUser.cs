@@ -1,8 +1,8 @@
-﻿using SaaS_RMS.Models.Entities.Restuarant;
+﻿using SaaS_RMS.Models.Entities.System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SaaS_RMS.Models.Entities.System
+namespace SaaS_RMS.Models.Entities.Restuarant
 {
     public class AppUser : Transport
     {

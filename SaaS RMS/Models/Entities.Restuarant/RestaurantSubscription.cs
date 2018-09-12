@@ -1,13 +1,10 @@
-﻿using SaaS_RMS.Models.Enums;
-using System;
-using System.Collections.Generic;
+﻿using SaaS_RMS.Models.Entities.System;
+using SaaS_RMS.Models.Enums;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SaaS_RMS.Models.Entities.System
+namespace SaaS_RMS.Models.Entities.Restuarant
 {
     public class RestaurantSubscription : Transport
     {

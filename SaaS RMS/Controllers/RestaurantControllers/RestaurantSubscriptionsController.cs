@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaaS_RMS.Data;
+using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 
-namespace SaaS_RMS.Controllers.SystemControllers
+namespace SaaS_RMS.Controllers.RestaurantControllers
 {
     public class RestaurantSubscriptionsController : Controller
     {

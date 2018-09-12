@@ -1,10 +1,8 @@
 ﻿using SaaS_RMS.Models.Entities.Employee;
-using System;
+using SaaS_RMS.Models.Entities.System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SaaS_RMS.Models.Entities.System
+namespace SaaS_RMS.Models.Entities.Restuarant
 {
     public class ApplicationTransport
     {

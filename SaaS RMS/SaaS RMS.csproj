@@ -128,6 +128,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Entities.Landing\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

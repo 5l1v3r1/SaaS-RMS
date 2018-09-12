@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Encryption;
+using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SaaS_RMS.Models.Entities.System;
 
-namespace SaaS_RMS.Models.Entities.System
+namespace SaaS_RMS.Models.Entities.Restuarant
 {
     public class AccessLog : Transport
     {
