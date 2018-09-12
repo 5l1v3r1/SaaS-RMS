@@ -52,10 +52,10 @@ namespace SaaS_RMS.Models.Entities.Customer
 
         #region Foreign Key
 
-        [DisplayName("LGA")]
-        public int LgaId { get; set; }
-        [ForeignKey("LgaId")]
-        public virtual Lga Lga { get; set; }
+        //[DisplayName("LGA")]
+        //public int LgaId { get; set; }
+        //[ForeignKey("LgaId")]
+        //public virtual Lga Lga { get; set; }
 
         #endregion
     }

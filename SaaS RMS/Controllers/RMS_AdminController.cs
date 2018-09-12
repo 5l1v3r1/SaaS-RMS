@@ -66,15 +66,22 @@ namespace SaaS_RMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(RMSUser user)
         {
-            var _admin = await _db.RMSUsers.FirstOrDefaultAsync(ru => ru.Email == user.Email && ru.Password == user.Password);
+            var _admin = await _db.RMSUsers.FirstOrDefaultAsync(ru => ru.Email == user.Email);
             if(_admin != null)
             {
-                _session.SetString("rmsloggedinuser", JsonConvert.SerializeObject(_admin));
-                _session.SetInt32("rmsloggedinuserid", _admin.RMSUserId);
+                var _password = BCrypt.Net.BCrypt.Verify(user.Password, _admin.Password);
+                if (_password == true)
+                {
+                    _session.SetString("rmsloggedinuser", JsonConvert.SerializeObject(_admin));
+                    _session.SetInt32("rmsloggedinuserid", _admin.RMSUserId);
 
-                return RedirectToAction("Dashboard", "RMS_Admin");
+                    return RedirectToAction("Dashboard", "RMS_Admin");
+                }
+                else
+                {
+                    ViewData["mismatch"] = "Email and Password do not match";
+                }
             }
-
             return View(user);
         }
 
@@ -112,8 +119,8 @@ namespace SaaS_RMS.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Password = user.Password,
-                    ConfirmPassword = user.ConfirmPassword,
+                    Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
+                    ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(user.ConfirmPassword),
                     RMSRoleId = _role.RMSRoleId
                 };
 

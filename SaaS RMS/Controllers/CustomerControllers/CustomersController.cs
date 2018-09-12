@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SaaS_RMS.Data;
@@ -150,7 +151,16 @@ namespace SaaS_RMS.Controllers.CustomerControllers
 
         #endregion
         
-        #region MyRegion
+        #region Logout
+
+        [HttpGet]
+        public IActionResult LogOut()
+        {
+            _db.Dispose();
+            _session.Clear();
+            HttpContext.SignOutAsync();
+            return RedirectToAction("SignIn");
+        }
 
         #endregion
 
