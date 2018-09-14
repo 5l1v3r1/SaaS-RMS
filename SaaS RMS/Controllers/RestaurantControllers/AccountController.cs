@@ -308,6 +308,57 @@ namespace SaaS_RMS.Controllers.SystemControllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Signin(AppUser appUser)
+        {
+            try
+            {
+                var _user = await _db.AppUsers.Where(au => au.Email == appUser.Email).SingleOrDefaultAsync();
+
+                var access = new AccessLog();
+
+                if (_user != null)
+                {
+                    var _password = BCrypt.Net.BCrypt.Verify(appUser.Password, _user.Password);
+
+                    if(_password == true)
+                    {
+                        access.Message = "Dear " + _user.Name + ", You have successfully logged in!";
+                        access.Status = AccessStatus.Approved.ToString();
+                        access.Category = AccessCategory.Login.ToString();
+                        access.DateCreated = DateTime.Now;
+                        access.AppUserId = _user.AppUserId;
+                        access.DateLastModified = DateTime.Now;
+                        access.CreatedBy = _user.AppUserId;
+                        access.LastModifiedBy = _user.AppUserId;
+
+                        await _db.AccessLogs.AddAsync(access);
+                        await _db.SaveChangesAsync();
+
+                        //store user sessions
+                        _session.SetInt32("loggedinuserid", _user.AppUserId);
+                        _session.SetInt32("loggedinemployeeid", _user.EmployeeId);
+                        _session.SetString("loggedinuser", JsonConvert.SerializeObject(_user));
+
+                        //display notification
+                        TempData["account"] = access.Message;
+                        TempData["notificationtype"] = NotificationType.Success.ToString();
+                        return RedirectToAction("Dashboard", "Restaurant");
+                    }
+                    else
+                    {
+                        ViewData["mismatch"] = "Email and Password do not match";
+                    }
+                }
+            }
+            catch
+            {
+                return View();
+            }
+            return View();
+        }
+
         #endregion
 
 

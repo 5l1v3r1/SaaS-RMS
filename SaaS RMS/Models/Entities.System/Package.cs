@@ -17,8 +17,14 @@ namespace SaaS_RMS.Models.Entities.System
 
         [Required(ErrorMessage = "Description field is required")]
         [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
-
+        public string Description1 { get; set; }
+        
+        [DataType(DataType.MultilineText)]
+        public string Description2 { get; set; }
+        
+        [DataType(DataType.MultilineText)]
+        public string Description3 { get; set; }
+        
         [Required(ErrorMessage = "Amount field is required")]
         public double Amount { get; set; }
 

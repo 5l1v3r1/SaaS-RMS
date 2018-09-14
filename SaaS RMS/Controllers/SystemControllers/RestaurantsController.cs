@@ -165,7 +165,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
                         return RedirectToAction("FirstRegistration", "Account");
                     }
 
-                    return RedirectToAction("Subscription");
+                    return RedirectToAction("Packages");
                 }
                 
             }
@@ -189,15 +189,20 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
-        #region Restaurant Subscription
+        #region Restaurant Package
 
         [HttpGet]
-        public IActionResult Subscription()
+        public async Task<IActionResult> Packages()
         {
             var restaurantid = _session.GetInt32("restaurantsessionid");
             var restaurantString = _session.GetString("restaurantobject");
 
             var restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantString);
+
+            if(restaurant == null)
+            {
+                return RedirectToAction("Access", "Restaurant");
+            }
 
             ViewData["restaurantname"] = restaurant.Name;
             ViewData["restaurantlogo"] = restaurant.Logo;
@@ -210,10 +215,45 @@ namespace SaaS_RMS.Controllers.SystemControllers
                 return RedirectToAction("Account", "FirstRegisteration");
             }
 
-            return View();
+            var subscription = await _db.Packages.ToListAsync();
+            return View(subscription);
         }
 
+        #endregion
 
+        #region Restaurant Subscription
+
+        [HttpGet]
+        public async Task<IActionResult> Subcriptions(int? id)
+        {
+            var restaurantid = _session.GetInt32("restaurantsessionid");
+            var restaurantString = _session.GetString("restaurantobject");
+
+            var restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantString);
+
+            if (restaurant == null)
+            {
+                return RedirectToAction("Access", "Restaurant");
+            }
+
+            ViewData["restaurantname"] = restaurant.Name;
+            ViewData["restaurantlogo"] = restaurant.Logo;
+            ViewData["restaurantemail"] = restaurant.ContactEmail;
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var subscription = await _db.Subcriptions.Where(s => s.PackageId == id).ToListAsync();
+
+            if (subscription == null)
+            {
+                return NotFound();
+            }
+
+            return View(subscription);
+        }
 
         #endregion
 
@@ -317,72 +357,73 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
-        #region Restaurant Dashborad
+        //#region Restaurant Dashborad
 
-        [HttpGet]
-        public IActionResult Dashboard(int? id)
-        {
-            if (id != null)
-            {
-                var meals = _db.Meals.Where(m => m.RestaurantId == id);
-                List<MealDishResponse> response = new List<MealDishResponse>();
-                var landingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply);
-                var restaurant = _db.Restaurants.Find(id);
+        //[HttpGet]
+        //[Route("Restaurant/Dashboard")]
+        //public IActionResult Dashboard(int? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        var meals = _db.Meals.Where(m => m.RestaurantId == id);
+        //        List<MealDishResponse> response = new List<MealDishResponse>();
+        //        var landingInfo = _db.LandingInfo.Where(l => l.Approval == ApprovalEnum.Apply);
+        //        var restaurant = _db.Restaurants.Find(id);
 
-                ViewData["restaurantname"] = restaurant.Name;
-                ViewData["restaurantlogo"] = restaurant.Logo;
-                ViewData["restaurantmotto"] = restaurant.Motto;
-                ViewData["restaurantlocation"] = restaurant.Location;
-                ViewData["restaurantnumber"] = restaurant.ContactNumber;
-                ViewData["restaurantemail"] = restaurant.ContactEmail;
+        //        ViewData["restaurantname"] = restaurant.Name;
+        //        ViewData["restaurantlogo"] = restaurant.Logo;
+        //        ViewData["restaurantmotto"] = restaurant.Motto;
+        //        ViewData["restaurantlocation"] = restaurant.Location;
+        //        ViewData["restaurantnumber"] = restaurant.ContactNumber;
+        //        ViewData["restaurantemail"] = restaurant.ContactEmail;
 
 
-                foreach (var meal in meals)
-                {
-                    var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
-                    var _response = new MealDishResponse
-                    {
-                        meal = meal,
-                        dishes = dishes
-                    };
-                    response.Add(_response);
-                }
-                
-                ViewData["dishes"] = response;
-                
-                return View();
-            }
+        //        foreach (var meal in meals)
+        //        {
+        //            var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
+        //            var _response = new MealDishResponse
+        //            {
+        //                meal = meal,
+        //                dishes = dishes
+        //            };
+        //            response.Add(_response);
+        //        }
 
-            else
-            {
-                return RedirectToAction("Dashboard", "Restaurants");
-            }
-        }
+        //        ViewData["dishes"] = response;
 
-        [HttpGet]
-        public JsonResult GetDishes(int? id)
-        {
-            if (id != null)
-            {
-                var meals = _db.Meals.Where(m => m.RestaurantId == id);
-                List<MealDishResponse> response = new List<MealDishResponse>();
+        //        return View();
+        //    }
 
-                foreach (var meal in meals)
-                {
-                    var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
-                    var _response = new MealDishResponse
-                    {
-                        meal = meal,
-                        dishes = dishes
-                    };
-                    response.Add(_response);
-                }
-                return Json(new { data = response });
-            }
-            return Json(new { });
-        }
+        //    else
+        //    {
+        //        return RedirectToAction("Dashboard", "Restaurants");
+        //    }
+        //}
 
-        #endregion
+        //[HttpGet]
+        //public JsonResult GetDishes(int? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        var meals = _db.Meals.Where(m => m.RestaurantId == id);
+        //        List<MealDishResponse> response = new List<MealDishResponse>();
+
+        //        foreach (var meal in meals)
+        //        {
+        //            var dishes = _db.Dishes.Where(s => s.MealId == meal.MealId).ToList();
+        //            var _response = new MealDishResponse
+        //            {
+        //                meal = meal,
+        //                dishes = dishes
+        //            };
+        //            response.Add(_response);
+        //        }
+        //        return Json(new { data = response });
+        //    }
+        //    return Json(new { });
+        //}
+
+        //#endregion
 
         //[HttpGet]
         //public ActionResult Dashboard(int? id)
@@ -410,6 +451,30 @@ namespace SaaS_RMS.Controllers.SystemControllers
         //    return meals;
         //}
 
+        #region Dashboard
+
+        [HttpGet]
+        [Route("Restaurant/Dashboard")]
+        public IActionResult Dashboard()
+        {
+            var restaurantid = _session.GetInt32("restaurantsessionid");
+            var _restaurantDetails = _db.Restaurants.Find(restaurantid);
+            ViewData["restaurantname"] = _restaurantDetails.Name;
+            ViewData["restaurantlogo"] = _restaurantDetails.Logo;
+
+
+            var employeeid = _session.GetInt32("loggedinemployeeid");
+            var _employeeDetails = _db.EmployeePersonalDatas.Find(employeeid);
+
+            ViewData["employeename"] = _employeeDetails.DisplayName;
+            ViewData["employeeimage"] = _employeeDetails.EmployeeImage;
+           
+            
+            return View();
+        }
+
+        #endregion
+        
         #region Restaurant Exists
 
         private bool RestaurantExists(int id)
