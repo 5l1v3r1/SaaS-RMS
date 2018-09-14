@@ -13,44 +13,65 @@
     <div class="modal-body">
         <div class="form-horizontal">
             <div class="row">
-                <div class="control-label col-md-2">
+                <div class="control-label col-md-3">
                     <label asp-for="Name"></label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input asp-for="Name" class="form-control " />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Description"></label>
+                <div class="control-label col-md-3">
+                    <label asp-for="Type"></label>
                 </div>
-                <div class="col-md-10">
-                    <input asp-for="Description" class="form-control " />
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="col-md-9">
+                    <select asp-for="Type" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.PackageType)))"></select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
+                <div class="control-label col-md-3">
                     <label asp-for="Amount"></label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input asp-for="Amount" class="form-control " />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="control-label col-md-2">
-                    <label asp-for="Type"></label>
+                <div class="control-label col-md-3">
+                    <label>Description One</label>
                 </div>
-                <div class="col-md-10">
-                    <select asp-for="Type" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(SaaS_RMS.Models.Enums.PackageType)))"></select>
-                    <span asp-validation-for="Type" class="text-danger"></span>
+                <div class="col-md-9">
+                    <textarea asp-for="Description1" class="form-control "></textarea>
+                    <span asp-validation-for="Description1" class="text-danger"></span>
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="control-label col-md-3">
+                    <label>Description Two</label>
+                </div>
+                <div class="col-md-9">
+                    <textarea asp-for="Description2" class="form-control "></textarea>
+                    <span asp-validation-for="Description2" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="control-label col-md-3">
+                    <label>Description Three</label>
+                </div>
+                <div class="col-md-9">
+                    <textarea asp-for="Description3" class="form-control "></textarea>
+                    <span asp-validation-for="Description3" class="text-danger"></span>
+                </div>
+            </div>
+
         </div>
     </div>
 

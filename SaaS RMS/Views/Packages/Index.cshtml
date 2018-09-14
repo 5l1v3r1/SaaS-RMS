@@ -54,42 +54,37 @@
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Description)
+                                @Html.DisplayNameFor(model => model.Type)
                             </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Amount)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Type)
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
-                            </tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Amount)
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @(x++)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Amount)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Type)
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Subscriptions" asp-route-id="@item.PackageId"><i class="fa fa-check"></i> Subscriptions</a>
-                                        <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PackageId"><i class="fa fa-pencil-square-o "></i> Edit</a>
-                                        <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PackageId"><i class="fa fa-trash-o "></i> Delete</a>
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td>
+                                @(x++)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Subscriptions" asp-route-id="@item.PackageId"><i class="fa fa-check"></i> Subscriptions</a>
+                                <a class="btn btn-info btn-sm" data-modal="" asp-action="Details" asp-route-id="@item.PackageId"><i class="fa fa-book "></i> Details</a>
+                                <a class="btn btn-warning btn-sm" data-modal="" asp-action="Edit" asp-route-id="@item.PackageId"><i class="fa fa-pencil-square-o "></i> Edit</a>
+                                <a class="btn btn-danger btn-sm" data-modal="" asp-action="Delete" asp-route-id="@item.PackageId"><i class="fa fa-trash-o "></i> Delete</a>
+                            </td>
+                        </tr>
                             }
                         </table>
                     </div>
