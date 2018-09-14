@@ -1,12 +1,12 @@
-﻿@model SaaS_RMS.Models.Entities.System.RMSUser
+﻿@model SaaS_RMS.Models.Entities.Restuarant.AppUser
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Signin";
     Layout = "~/Views/Shared/AuthenticationLayout/_AuthenticationLayout.cshtml";
 }
 
-<form class="form-login" asp-action="Login" role="form" asp-controller="RMS_Admin">
-    <h2 class="form-login-heading"> RMS LOGIN </h2>
+<form class="form-login" asp-action="Signin" role="form" asp-controller="Account">
+    <h2 class="form-login-heading"> Restaurant Singin </h2>
     @if (ViewData["mismatch"] != null && Convert.ToString(ViewData["mismatch"]) != " ")
     {
         <h5 style="padding-left:1em;" class="text-danger">@ViewData["mismatch"]</h5>
@@ -39,4 +39,3 @@
         </div>
     </div>
 </form>
-

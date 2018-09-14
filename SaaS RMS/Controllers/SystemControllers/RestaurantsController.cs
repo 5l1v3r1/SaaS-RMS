@@ -130,6 +130,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Access
 
         //GET: Restaurant/Access
+        [Route("Restaurant/Access")]
         [HttpGet]
         public IActionResult Access()
         {
@@ -137,6 +138,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         }
 
         //POST: 
+        [Route("Restaurant/Access")]
         [HttpPost]
         public async Task<IActionResult> Access(Restaurant restaurant)
         {
@@ -151,10 +153,18 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
                 if (_restuarant.Status == RestaurantStatus.Active)
                 {
-                    return RedirectToAction("Admin");
+                    return RedirectToAction("Signin", "Account");
                 }
                 else
                 {
+                    var _restauarntid = _session.GetInt32("restaurantsessionid");
+                    var _avaliableUser = await _db.AppUsers.Where(au => au.RestaurantId == _restauarntid).CountAsync();
+
+                    if(_avaliableUser < 1)
+                    {
+                        return RedirectToAction("FirstRegistration", "Account");
+                    }
+
                     return RedirectToAction("Subscription");
                 }
                 

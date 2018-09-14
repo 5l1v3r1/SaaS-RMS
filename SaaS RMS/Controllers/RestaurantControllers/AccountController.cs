@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SaaS_RMS.Data;
 using SaaS_RMS.Models.Encryption;
+using SaaS_RMS.Models.Entities.Employee;
 using SaaS_RMS.Models.Entities.Restuarant;
 using SaaS_RMS.Models.Entities.System;
 using SaaS_RMS.Models.Enums;
@@ -233,10 +234,86 @@ namespace SaaS_RMS.Controllers.SystemControllers
 
         #endregion
 
-        
+        #region First Registeration
+
+        [HttpGet]
+        public IActionResult FirstRegistration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FirstRegistration(AppUser appUser)
+        {
+            var restaurantid = _session.GetInt32("restaurantsessionid");
+            
+            if (restaurantid != null)
+            {
+                var _firstEmployee = new Employee()
+                {
+                    DateCreated = DateTime.Now,
+                    DateLastModified = DateTime.Now,
+                    RestaurantId = Convert.ToInt32(restaurantid)
+                };
+                await _db.Employees.AddAsync(_firstEmployee);
+                await _db.SaveChangesAsync();
+
+                var _firstRole = new Role()
+                {
+                    Name = "SuperUser",
+                    CanDoSomething = true,
+                    CanManageEmployee = true,
+                    CanManageOrders = true,
+                    DateCreated = DateTime.Now,
+                    DateLastModified = DateTime.Now,
+                    RestaurantId = Convert.ToInt32(restaurantid)
+
+                };
+                await _db.Roles.AddAsync(_firstRole);
+                await _db.SaveChangesAsync();
+
+                var _firstAppUser = new AppUser()
+                {
+                    Name = appUser.Name,
+                    Email = appUser.Email,
+                    DateCreated = DateTime.Now,
+                    DateLastModified = DateTime.Now,
+                    Password = BCrypt.Net.BCrypt.HashPassword(appUser.Password),
+                    ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(appUser.ConfirmPassword),
+                    EmployeeId = _firstEmployee.EmployeeId,
+                    RestaurantId = Convert.ToInt32(restaurantid),
+                    RoleId = _firstRole.RoleId
+                };
+                await _db.AppUsers.AddAsync(_firstAppUser);
+                await _db.SaveChangesAsync();
+            }
+            else
+            {
+                return RedirectToAction("Access", "Restaurant");
+            }
+
+            var _restaurant = _db.Restaurants.Find(restaurantid);
+            ViewData["restaurantname"] = _restaurant.Name;
+            return RedirectToAction("Signin", "Account");
+        }
+
+        #endregion
+
+        #region Signin
+
+        [HttpGet]
+        public IActionResult Signin()
+        {
+            return View();
+        }
+
+        #endregion
 
 
-        
+
+
+
 
     }
 }
