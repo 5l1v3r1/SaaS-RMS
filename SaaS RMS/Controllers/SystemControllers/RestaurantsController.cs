@@ -192,6 +192,7 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Package
 
         [HttpGet]
+        [Route("Restaurant/Packages")]
         public async Task<IActionResult> Packages()
         {
             var restaurantid = _session.GetInt32("restaurantsessionid");
@@ -224,7 +225,8 @@ namespace SaaS_RMS.Controllers.SystemControllers
         #region Restaurant Subscription
 
         [HttpGet]
-        public async Task<IActionResult> Subcriptions(int? id)
+        //[Route("Restaurant/Subscriptions/{PackageId}")]
+        public async Task<IActionResult> Subscriptions(int? PackageId)
         {
             var restaurantid = _session.GetInt32("restaurantsessionid");
             var restaurantString = _session.GetString("restaurantobject");
@@ -240,12 +242,12 @@ namespace SaaS_RMS.Controllers.SystemControllers
             ViewData["restaurantlogo"] = restaurant.Logo;
             ViewData["restaurantemail"] = restaurant.ContactEmail;
 
-            if (id == null)
+            if (PackageId == null)
             {
                 return NotFound();
             }
 
-            var subscription = await _db.Subcriptions.Where(s => s.PackageId == id).ToListAsync();
+            var subscription = await _db.Subcriptions.Where(s => s.PackageId == PackageId).ToListAsync();
 
             if (subscription == null)
             {
